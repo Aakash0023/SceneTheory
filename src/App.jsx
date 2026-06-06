@@ -1,5 +1,7 @@
+import Home from "./Pages/Home";
+
 function App() {
-  return <h1>SceneTheory</h1>;
+  return <Home />;
 }
 
 export default App;
