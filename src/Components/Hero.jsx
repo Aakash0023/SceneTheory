@@ -25,6 +25,23 @@ const Hero = () => {
 
           <button className="secondary-btn">Watch Trailer</button>
         </div>
+
+        <div className="hero-stats">
+          <div className="stat">
+            <h3>48K+</h3>
+            <p>Films</p>
+          </div>
+
+          <div className="stat">
+            <h3>1.2M</h3>
+            <p>Members</p>
+          </div>
+
+          <div className="stat">
+            <h3>9400</h3>
+            <p>Quizzes</p>
+          </div>
+        </div>
       </div>
 
       <div className="hero-right">

@@ -20,4 +20,5 @@ const movies = [
     image: "https://image.tmdb.org/t/p/w500/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg",
   },
 ];
+
 export default movies;
