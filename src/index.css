@@ -604,3 +604,8 @@ body {
 .auth-link a:hover {
   text-decoration: underline;
 }
+.error-message {
+  color: #ff4d4d;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
