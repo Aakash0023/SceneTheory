@@ -4,13 +4,17 @@ const Signup = () => {
       <div className="signup-card">
         <h1>Join SceneTheory</h1>
 
-        <input type="text" placeholder="Full Name" />
+        <p>Discover films. Test your knowledge. Connect with cinema lovers.</p>
 
-        <input type="email" placeholder="Email Address" />
+        <form className="signup-form">
+          <input type="text" placeholder="Full Name" />
 
-        <input type="password" placeholder="Password" />
+          <input type="email" placeholder="Email Address" />
 
-        <button>Create Account</button>
+          <input type="password" placeholder="Password" />
+
+          <button type="submit">Create Account</button>
+        </form>
       </div>
     </div>
   );
