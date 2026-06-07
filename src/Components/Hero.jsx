@@ -12,7 +12,7 @@ const Hero = () => {
           <br />
           beyond the
           <br />
-          <span>credits.</span>
+          <span className="shimmer-text">credits.</span>
         </h1>
 
         <p className="hero-description">

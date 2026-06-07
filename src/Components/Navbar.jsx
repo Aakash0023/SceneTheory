@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 const Navbar = () => {
   return (
     <nav className="navbar">
@@ -16,7 +17,9 @@ const Navbar = () => {
         <li>Lists</li>
       </ul>
 
-      <button className="signup-btn">Sign Up</button>
+      <Link to="/signup" className="signup-btn">
+        Sign Up
+      </Link>
     </nav>
   );
 };
