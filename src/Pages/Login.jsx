@@ -1,6 +1,36 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!email || !password) {
+      setError("Please fill all fields");
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(email)) {
+      setError("Please enter a valid email address");
+      return;
+    }
+
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters");
+      return;
+    }
+
+    setError("");
+
+    alert("Login successful!");
+  };
+
   return (
     <div className="signup-page">
       <div className="signup-card">
@@ -8,10 +38,22 @@ const Login = () => {
 
         <p>Continue your cinematic journey with SceneTheory.</p>
 
-        <form className="signup-form">
-          <input type="email" placeholder="Email Address" />
+        {error && <p className="error-message">{error}</p>}
 
-          <input type="password" placeholder="Password" />
+        <form className="signup-form" onSubmit={handleSubmit}>
+          <input
+            type="email"
+            placeholder="Email Address"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
           <button type="submit">Login</button>
         </form>
