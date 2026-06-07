@@ -1,28 +1,28 @@
 import { Link } from "react-router-dom";
-const Signup = () => {
+
+const Login = () => {
   return (
     <div className="signup-page">
       <div className="signup-card">
-        <h1>Join SceneTheory</h1>
+        <h1>Welcome Back</h1>
 
-        <p>Discover films. Test your knowledge. Connect with cinema lovers.</p>
+        <p>Continue your cinematic journey with SceneTheory.</p>
 
         <form className="signup-form">
-          <input type="text" placeholder="Full Name" />
-
           <input type="email" placeholder="Email Address" />
 
           <input type="password" placeholder="Password" />
 
-          <button type="submit">Create Account</button>
+          <button type="submit">Login</button>
         </form>
+
         <p className="auth-link">
-          Already have an account?
-          <Link to="/login"> Login</Link>
+          Don't have an account?
+          <Link to="/signup"> Sign Up</Link>
         </p>
       </div>
     </div>
   );
 };
 
-export default Signup;
+export default Login;
