@@ -3,7 +3,7 @@ import movies from "../data/movies";
 
 const Hero = () => {
   return (
-    <section className="hero">
+    <section id="discover" className="hero">
       <div className="hero-left">
         <p className="hero-eyebrow">Where every frame tells a story</p>
 

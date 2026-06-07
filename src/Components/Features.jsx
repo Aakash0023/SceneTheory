@@ -40,7 +40,7 @@ const features = [
 ];
 const Features = () => {
   return (
-    <section className="features-section">
+    <section id="quizzes" className="features-section">
       <div className="section-header">
         <p className="section-eyebrow">Why SceneTheory</p>
 

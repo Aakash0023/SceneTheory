@@ -11,10 +11,23 @@ const Navbar = () => {
       </div>
 
       <ul className="nav-links">
-        <li>Discover</li>
-        <li>Quizzes</li>
-        <li>Community</li>
-        <li>Lists</li>
+        <li>
+          <a href="#discover">Discover</a>
+        </li>
+
+        <li>
+          <a href="#quizzes">Quizzes</a>
+        </li>
+
+        <li>
+          <a href="#community" onClick={() => console.log("Community clicked")}>
+            Community
+          </a>
+        </li>
+
+        <li>
+          <a href="#watchlists">Watchlists</a>
+        </li>
       </ul>
 
       <Link to="/signup" className="signup-btn">
