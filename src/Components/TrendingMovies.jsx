@@ -1,7 +1,19 @@
+import { useEffect, useState } from "react";
 import MovieCard from "./MovieCard";
-import movies from "../data/movies";
+import { fetchTrendingMovies } from "../api/tmdb";
 
 const TrendingMovies = () => {
+  const [movies, setMovies] = useState([]);
+
+  useEffect(() => {
+    const getMovies = async () => {
+      const data = await fetchTrendingMovies();
+      setMovies(data);
+    };
+
+    getMovies();
+  }, []);
+
   return (
     <section className="trending-section">
       <div className="section-header">
@@ -13,10 +25,10 @@ const TrendingMovies = () => {
       <div className="trending-grid">
         {movies.map((movie) => (
           <MovieCard
-            key={movie.title}
+            key={movie.id}
+            id={movie.id}
             title={movie.title}
-            year={movie.year}
-            image={movie.image}
+            image={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
           />
         ))}
       </div>
