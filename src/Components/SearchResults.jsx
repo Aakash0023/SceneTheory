@@ -1,12 +1,14 @@
 import MovieCard from "./MovieCard";
 
-const TrendingMovies = ({ movies = [] }) => {
+const SearchResults = ({ movies = [] }) => {
+  if (!movies.length) return null;
+
   return (
     <section className="trending-section">
       <div className="section-header">
-        <p className="section-eyebrow">What's Trending</p>
+        <p className="section-eyebrow">Search Results</p>
 
-        <h2 className="section-title">Trending Movies</h2>
+        <h2 className="section-title">{movies.length} Movies Found</h2>
       </div>
 
       <div className="trending-grid">
@@ -25,4 +27,4 @@ const TrendingMovies = ({ movies = [] }) => {
   );
 };
 
-export default TrendingMovies;
+export default SearchResults;

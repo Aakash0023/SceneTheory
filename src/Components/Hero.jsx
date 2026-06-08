@@ -48,9 +48,9 @@ const Hero = () => {
         <div className="poster-grid">
           {movies.map((movie) => (
             <MovieCard
-              key={movie.title}
+              key={movie.id}
+              id={movie.id}
               title={movie.title}
-              year={movie.year}
               image={movie.image}
             />
           ))}

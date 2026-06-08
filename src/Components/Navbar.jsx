@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-const Navbar = () => {
+import SearchBar from "./SearchBar";
+const Navbar = ({ onSearch }) => {
   return (
     <nav className="navbar">
       <div className="logo">
@@ -29,6 +30,7 @@ const Navbar = () => {
           <a href="#watchlists">Watchlists</a>
         </li>
       </ul>
+      <SearchBar onSearch={onSearch} />
 
       <Link to="/signup" className="signup-btn">
         Sign Up

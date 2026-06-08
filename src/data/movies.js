@@ -1,5 +1,6 @@
 const movies = [
   {
+    id: 157336,
     title: "Interstellar",
     year: "2014",
     rating: "8.7",
@@ -8,6 +9,7 @@ const movies = [
       "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.",
   },
   {
+    id: 872585,
     title: "Oppenheimer",
     year: "2023",
     rating: "8.3",
@@ -16,6 +18,7 @@ const movies = [
       "The story of J. Robert Oppenheimer and the creation of the atomic bomb.",
   },
   {
+    id: 438631,
     title: "Dune",
     year: "2021",
     rating: "8.0",
@@ -24,6 +27,7 @@ const movies = [
       "Paul Atreides embarks on a journey to protect the future of his people and planet.",
   },
   {
+    id: 496243,
     title: "Parasite",
     year: "2019",
     rating: "8.3",

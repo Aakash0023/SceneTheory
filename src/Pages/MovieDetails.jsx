@@ -1,17 +1,27 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { fetchMovieDetails } from "../api/tmdb";
-
+import { fetchMovieDetails, fetchMovieTrailer } from "../api/tmdb";
 const MovieDetails = () => {
   const { movieId } = useParams();
   const navigate = useNavigate();
 
   const [movie, setMovie] = useState(null);
+  const [trailerUrl, setTrailerUrl] = useState("");
 
   useEffect(() => {
     const getMovie = async () => {
       const data = await fetchMovieDetails(movieId);
       setMovie(data);
+
+      const videos = await fetchMovieTrailer(movieId);
+
+      const trailer = videos?.find(
+        (video) => video.site === "YouTube" && video.type === "Trailer"
+      );
+
+      if (trailer) {
+        setTrailerUrl(`https://www.youtube.com/watch?v=${trailer.key}`);
+      }
     };
 
     getMovie();
@@ -42,7 +52,14 @@ const MovieDetails = () => {
 
         <p className="movie-description">{movie.overview}</p>
 
-        <button className="primary-btn">Watch Trailer</button>
+        <a
+          href={trailerUrl}
+          target="_blank"
+          rel="noreferrer"
+          className="primary-btn"
+        >
+          ▶ Watch Trailer
+        </a>
       </div>
     </div>
   );
