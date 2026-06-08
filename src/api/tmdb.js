@@ -38,3 +38,12 @@ export const fetchMovieTrailer = async (movieId) => {
 
   return data.results;
 };
+export const fetchSimilarMovies = async (movieId) => {
+  const response = await fetch(
+    `https://api.themoviedb.org/3/movie/${movieId}/similar?api_key=${API_KEY}`
+  );
+
+  const data = await response.json();
+
+  return data.results;
+};

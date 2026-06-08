@@ -886,3 +886,113 @@ body {
   text-decoration: none;
   display: inline-block;
 }
+.remove-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
+  border: none;
+  background: rgba(0, 0, 0, 0.8);
+
+  color: white;
+  font-size: 1rem;
+
+  cursor: pointer;
+
+  padding: 8px;
+  border-radius: 50%;
+
+  z-index: 10;
+}
+
+.remove-btn:hover {
+  transform: scale(1.1);
+}
+.remove-container {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.remove-btn {
+  border: none;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  z-index: 10;
+}
+
+.tooltip {
+  position: absolute;
+  top: 50%;
+  right: 130%;
+
+  transform: translateY(-50%) translateX(10px);
+
+  background: rgba(15, 15, 15, 0.95);
+  color: white;
+
+  padding: 8px 12px;
+  border-radius: 8px;
+
+  font-size: 0.85rem;
+  font-weight: 500;
+
+  white-space: nowrap;
+
+  opacity: 0;
+  visibility: hidden;
+
+  transition: opacity 0.3s ease, transform 0.3s ease;
+
+  backdrop-filter: blur(8px);
+
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.remove-container:hover .tooltip {
+  opacity: 1;
+  visibility: visible;
+
+  transform: translateY(-50%) translateX(0);
+}
+.tooltip::after {
+  content: "";
+
+  position: absolute;
+
+  top: 50%;
+  left: 100%;
+
+  transform: translateY(-50%);
+
+  border-width: 6px;
+  border-style: solid;
+
+  border-color: transparent transparent transparent rgba(15, 15, 15, 0.95);
+}
+.remove-btn {
+  border: none;
+  background: rgba(0, 0, 0, 0.8);
+
+  color: white;
+
+  font-size: 1rem;
+
+  cursor: pointer;
+
+  padding: 8px;
+
+  border-radius: 50%;
+
+  transition: transform 0.25s ease, background 0.25s ease;
+}
+
+.remove-btn:hover {
+  transform: scale(1.15) rotate(8deg);
+
+  background: rgba(220, 38, 38, 0.95);
+}

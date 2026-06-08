@@ -1,12 +1,36 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { fetchMovieDetails, fetchMovieTrailer } from "../api/tmdb";
+import { BsBookmarkPlus } from "react-icons/bs";
+import {
+  fetchMovieDetails,
+  fetchMovieTrailer,
+  fetchSimilarMovies,
+} from "../api/tmdb";
+import SimilarMovies from "../components/SimilarMovies";
 const MovieDetails = () => {
   const { movieId } = useParams();
   const navigate = useNavigate();
 
   const [movie, setMovie] = useState(null);
   const [trailerUrl, setTrailerUrl] = useState("");
+  const [similarMovies, setSimilarMovies] = useState([]);
+
+  const addToWatchlist = () => {
+    const watchlist = JSON.parse(localStorage.getItem("watchlist")) || [];
+
+    const exists = watchlist.find((item) => item.id === movie.id);
+
+    if (exists) {
+      alert("Movie already in watchlist!");
+      return;
+    }
+
+    watchlist.push(movie);
+
+    localStorage.setItem("watchlist", JSON.stringify(watchlist));
+
+    alert("Added to Watchlist!");
+  };
 
   useEffect(() => {
     const getMovie = async () => {
@@ -14,6 +38,9 @@ const MovieDetails = () => {
       setMovie(data);
 
       const videos = await fetchMovieTrailer(movieId);
+      const similar = await fetchSimilarMovies(movieId);
+
+      setSimilarMovies(similar.slice(0, 4));
 
       const trailer = videos?.find(
         (video) => video.site === "YouTube" && video.type === "Trailer"
@@ -60,7 +87,11 @@ const MovieDetails = () => {
         >
           ▶ Watch Trailer
         </a>
+        <button className="secondary-btn" onClick={addToWatchlist}>
+          <BsBookmarkPlus /> Add to Watchlist
+        </button>
       </div>
+      <SimilarMovies movies={similarMovies} />
     </div>
   );
 };

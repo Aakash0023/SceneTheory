@@ -27,7 +27,7 @@ const Navbar = ({ onSearch }) => {
         </li>
 
         <li>
-          <a href="#watchlists">Watchlists</a>
+          <Link to="/watchlist">Watchlist</Link>
         </li>
       </ul>
       <SearchBar onSearch={onSearch} />
