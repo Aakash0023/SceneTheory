@@ -29,6 +29,7 @@ export const searchMovies = async (query) => {
 
   return data.results;
 };
+
 export const fetchMovieTrailer = async (movieId) => {
   const response = await fetch(
     `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${API_KEY}`
@@ -38,9 +39,30 @@ export const fetchMovieTrailer = async (movieId) => {
 
   return data.results;
 };
+
 export const fetchSimilarMovies = async (movieId) => {
   const response = await fetch(
     `https://api.themoviedb.org/3/movie/${movieId}/similar?api_key=${API_KEY}`
+  );
+
+  const data = await response.json();
+
+  return data.results;
+};
+
+export const fetchGenres = async () => {
+  const response = await fetch(
+    `https://api.themoviedb.org/3/genre/movie/list?api_key=${API_KEY}`
+  );
+
+  const data = await response.json();
+
+  return data.genres;
+};
+
+export const fetchMoviesByGenre = async (genreId) => {
+  const response = await fetch(
+    `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_genres=${genreId}`
   );
 
   const data = await response.json();

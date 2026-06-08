@@ -7,12 +7,14 @@ import {
   fetchSimilarMovies,
 } from "../api/tmdb";
 import SimilarMovies from "../components/SimilarMovies";
+import TrailerModal from "../components/TrailerModal";
 const MovieDetails = () => {
   const { movieId } = useParams();
   const navigate = useNavigate();
 
   const [movie, setMovie] = useState(null);
   const [trailerUrl, setTrailerUrl] = useState("");
+  const [showTrailer, setShowTrailer] = useState(false);
   const [similarMovies, setSimilarMovies] = useState([]);
 
   const addToWatchlist = () => {
@@ -79,17 +81,16 @@ const MovieDetails = () => {
 
         <p className="movie-description">{movie.overview}</p>
 
-        <a
-          href={trailerUrl}
-          target="_blank"
-          rel="noreferrer"
-          className="primary-btn"
-        >
+        <button className="primary-btn" onClick={() => setShowTrailer(true)}>
           ▶ Watch Trailer
-        </a>
+        </button>
         <button className="secondary-btn" onClick={addToWatchlist}>
           <BsBookmarkPlus /> Add to Watchlist
         </button>
+        <TrailerModal
+          trailerUrl={showTrailer ? trailerUrl : ""}
+          onClose={() => setShowTrailer(false)}
+        />
       </div>
       <SimilarMovies movies={similarMovies} />
     </div>

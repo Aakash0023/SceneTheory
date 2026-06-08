@@ -6,20 +6,31 @@ import Features from "../components/Features";
 import Footer from "../components/Footer";
 import Community from "../components/Community";
 import Watchlists from "../components/Watchlists";
+
 import { useEffect, useState } from "react";
-import { fetchTrendingMovies, searchMovies } from "../api/tmdb";
+
+import {
+  fetchTrendingMovies,
+  searchMovies,
+  fetchGenres,
+  fetchMoviesByGenre,
+} from "../api/tmdb";
 
 const Home = () => {
   const [movies, setMovies] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
+  const [genres, setGenres] = useState([]);
 
   useEffect(() => {
-    const getTrending = async () => {
-      const data = await fetchTrendingMovies();
-      setMovies(data);
+    const loadData = async () => {
+      const trending = await fetchTrendingMovies();
+      setMovies(trending);
+
+      const genreData = await fetchGenres();
+      setGenres(genreData);
     };
 
-    getTrending();
+    loadData();
   }, []);
 
   const handleSearch = async (query) => {
@@ -34,9 +45,38 @@ const Home = () => {
     }, 100);
   };
 
+  const handleGenreSelect = async (genreId) => {
+    if (!genreId) {
+      const trending = await fetchTrendingMovies();
+      setMovies(trending);
+
+      setTimeout(() => {
+        document
+          .querySelector(".trending-section")
+          ?.scrollIntoView({ behavior: "smooth" });
+      }, 100);
+
+      return;
+    }
+
+    const filteredMovies = await fetchMoviesByGenre(genreId);
+
+    setMovies(filteredMovies);
+
+    setTimeout(() => {
+      document
+        .querySelector(".trending-section")
+        ?.scrollIntoView({ behavior: "smooth" });
+    }, 100);
+  };
+
   return (
     <>
-      <Navbar onSearch={handleSearch} />
+      <Navbar
+        onSearch={handleSearch}
+        genres={genres}
+        onGenreSelect={handleGenreSelect}
+      />
 
       <Hero />
 
