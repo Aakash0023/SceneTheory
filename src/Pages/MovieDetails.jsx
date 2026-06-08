@@ -8,6 +8,7 @@ import {
 } from "../api/tmdb";
 import SimilarMovies from "../components/SimilarMovies";
 import TrailerModal from "../components/TrailerModal";
+import { Link } from "react-router-dom";
 const MovieDetails = () => {
   const { movieId } = useParams();
   const navigate = useNavigate();
@@ -74,19 +75,19 @@ const MovieDetails = () => {
 
       <div className="details-content">
         <h1>{movie.title}</h1>
-
         <p className="movie-year">{movie.release_date}</p>
-
         <p className="movie-rating">⭐ {movie.vote_average?.toFixed(1)}/10</p>
-
         <p className="movie-description">{movie.overview}</p>
-
         <button className="primary-btn" onClick={() => setShowTrailer(true)}>
           ▶ Watch Trailer
         </button>
         <button className="secondary-btn" onClick={addToWatchlist}>
           <BsBookmarkPlus /> Add to Watchlist
         </button>
+        <Link to={`/movie/${movieId}/quiz`} className="secondary-btn">
+          🧠 Start Quiz
+        </Link>
+
         <TrailerModal
           trailerUrl={showTrailer ? trailerUrl : ""}
           onClose={() => setShowTrailer(false)}

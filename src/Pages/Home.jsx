@@ -20,6 +20,12 @@ const Home = () => {
   const [movies, setMovies] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
   const [genres, setGenres] = useState([]);
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "dark");
+  useEffect(() => {
+    document.body.className = theme;
+
+    localStorage.setItem("theme", theme);
+  }, [theme]);
 
   useEffect(() => {
     const loadData = async () => {
@@ -76,6 +82,8 @@ const Home = () => {
         onSearch={handleSearch}
         genres={genres}
         onGenreSelect={handleGenreSelect}
+        theme={theme}
+        setTheme={setTheme}
       />
 
       <Hero />

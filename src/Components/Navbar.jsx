@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import SearchBar from "./SearchBar";
+import { BsMoonStarsFill, BsSunFill } from "react-icons/bs";
 
-const Navbar = ({ onSearch, genres, onGenreSelect }) => {
+const Navbar = ({ onSearch, genres, onGenreSelect, theme, setTheme }) => {
   const [showGenres, setShowGenres] = useState(false);
 
   return (
@@ -67,6 +68,12 @@ const Navbar = ({ onSearch, genres, onGenreSelect }) => {
       </ul>
 
       <SearchBar onSearch={onSearch} />
+      <button
+        className="theme-toggle"
+        onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+      >
+        {theme === "dark" ? <BsSunFill /> : <BsMoonStarsFill />}
+      </button>
 
       <Link to="/signup" className="signup-btn">
         Sign Up

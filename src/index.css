@@ -1149,3 +1149,139 @@ body {
     opacity: 1;
   }
 }
+.theme-toggle {
+  border: none;
+  background: transparent;
+
+  font-size: 1.3rem;
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+  transform: rotate(20deg) scale(1.15);
+}
+body.dark {
+  background: #0f0f0f;
+  color: white;
+
+  transition: all 0.3s ease;
+}
+
+body.light {
+  background: #f5f5f5;
+  color: #111;
+
+  transition: all 0.3s ease;
+}
+body.light .navbar {
+  background: #ffffff;
+  color: #111;
+  border-bottom: 1px solid #ddd;
+}
+
+body.dark .navbar {
+  background: #0f0f0f;
+  color: white;
+}
+body.light .nav-links a {
+  color: #111;
+}
+
+body.dark .nav-links a {
+  color: white;
+}
+body.light .logo h2 {
+  color: #111;
+}
+
+body.dark .logo h2 {
+  color: white;
+}
+body.light .dropdown-menu {
+  background: white;
+  color: black;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+body.dark .dropdown-menu {
+  background: #111;
+  color: white;
+}
+body.light .dropdown-menu li:hover {
+  background: #f3f3f3;
+}
+
+body.dark .dropdown-menu li:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+body.light .poster-card {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+body.dark .poster-card {
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.08);
+}
+body.light .poster-card {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+body.dark .poster-card {
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.08);
+}
+body.light .watchlist-page {
+  color: #111;
+}
+
+body.dark .watchlist-page {
+  color: white;
+}
+body.light .modal-content {
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+}
+
+body.dark .modal-content {
+  box-shadow: 0 10px 40px rgba(255, 255, 255, 0.1);
+}
+body,
+.navbar,
+.poster-card,
+.primary-btn,
+.secondary-btn,
+.dropdown-menu,
+.watchlist-page {
+  transition: all 0.3s ease;
+}
+body.dark .theme-toggle {
+  color: #ffd43b;
+}
+
+body.light .theme-toggle {
+  color: #111;
+}
+.quiz-page {
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 20px;
+}
+
+.quiz-options {
+  display: flex;
+  flex-direction: column;
+
+  gap: 12px;
+
+  width: 400px;
+}

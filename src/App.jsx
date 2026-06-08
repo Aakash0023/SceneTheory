@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Watchlist from "./pages/Watchlist";
+import QuizPage from "./pages/QuizPage";
 function App() {
   return (
     <BrowserRouter>
@@ -13,6 +14,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/movie/:movieId" element={<MovieDetails />} />
         <Route path="/watchlist" element={<Watchlist />} />
+        <Route path="/movie/:movieId/quiz" element={<QuizPage />} />
       </Routes>
     </BrowserRouter>
   );
