@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { BsBookmarkPlus } from "react-icons/bs";
+import { motion } from "framer-motion";
+
 import {
   fetchMovieDetails,
   fetchMovieTrailer,
   fetchSimilarMovies,
 } from "../api/tmdb";
+
 import SimilarMovies from "../components/SimilarMovies";
 import TrailerModal from "../components/TrailerModal";
-import { Link } from "react-router-dom";
+
 const MovieDetails = () => {
   const { movieId } = useParams();
   const navigate = useNavigate();
@@ -41,8 +44,8 @@ const MovieDetails = () => {
       setMovie(data);
 
       const videos = await fetchMovieTrailer(movieId);
-      const similar = await fetchSimilarMovies(movieId);
 
+      const similar = await fetchSimilarMovies(movieId);
       setSimilarMovies(similar.slice(0, 4));
 
       const trailer = videos?.find(
@@ -62,37 +65,67 @@ const MovieDetails = () => {
   }
 
   return (
-    <div className="movie-details">
+    <div
+      className="movie-details"
+      style={{
+        backgroundImage: `linear-gradient(
+          rgba(5,5,5,0.85),
+          rgba(5,5,5,0.95)
+        ),
+        url(https://image.tmdb.org/t/p/original${movie.backdrop_path})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundAttachment: "fixed",
+      }}
+    >
       <button className="secondary-btn" onClick={() => navigate(-1)}>
         ← Back
       </button>
 
-      <img
+      <motion.img
         src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
         alt={movie.title}
         className="details-poster"
+        initial={{ opacity: 0, x: -80 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.6 }}
       />
 
-      <div className="details-content">
+      <motion.div
+        className="details-content"
+        initial={{ opacity: 0, x: 80 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.8 }}
+      >
         <h1>{movie.title}</h1>
+
         <p className="movie-year">{movie.release_date}</p>
+
         <p className="movie-rating">⭐ {movie.vote_average?.toFixed(1)}/10</p>
+
         <p className="movie-description">{movie.overview}</p>
-        <button className="primary-btn" onClick={() => setShowTrailer(true)}>
-          ▶ Watch Trailer
-        </button>
-        <button className="secondary-btn" onClick={addToWatchlist}>
-          <BsBookmarkPlus /> Add to Watchlist
-        </button>
-        <Link to={`/movie/${movieId}/quiz`} className="secondary-btn">
-          🧠 Start Quiz
-        </Link>
+
+        <div className="details-buttons">
+          <button className="primary-btn" onClick={() => setShowTrailer(true)}>
+            ▶ Watch Trailer
+          </button>
+
+          <button className="secondary-btn" onClick={addToWatchlist}>
+            <BsBookmarkPlus />
+            Add to Watchlist
+          </button>
+
+          <Link to={`/movie/${movieId}/quiz`} className="secondary-btn">
+            🧠 Start Quiz
+          </Link>
+        </div>
 
         <TrailerModal
           trailerUrl={showTrailer ? trailerUrl : ""}
           onClose={() => setShowTrailer(false)}
         />
-      </div>
+      </motion.div>
+
       <SimilarMovies movies={similarMovies} />
     </div>
   );

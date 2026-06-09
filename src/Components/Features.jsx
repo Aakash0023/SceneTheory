@@ -6,6 +6,9 @@ import {
   Bookmark,
   User,
 } from "lucide-react";
+
+import { motion } from "framer-motion";
+
 const features = [
   {
     icon: <Clapperboard size={40} />,
@@ -38,6 +41,7 @@ const features = [
     description: "Show your cinematic journey.",
   },
 ];
+
 const Features = () => {
   return (
     <section id="quizzes" className="features-section">
@@ -48,14 +52,28 @@ const Features = () => {
       </div>
 
       <div className="features-grid">
-        {features.map((feature) => (
-          <div className="feature-card" key={feature.title}>
+        {features.map((feature, index) => (
+          <motion.div
+            key={feature.title}
+            className="feature-card"
+            initial={{ opacity: 0, y: 60 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: 0.5,
+              delay: index * 0.15,
+            }}
+            viewport={{ once: true }}
+            whileHover={{
+              y: -10,
+              scale: 1.03,
+            }}
+          >
             <div className="feature-icon">{feature.icon}</div>
 
             <h3>{feature.title}</h3>
 
             <p>{feature.description}</p>
-          </div>
+          </motion.div>
         ))}
       </div>
     </section>
