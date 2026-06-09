@@ -26,6 +26,9 @@ const QuizResults = ({ score, total, movieId }) => {
       <Link to={`/movie/${movieId}`} className="primary-btn">
         Back To Movie
       </Link>
+      <Link to={`/movie/${movieId}/quiz`} className="secondary-btn">
+        Try Again
+      </Link>
     </div>
   );
 };
