@@ -1,10 +1,10 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import MovieDetails from "./pages/MovieDetails";
-import Home from "./pages/Home";
-import Signup from "./pages/Signup";
-import Login from "./pages/Login";
-import Watchlist from "./pages/Watchlist";
-import QuizPage from "./pages/QuizPage";
+import MovieDetails from "./pages/MovieDetails.jsx";
+import Home from "./pages/Home.jsx";
+import Signup from "./pages/Signup.jsx";
+import Login from "./pages/Login.jsx";
+import Watchlist from "./pages/Watchlist.jsx";
+import QuizPage from "./pages/QuizPage.jsx";
 function App() {
   return (
     <BrowserRouter>
