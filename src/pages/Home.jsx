@@ -96,8 +96,6 @@ const Home = () => {
 
       <Features />
 
-      <Community />
-
       <Watchlists />
 
       <Footer />

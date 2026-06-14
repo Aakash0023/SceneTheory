@@ -1,6 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState } from "react";
 
+import MouseGlow from "./components/MouseGlow";
+
 import MovieDetails from "./pages/MovieDetails.jsx";
 import Home from "./pages/Home.jsx";
 import Signup from "./pages/Signup.jsx";
@@ -25,6 +27,8 @@ function App() {
 
   return (
     <BrowserRouter>
+      <MouseGlow />
+
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/signup" element={<Signup />} />

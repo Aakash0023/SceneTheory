@@ -1,8 +1,13 @@
+import { useState } from "react";
 import MovieCard from "./MovieCard";
 import movies from "../data/movies";
 import { motion } from "framer-motion";
+import { FaPlay } from "react-icons/fa";
+import { IoFilmOutline } from "react-icons/io5";
 
 const Hero = () => {
+  const [showTrailer, setShowTrailer] = useState(false);
+
   return (
     <section id="discover" className="hero">
       <div className="hero-left">
@@ -53,34 +58,18 @@ const Hero = () => {
             delay: 0.8,
           }}
         >
-          <button className="primary-btn">Start Exploring</button>
+          <button className="primary-btn">
+            <IoFilmOutline />
+            Start Exploring
+          </button>
 
-          <button className="secondary-btn">Watch Trailer</button>
-        </motion.div>
-
-        <motion.div
-          className="hero-stats"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{
-            duration: 0.8,
-            delay: 1.1,
-          }}
-        >
-          <div className="stat">
-            <h3>48K+</h3>
-            <p>Films</p>
-          </div>
-
-          <div className="stat">
-            <h3>1.2M</h3>
-            <p>Members</p>
-          </div>
-
-          <div className="stat">
-            <h3>9400</h3>
-            <p>Quizzes</p>
-          </div>
+          <button
+            className="secondary-btn"
+            onClick={() => setShowTrailer(true)}
+          >
+            <FaPlay />
+            Watch Trailer
+          </button>
         </motion.div>
       </div>
 
@@ -115,6 +104,29 @@ const Hero = () => {
           ))}
         </div>
       </motion.div>
+
+      {showTrailer && (
+        <div className="modal-overlay" onClick={() => setShowTrailer(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button
+              className="modal-close"
+              onClick={() => setShowTrailer(false)}
+            >
+              ✕
+            </button>
+
+            <iframe
+              width="100%"
+              height="500"
+              src="https://www.youtube.com/embed/zSWdZVtXT7E"
+              title="Interstellar Trailer"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+          </div>
+        </div>
+      )}
     </section>
   );
 };
