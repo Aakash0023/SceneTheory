@@ -88,3 +88,53 @@
   border-radius: 12px;
   margin-top: 10px;
 }
+.like-btn,
+.comment-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.like-btn {
+  cursor: pointer;
+}
+
+.like-btn:hover {
+  transform: scale(1.05);
+}
+.liked {
+  color: #e50914;
+}
+.comment-section {
+  margin-top: 15px;
+}
+
+.comment-input-row {
+  display: flex;
+  gap: 10px;
+}
+
+.comment-input {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background: #2a2d35;
+  color: white;
+}
+
+.comment-submit-btn {
+  background: #e50914;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.comment-item {
+  margin-top: 10px;
+  padding: 8px;
+  background: #2a2d35;
+  border-radius: 8px;
+}
