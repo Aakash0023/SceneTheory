@@ -5,6 +5,7 @@ import Signup from "./pages/Signup.jsx";
 import Login from "./pages/Login.jsx";
 import Watchlist from "./pages/Watchlist.jsx";
 import QuizPage from "./pages/QuizPage.jsx";
+import Community from "./pages/Community";
 function App() {
   return (
     <BrowserRouter>
@@ -15,6 +16,7 @@ function App() {
         <Route path="/movie/:movieId" element={<MovieDetails />} />
         <Route path="/watchlist" element={<Watchlist />} />
         <Route path="/movie/:movieId/quiz" element={<QuizPage />} />
+        <Route path="/community" element={<Community />} />
       </Routes>
     </BrowserRouter>
   );

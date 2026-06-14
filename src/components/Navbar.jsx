@@ -26,9 +26,7 @@ const Navbar = ({ onSearch, genres, onGenreSelect, theme, setTheme }) => {
         </li>
 
         <li>
-          <a href="#community" onClick={() => console.log("Community clicked")}>
-            Community
-          </a>
+          <Link to="/community">Community</Link>
         </li>
 
         <li className="genre-dropdown">
