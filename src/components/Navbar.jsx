@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import SearchBar from "./SearchBar";
 import { BsMoonStarsFill, BsSunFill } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = ({ onSearch, genres, onGenreSelect, theme, setTheme }) => {
   const [showGenres, setShowGenres] = useState(false);

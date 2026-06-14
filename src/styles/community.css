@@ -58,3 +58,33 @@
 .create-post-btn:hover {
   background: #ff1f29;
 }
+.create-post-form {
+  max-width: 600px;
+  margin: 30px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.caption-input {
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  background: #1a1d24;
+  color: white;
+}
+
+.create-post-form button {
+  background: #e50914;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.preview-image {
+  width: 100%;
+  max-width: 500px;
+  border-radius: 12px;
+  margin-top: 10px;
+}
