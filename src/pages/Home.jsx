@@ -4,7 +4,6 @@ import TrendingMovies from "../components/TrendingMovies";
 import SearchResults from "../components/SearchResults";
 import Features from "../components/Features";
 import Footer from "../components/Footer";
-import Community from "../components/Community";
 import Watchlists from "../components/Watchlists";
 import CineChallenge from "../components/CineChallenge";
 
@@ -21,12 +20,6 @@ const Home = () => {
   const [movies, setMovies] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
   const [genres, setGenres] = useState([]);
-  const [theme, setTheme] = useState(localStorage.getItem("theme") || "dark");
-  useEffect(() => {
-    document.body.className = theme;
-
-    localStorage.setItem("theme", theme);
-  }, [theme]);
 
   useEffect(() => {
     const loadData = async () => {
@@ -55,6 +48,7 @@ const Home = () => {
   const handleGenreSelect = async (genreId) => {
     if (!genreId) {
       const trending = await fetchTrendingMovies();
+
       setMovies(trending);
 
       setTimeout(() => {
@@ -83,8 +77,6 @@ const Home = () => {
         onSearch={handleSearch}
         genres={genres}
         onGenreSelect={handleGenreSelect}
-        theme={theme}
-        setTheme={setTheme}
       />
 
       <Hero />
@@ -96,6 +88,7 @@ const Home = () => {
       </div>
 
       <Features />
+
       <CineChallenge />
 
       <Watchlists />

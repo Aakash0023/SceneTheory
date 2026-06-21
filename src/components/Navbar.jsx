@@ -1,11 +1,23 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SearchBar from "./SearchBar";
-import { BsMoonStarsFill, BsSunFill } from "react-icons/bs";
-import { useNavigate } from "react-router-dom";
 
-const Navbar = ({ onSearch, genres, onGenreSelect, theme, setTheme }) => {
+const Navbar = ({ onSearch, genres, onGenreSelect }) => {
   const [showGenres, setShowGenres] = useState(false);
+  const [streak, setStreak] = useState(0);
+
+  useEffect(() => {
+    const updateNavbarStreak = () => {
+      setStreak(Number(localStorage.getItem("cineStreak")) || 0);
+    };
+
+    updateNavbarStreak();
+
+    window.addEventListener("streakUpdated", updateNavbarStreak);
+
+    return () =>
+      window.removeEventListener("streakUpdated", updateNavbarStreak);
+  }, []);
 
   return (
     <nav className="navbar">
@@ -67,12 +79,8 @@ const Navbar = ({ onSearch, genres, onGenreSelect, theme, setTheme }) => {
       </ul>
 
       <SearchBar onSearch={onSearch} genres={genres} />
-      <button
-        className="theme-toggle"
-        onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      >
-        {theme === "dark" ? <BsSunFill /> : <BsMoonStarsFill />}
-      </button>
+
+      <div className="streak-badge">🔥 {streak} Day Streak</div>
 
       <Link to="/signup" className="signup-btn">
         Sign Up

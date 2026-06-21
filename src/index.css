@@ -1983,7 +1983,7 @@ body.light .theme-toggle {
 
   border-radius: 999px;
 
-  background: rgba(139,92,246,0.15);
+  background: rgba(139, 92, 246, 0.15);
 
   color: #b794ff;
 
@@ -1994,4 +1994,118 @@ body.light .theme-toggle {
   letter-spacing: 2px;
 
   text-transform: uppercase;
+}
+.challenge-btn-container {
+  display: flex;
+
+  justify-content: center;
+
+  margin-top: 20px;
+}
+
+.challenge-answer {
+  margin-top: 25px;
+
+  font-size: 2rem;
+
+  font-weight: 700;
+
+  color: #8b5cf6;
+
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform: translateY(0);
+  }
+}
+.challenge-counter {
+  color: rgba(255, 255, 255, 0.6);
+
+  margin-bottom: 20px;
+
+  font-size: 0.9rem;
+}
+.guess-container {
+  display: flex;
+
+  justify-content: center;
+
+  gap: 15px;
+
+  margin-top: 25px;
+
+  flex-wrap: wrap;
+}
+
+.guess-input {
+  width: 320px;
+
+  padding: 14px 18px;
+
+  border-radius: 12px;
+
+  border: 1px solid rgba(255,255,255,0.1);
+
+  background: rgba(255,255,255,0.06);
+
+  color: white;
+
+  outline: none;
+}
+
+.guess-input:focus {
+  border-color: #8b5cf6;
+}
+
+.challenge-correct {
+  color: #22c55e;
+
+  font-size: 1.4rem;
+
+  font-weight: 600;
+
+  margin-top: 20px;
+}
+
+.challenge-wrong {
+  color: #ef4444;
+
+  font-size: 1.4rem;
+
+  font-weight: 600;
+
+  margin-top: 20px;
+}
+.streak-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 10px 18px;
+
+  border-radius: 999px;
+
+  background: rgba(255, 140, 0, 0.15);
+
+  border: 1px solid rgba(255, 140, 0, 0.3);
+
+  color: #ffb347;
+
+  font-weight: 600;
+
+  font-size: 0.9rem;
+
+  backdrop-filter: blur(10px);
+
+  white-space: nowrap;
 }
