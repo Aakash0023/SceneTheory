@@ -2054,9 +2054,9 @@ body.light .theme-toggle {
 
   border-radius: 12px;
 
-  border: 1px solid rgba(255,255,255,0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 
-  background: rgba(255,255,255,0.06);
+  background: rgba(255, 255, 255, 0.06);
 
   color: white;
 
@@ -2108,4 +2108,649 @@ body.light .theme-toggle {
   backdrop-filter: blur(10px);
 
   white-space: nowrap;
+}
+.watchlist-page {
+  min-height: 100vh;
+
+  padding: 120px 5% 60px;
+}
+
+.watchlist-header {
+  margin-bottom: 50px;
+}
+
+.watchlist-header h1 {
+  font-size: 3rem;
+
+  font-weight: 800;
+
+  margin-bottom: 10px;
+}
+
+.watchlist-header p {
+  color: rgba(255, 255, 255, 0.6);
+
+  font-size: 1rem;
+}
+
+.watchlist-grid {
+  display: grid;
+
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+
+  gap: 30px;
+
+  margin-top: 50px;
+}
+.watchlist-card {
+  position: relative;
+
+  overflow: hidden;
+
+  border-radius: 20px;
+}
+
+.watchlist-overlay {
+  position: absolute;
+
+  inset: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: flex-end;
+
+  padding: 20px;
+
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.95), transparent);
+
+  opacity: 0;
+
+  transition: 0.3s ease;
+}
+
+.watchlist-card:hover .watchlist-overlay {
+  opacity: 1;
+}
+
+.watchlist-card:hover {
+  transform: scale(1.05);
+}
+
+.remove-btn {
+  border: none;
+
+  padding: 10px 14px;
+
+  border-radius: 10px;
+
+  background: rgba(255, 255, 255, 0.12);
+
+  color: white;
+
+  cursor: pointer;
+}
+.watchlist-card {
+  width: 260px;
+  transition: all 0.3s ease;
+
+  flex-shrink: 0;
+}
+.watchlist-page {
+  position: relative;
+
+  min-height: 100vh;
+
+  padding: 120px 5% 60px;
+
+  overflow: hidden;
+}
+
+.watchlist-page::before {
+  content: "";
+
+  position: absolute;
+
+  top: -200px;
+  left: 50%;
+
+  width: 600px;
+  height: 600px;
+
+  background: radial-gradient(
+    circle,
+    rgba(124, 58, 237, 0.15),
+    transparent 70%
+  );
+
+  transform: translateX(-50%);
+
+  pointer-events: none;
+}
+.watchlist-card {
+  position: relative;
+
+  overflow: hidden;
+
+  border-radius: 18px;
+
+  cursor: pointer;
+
+  transition: all 0.3s ease;
+}
+
+.watchlist-card:hover {
+  transform: scale(1.05);
+}
+
+.watchlist-poster {
+  width: 100%;
+
+  display: block;
+
+  border-radius: 18px;
+}
+
+.watchlist-overlay {
+  position: absolute;
+
+  inset: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: flex-end;
+
+  padding: 20px;
+
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.95), transparent);
+
+  opacity: 0;
+
+  transition: 0.3s ease;
+}
+
+.watchlist-card:hover .watchlist-overlay {
+  opacity: 1;
+}
+
+.watchlist-overlay h3 {
+  margin-bottom: 12px;
+
+  color: white;
+
+  font-size: 1rem;
+}
+
+.watchlist-empty {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  min-height: 50vh;
+
+  text-align: center;
+}
+
+.watchlist-empty h2 {
+  font-size: 2rem;
+
+  margin-bottom: 15px;
+}
+
+.watchlist-empty p {
+  color: rgba(255, 255, 255, 0.6);
+
+  margin-bottom: 25px;
+}
+.watchlist-discover-btn {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 14px 28px;
+
+  border-radius: 999px;
+
+  background: #d4a133;
+
+  color: black;
+
+  font-weight: 700;
+
+  text-decoration: none;
+
+  transition: 0.3s ease;
+}
+
+.watchlist-discover-btn:hover {
+  transform: translateY(-2px);
+}
+.watchlist-empty {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  min-height: 60vh;
+
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: 4rem;
+
+  margin-bottom: 20px;
+}
+
+.watchlist-empty h2 {
+  font-size: 2.2rem;
+
+  margin-bottom: 15px;
+
+  font-weight: 700;
+}
+
+.watchlist-empty p {
+  max-width: 500px;
+
+  color: rgba(255, 255, 255, 0.65);
+
+  line-height: 1.8;
+
+  margin-bottom: 30px;
+}
+
+.watchlist-discover-btn {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 14px 28px;
+
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.08);
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  color: white;
+
+  font-weight: 600;
+
+  text-decoration: none;
+
+  transition: all 0.3s ease;
+}
+
+.watchlist-discover-btn:hover {
+  transform: translateY(-2px);
+
+  background: rgba(255, 255, 255, 0.12);
+}
+.watchlist-page {
+  min-height: 100vh;
+
+  padding: 120px 5% 60px;
+
+  position: relative;
+
+  overflow: hidden;
+}
+
+.watchlist-page::before {
+  content: "";
+
+  position: absolute;
+
+  top: -250px;
+  left: 50%;
+
+  width: 700px;
+  height: 700px;
+
+  transform: translateX(-50%);
+
+  background: radial-gradient(
+    circle,
+    rgba(124, 58, 237, 0.12),
+    transparent 70%
+  );
+
+  pointer-events: none;
+}
+
+.watchlist-header {
+  margin-bottom: 50px;
+}
+
+.watchlist-logo {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  margin: 15px 0;
+}
+
+.watchlist-logo h2 {
+  font-size: 2rem;
+
+  font-weight: 800;
+
+  color: white;
+}
+
+.watchlist-logo span {
+  color: #d4a133;
+}
+.watchlist-header h1 {
+  font-size: 4rem;
+
+  font-weight: 800;
+
+  margin-bottom: 10px;
+}
+
+.watchlist-header p {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.watchlist-grid {
+  display: grid;
+
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+
+  gap: 30px;
+
+  margin-top: 50px;
+}
+
+.watchlist-card {
+  position: relative;
+
+  overflow: hidden;
+
+  border-radius: 20px;
+
+  transition: all 0.3s ease;
+
+  cursor: pointer;
+}
+
+.watchlist-card:hover {
+  transform: scale(1.05);
+}
+
+.watchlist-poster {
+  width: 100%;
+
+  display: block;
+
+  border-radius: 20px;
+}
+
+.watchlist-overlay {
+  position: absolute;
+
+  inset: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: flex-end;
+
+  padding: 20px;
+
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.95), transparent);
+
+  opacity: 0;
+
+  transition: 0.3s ease;
+}
+
+.watchlist-card:hover .watchlist-overlay {
+  opacity: 1;
+}
+
+.watchlist-overlay h3 {
+  color: white;
+
+  margin-bottom: 6px;
+}
+
+.watchlist-overlay p {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.watchlist-empty {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  min-height: 60vh;
+
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: 4rem;
+
+  margin-bottom: 20px;
+}
+
+.watchlist-empty h2 {
+  font-size: 2.2rem;
+
+  margin-bottom: 15px;
+}
+
+.watchlist-empty p {
+  max-width: 500px;
+
+  line-height: 1.8;
+
+  color: rgba(255, 255, 255, 0.65);
+
+  margin-bottom: 30px;
+}
+
+.watchlist-discover-btn {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 14px 28px;
+
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.08);
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  color: white;
+
+  text-decoration: none;
+
+  font-weight: 600;
+
+  transition: all 0.3s ease;
+}
+
+.watchlist-discover-btn:hover {
+  transform: translateY(-2px);
+
+  background: rgba(255, 255, 255, 0.12);
+}
+.chat-toggle {
+  position: fixed;
+
+  bottom: 25px;
+  right: 25px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 14px 20px;
+
+  border: none;
+
+  border-radius: 999px;
+
+  background: #d4a133;
+
+  color: black;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  z-index: 99999;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+
+  transition: all 0.3s ease;
+}
+
+.chat-toggle:hover {
+  transform: translateY(-3px);
+}
+.chat-toggle::after {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  border-radius: 999px;
+
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(212, 161, 51, 0.4);
+  }
+
+  70% {
+    box-shadow: 0 0 0 15px rgba(212, 161, 51, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(212, 161, 51, 0);
+  }
+}
+
+.chat-widget {
+  position: fixed;
+
+  bottom: 100px;
+  right: 25px;
+
+  width: 360px;
+  height: 500px;
+
+  background: #111;
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  border-radius: 20px;
+
+  overflow: hidden;
+
+  z-index: 99999;
+
+  display: flex;
+
+  flex-direction: column;
+}
+
+.chat-header {
+  padding: 18px;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+  font-weight: 700;
+}
+
+.chat-messages {
+  flex: 1;
+
+  padding: 20px;
+
+  overflow-y: auto;
+}
+
+.bot-message {
+  background: rgba(255, 255, 255, 0.08);
+
+  padding: 12px 15px;
+
+  border-radius: 14px;
+
+  width: fit-content;
+
+  max-width: 80%;
+}
+
+.chat-input-area {
+  display: flex;
+
+  gap: 10px;
+
+  padding: 15px;
+
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.chat-input-area input {
+  flex: 1;
+
+  background: rgba(255, 255, 255, 0.05);
+
+  border: none;
+
+  outline: none;
+
+  padding: 12px;
+
+  border-radius: 12px;
+
+  color: white;
+}
+
+.chat-input-area button {
+  padding: 12px 18px;
+
+  border: none;
+
+  border-radius: 12px;
+
+  background: #d4a133;
+
+  cursor: pointer;
 }

@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState } from "react";
 
 import MouseGlow from "./components/MouseGlow";
+import ChatWidget from "./components/ChatWidget";
 
 import MovieDetails from "./pages/MovieDetails.jsx";
 import Home from "./pages/Home.jsx";
@@ -29,12 +30,19 @@ function App() {
     <BrowserRouter>
       <MouseGlow />
 
+      <ChatWidget />
+
       <Routes>
         <Route path="/" element={<Home />} />
+
         <Route path="/signup" element={<Signup />} />
+
         <Route path="/login" element={<Login />} />
+
         <Route path="/movie/:movieId" element={<MovieDetails />} />
+
         <Route path="/watchlist" element={<Watchlist />} />
+
         <Route path="/movie/:movieId/quiz" element={<QuizPage />} />
 
         <Route path="/community" element={<Community posts={posts} />} />
