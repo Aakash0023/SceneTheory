@@ -66,7 +66,7 @@ const Navbar = ({ onSearch, genres, onGenreSelect, theme, setTheme }) => {
         </li>
       </ul>
 
-      <SearchBar onSearch={onSearch} />
+      <SearchBar onSearch={onSearch} genres={genres} />
       <button
         className="theme-toggle"
         onClick={() => setTheme(theme === "dark" ? "light" : "dark")}

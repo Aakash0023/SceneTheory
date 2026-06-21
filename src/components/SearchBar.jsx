@@ -1,32 +1,48 @@
 import { useState, useEffect } from "react";
 import { Search } from "lucide-react";
 import { Link } from "react-router-dom";
-import { searchMovies } from "../api/tmdb";
+import { searchMovies, fetchMoviesByGenre } from "../api/tmdb";
 
-const SearchBar = ({ onSearch }) => {
+const SearchBar = ({ onSearch, genres }) => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
 
   useEffect(() => {
-    console.log("Query:", query);
-
     const fetchResults = async () => {
       if (query.trim().length < 2) {
         setResults([]);
         return;
       }
 
-      const movies = await searchMovies(query);
+      try {
+        const matchingGenre = genres.find((genre) =>
+          genre.name.toLowerCase().includes(query.trim().toLowerCase())
+        );
 
-      console.log("Movies:", movies);
+        let movies;
 
-      setResults(movies.slice(0, 5));
+        if (matchingGenre) {
+          movies = await fetchMoviesByGenre(matchingGenre.id);
+        } else {
+          movies = await searchMovies(query);
+        }
+
+        setResults(
+          movies
+            .filter((movie) => movie.poster_path)
+            .filter((movie) => movie.vote_count > 50)
+            .slice(0, 5)
+        );
+      } catch (error) {
+        console.error("Search Error:", error);
+      }
     };
 
     const timer = setTimeout(fetchResults, 300);
 
     return () => clearTimeout(timer);
-  }, [query]);
+  }, [query, genres]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -43,7 +59,7 @@ const SearchBar = ({ onSearch }) => {
 
       <input
         type="text"
-        placeholder="Search movies, genres..."
+        placeholder="Search Interstellar, Action, Crime..."
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />
@@ -61,21 +77,16 @@ const SearchBar = ({ onSearch }) => {
               }}
             >
               <img
-                src={
-                  movie.poster_path
-                    ? `https://image.tmdb.org/t/p/w92${movie.poster_path}`
-                    : "https://via.placeholder.com/92x138?text=No+Image"
-                }
+                src={`https://image.tmdb.org/t/p/w92${movie.poster_path}`}
                 alt={movie.title}
               />
 
               <div className="search-item-content">
                 <h4>{movie.title}</h4>
 
-                <p>
-                  ⭐ {movie.vote_average?.toFixed(1)} •{" "}
+                <span className="search-year">
                   {movie.release_date?.split("-")[0]}
-                </p>
+                </span>
               </div>
             </Link>
           ))}
