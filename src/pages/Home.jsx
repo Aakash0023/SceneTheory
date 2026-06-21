@@ -6,6 +6,7 @@ import Features from "../components/Features";
 import Footer from "../components/Footer";
 import Community from "../components/Community";
 import Watchlists from "../components/Watchlists";
+import CineChallenge from "../components/CineChallenge";
 
 import { useEffect, useState } from "react";
 
@@ -95,6 +96,7 @@ const Home = () => {
       </div>
 
       <Features />
+      <CineChallenge />
 
       <Watchlists />
 

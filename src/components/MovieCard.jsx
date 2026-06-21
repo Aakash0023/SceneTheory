@@ -7,8 +7,8 @@ const MovieCard = ({ id, title, image }) => {
       <motion.div
         className="poster-card"
         whileHover={{
-          y: -10,
-          scale: 1.05,
+          y: -6,
+          scale: 1.03,
         }}
         transition={{
           duration: 0.25,

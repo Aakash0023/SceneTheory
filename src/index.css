@@ -1380,6 +1380,8 @@ body.light .theme-toggle {
   display: flex;
   gap: 1.5rem;
   width: max-content;
+  padding-top: 20px;
+  padding-bottom: 20px;
 
   animation: scrollMovies 40s linear infinite;
 }
@@ -1839,4 +1841,157 @@ body.light .theme-toggle {
   padding: 6px 12px;
 
   border-radius: 999px;
+}
+.quiz-loading {
+  min-height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-size: cover;
+  background-position: center;
+
+  text-align: center;
+}
+.quiz-loader-content {
+  max-width: 600px;
+
+  padding: 2rem;
+
+  color: white;
+}
+
+.quiz-loader-content h1 {
+  font-size: 2.5rem;
+
+  margin-bottom: 1rem;
+}
+
+.quiz-loader-content p {
+  opacity: 0.8;
+
+  margin-bottom: 2rem;
+}
+.loader {
+  width: 60px;
+  height: 60px;
+
+  border: 4px solid rgba(255, 255, 255, 0.2);
+
+  border-top: 4px solid #8b5cf6;
+
+  border-radius: 50%;
+
+  animation: spin 1s linear infinite;
+
+  margin: auto;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.cine-challenge {
+  max-width: 1000px;
+
+  margin: 100px auto;
+
+  padding: 70px 50px;
+
+  text-align: center;
+
+  border-radius: 30px;
+
+  background: radial-gradient(
+      circle at top left,
+      rgba(139, 92, 246, 0.18),
+      transparent 40%
+    ),
+    linear-gradient(135deg, rgba(18, 18, 25, 0.98), rgba(5, 5, 10, 0.98));
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  backdrop-filter: blur(20px);
+
+  overflow: hidden;
+}
+
+.challenge-badge {
+  display: inline-block;
+
+  padding: 8px 18px;
+
+  border-radius: 999px;
+
+  background: rgba(139, 92, 246, 0.15);
+
+  color: #b794ff;
+
+  font-size: 0.85rem;
+
+  font-weight: 600;
+
+  letter-spacing: 0.5px;
+
+  margin-bottom: 25px;
+}
+
+.cine-challenge h2 {
+  font-size: 2.6rem;
+
+  font-weight: 700;
+
+  margin-bottom: 25px;
+
+  color: white;
+}
+
+.challenge-riddle {
+  max-width: 700px;
+
+  margin: 0 auto 35px;
+
+  font-size: 1.5rem;
+
+  line-height: 1.8;
+
+  color: rgba(255, 255, 255, 0.85);
+
+  font-style: italic;
+}
+
+.challenge-answer {
+  margin-top: 25px;
+
+  font-size: 2rem;
+
+  font-weight: 700;
+
+  color: #8b5cf6;
+}
+.challenge-btn-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+.challenge-badge {
+  display: inline-block;
+
+  padding: 8px 18px;
+
+  border-radius: 999px;
+
+  background: rgba(139,92,246,0.15);
+
+  color: #b794ff;
+
+  font-size: 0.8rem;
+
+  font-weight: 700;
+
+  letter-spacing: 2px;
+
+  text-transform: uppercase;
 }
