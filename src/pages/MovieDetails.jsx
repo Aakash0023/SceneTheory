@@ -98,6 +98,15 @@ const MovieDetails = () => {
         transition={{ duration: 0.8 }}
       >
         <h1>{movie.title}</h1>
+        <div className="movie-meta">
+          <span>⭐ {movie.vote_average?.toFixed(1)}</span>
+
+          <span>🎬 {movie.genres?.map((g) => g.name).join(" • ")}</span>
+
+          <span>⏱ {movie.runtime} min</span>
+
+          <span>🌎 {movie.original_language?.toUpperCase()}</span>
+        </div>
 
         <p className="movie-year">{movie.release_date}</p>
 
