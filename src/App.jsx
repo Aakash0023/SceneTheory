@@ -45,7 +45,10 @@ function App() {
 
         <Route path="/movie/:movieId/quiz" element={<QuizPage />} />
 
-        <Route path="/community" element={<Community posts={posts} />} />
+        <Route
+          path="/community"
+          element={<Community posts={posts} setPosts={setPosts} />}
+        />
 
         <Route
           path="/create-post"

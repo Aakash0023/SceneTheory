@@ -8,49 +8,70 @@ import {
 } from "lucide-react";
 
 import { motion } from "framer-motion";
-
-const features = [
-  {
-    icon: <Clapperboard size={40} />,
-    title: "SceneTheory AI",
-    description:
-      "Ask AI for recommendations, movie explanations, hidden gems and more.",
-  },
-
-  {
-    icon: <Brain size={40} />,
-    title: "AI Movie Quizzes",
-    description: "Generate personalized quizzes for any movie instantly.",
-  },
-
-  {
-    icon: <MessageSquare size={40} />,
-    title: "CineCommunity",
-    description:
-      "Discuss movies, share reviews and connect with cinema lovers.",
-  },
-
-  {
-    icon: <Star size={40} />,
-    title: "Daily CineChallenge",
-    description: "Solve movie riddles every day and maintain your streak.",
-  },
-
-  {
-    icon: <Bookmark size={40} />,
-    title: "My Collection",
-    description:
-      "Build your personal movie library and track what to watch next.",
-  },
-
-  {
-    icon: <User size={40} />,
-    title: "Actor & Genre Discovery",
-    description: "Explore films by actors, genres and cinematic universes.",
-  },
-];
+import { useNavigate } from "react-router-dom";
 
 const Features = () => {
+  const navigate = useNavigate();
+
+  const features = [
+    {
+      icon: <Clapperboard size={40} />,
+      title: "SceneTheory AI",
+      description:
+        "Ask AI for recommendations, movie explanations, hidden gems and more.",
+      action: () => {
+        document.querySelector(".chat-toggle")?.click();
+      },
+    },
+
+    {
+      icon: <Brain size={40} />,
+      title: "AI Movie Quizzes",
+      description: "Generate personalized quizzes for any movie instantly.",
+      action: () => {
+        document.querySelector(".cine-challenge")?.scrollIntoView({
+          behavior: "smooth",
+        });
+      },
+    },
+
+    {
+      icon: <MessageSquare size={40} />,
+      title: "CineCommunity",
+      description:
+        "Discuss movies, share reviews and connect with cinema lovers.",
+      action: () => navigate("/community"),
+    },
+
+    {
+      icon: <Star size={40} />,
+      title: "Daily CineChallenge",
+      description: "Solve movie riddles every day and maintain your streak.",
+      action: () => {
+        document.querySelector(".cine-challenge")?.scrollIntoView({
+          behavior: "smooth",
+        });
+      },
+    },
+
+    {
+      icon: <Bookmark size={40} />,
+      title: "My Collection",
+      description:
+        "Build your personal movie library and track what to watch next.",
+      action: () => navigate("/watchlist"),
+    },
+
+    {
+      icon: <User size={40} />,
+      title: "Actor & Genre Discovery",
+      description: "Explore films by actors, genres and cinematic universes.",
+      action: () => {
+        document.querySelector(".navbar-search input")?.focus();
+      },
+    },
+  ];
+
   return (
     <section id="quizzes" className="features-section">
       <div className="section-header">
@@ -68,7 +89,8 @@ const Features = () => {
         {features.map((feature, index) => (
           <motion.div
             key={feature.title}
-            className="feature-card"
+            className="feature-card clickable-card"
+            onClick={feature.action}
             initial={{
               opacity: 0,
               y: 60,
@@ -92,6 +114,8 @@ const Features = () => {
             <h3>{feature.title}</h3>
 
             <p>{feature.description}</p>
+
+            <span className="feature-link">Explore →</span>
           </motion.div>
         ))}
       </div>

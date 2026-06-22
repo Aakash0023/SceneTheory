@@ -21,7 +21,12 @@ const ActorDetails = () => {
 
         setActor(actorData);
 
-        setMovies(movieData.filter((movie) => movie.poster_path).slice(0, 12));
+        setMovies(
+          movieData
+            .filter((movie) => movie.poster_path)
+            .sort((a, b) => b.popularity - a.popularity)
+            .slice(0, 12)
+        );
       } catch (error) {
         console.error("Failed to load actor:", error);
       }

@@ -1,65 +1,32 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import "../styles/community.css";
+return (
+  <div className="create-post-page">
+    <div className="create-post-card">
+      <p className="section-eyebrow">CINECOMMUNITY</p>
 
-function CreatePost({ posts, setPosts }) {
-  const [caption, setCaption] = useState("");
-  const [preview, setPreview] = useState(null);
+      <h1>Create Post</h1>
 
-  const navigate = useNavigate();
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-
-    if (file) {
-      setPreview(URL.createObjectURL(file));
-    }
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const newPost = {
-      id: Date.now(),
-      username: "Aakash",
-      caption,
-      image: preview,
-      likes: 0,
-      comments: 0,
-    };
-
-    setPosts([newPost, ...posts]);
-
-    navigate("/community");
-  };
-
-  return (
-    <div className="community-page">
-      <h1 className="community-title">Create Post</h1>
+      <p className="create-post-subtitle">
+        Share your movie thoughts, reviews and theories.
+      </p>
 
       <form className="create-post-form" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Share your movie thoughts..."
+        <textarea
+          placeholder="What movie is on your mind today?"
           className="caption-input"
           value={caption}
           onChange={(e) => setCaption(e.target.value)}
         />
 
-        <input
-          type="file"
-          accept="image/*,video/*"
-          onChange={handleFileChange}
-        />
+        <input type="file" accept="image/*" onChange={handleFileChange} />
 
         {preview && (
           <img src={preview} alt="Preview" className="preview-image" />
         )}
 
-        <button type="submit">Post</button>
+        <button type="submit" className="create-post-submit">
+          Publish Post
+        </button>
       </form>
     </div>
-  );
-}
-
-export default CreatePost;
+  </div>
+);
