@@ -12,33 +12,41 @@ import { motion } from "framer-motion";
 const features = [
   {
     icon: <Clapperboard size={40} />,
-    title: "Smart Recommendations",
-    description: "Movies picked based on your taste.",
+    title: "SceneTheory AI",
+    description:
+      "Ask AI for recommendations, movie explanations, hidden gems and more.",
   },
+
   {
     icon: <Brain size={40} />,
-    title: "Movie Quizzes",
-    description: "Challenge your movie knowledge.",
+    title: "AI Movie Quizzes",
+    description: "Generate personalized quizzes for any movie instantly.",
   },
+
   {
     icon: <MessageSquare size={40} />,
-    title: "Community Discussions",
-    description: "Talk with cinema lovers.",
+    title: "CineCommunity",
+    description:
+      "Discuss movies, share reviews and connect with cinema lovers.",
   },
+
   {
     icon: <Star size={40} />,
-    title: "Reviews & Ratings",
-    description: "Share your thoughts on films.",
+    title: "Daily CineChallenge",
+    description: "Solve movie riddles every day and maintain your streak.",
   },
+
   {
     icon: <Bookmark size={40} />,
-    title: "Watchlists",
-    description: "Save movies for later.",
+    title: "My Collection",
+    description:
+      "Build your personal movie library and track what to watch next.",
   },
+
   {
     icon: <User size={40} />,
-    title: "Personalized Profiles",
-    description: "Show your cinematic journey.",
+    title: "Actor & Genre Discovery",
+    description: "Explore films by actors, genres and cinematic universes.",
   },
 ];
 
@@ -48,7 +56,12 @@ const Features = () => {
       <div className="section-header">
         <p className="section-eyebrow">Why SceneTheory</p>
 
-        <h2 className="section-title">More Than Movie Recommendations</h2>
+        <h2 className="section-title">Your Personal AI Cinema Companion</h2>
+
+        <p className="features-subtitle">
+          Discover movies, challenge yourself with quizzes, build collections
+          and explore cinema with AI-powered experiences.
+        </p>
       </div>
 
       <div className="features-grid">
@@ -56,8 +69,14 @@ const Features = () => {
           <motion.div
             key={feature.title}
             className="feature-card"
-            initial={{ opacity: 0, y: 60 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{
+              opacity: 0,
+              y: 60,
+            }}
+            whileInView={{
+              opacity: 1,
+              y: 0,
+            }}
             transition={{
               duration: 0.5,
               delay: index * 0.15,

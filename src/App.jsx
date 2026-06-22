@@ -12,7 +12,7 @@ import Watchlist from "./pages/Watchlist.jsx";
 import QuizPage from "./pages/QuizPage.jsx";
 import Community from "./pages/Community";
 import CreatePost from "./pages/CreatePost";
-
+import ActorDetails from "./pages/ActorDetails";
 function App() {
   const [posts, setPosts] = useState([
     {
@@ -51,6 +51,7 @@ function App() {
           path="/create-post"
           element={<CreatePost posts={posts} setPosts={setPosts} />}
         />
+        <Route path="/actor/:actorId" element={<ActorDetails />} />
       </Routes>
     </BrowserRouter>
   );

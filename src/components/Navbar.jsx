@@ -78,7 +78,11 @@ const Navbar = ({ onSearch, genres, onGenreSelect }) => {
         </li>
       </ul>
 
-      <SearchBar onSearch={onSearch} genres={genres} />
+      <SearchBar
+        onSearch={onSearch}
+        genres={genres}
+        onGenreSelect={onGenreSelect}
+      />
 
       <div className="streak-badge">🔥 {streak} Day Streak</div>
 
