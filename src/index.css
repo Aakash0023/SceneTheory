@@ -2858,3 +2858,130 @@ body.light .theme-toggle {
   align-items: center;
   gap: 12px;
 }
+.actor-page {
+  max-width: 1300px;
+
+  margin: 0 auto;
+
+  padding: 40px 30px;
+}
+
+.actor-hero {
+  display: flex;
+
+  gap: 40px;
+
+  align-items: center;
+
+  margin-bottom: 60px;
+}
+
+.actor-image {
+  width: 280px;
+
+  border-radius: 20px;
+
+  object-fit: cover;
+
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.actor-info h1 {
+  font-size: 3rem;
+
+  margin-bottom: 20px;
+}
+
+.actor-role {
+  color: #d4a133;
+
+  font-weight: 700;
+
+  margin-bottom: 10px;
+}
+
+.actor-stats {
+  display: flex;
+
+  gap: 16px;
+
+  flex-wrap: wrap;
+}
+
+.stat-card {
+  padding: 12px 18px;
+
+  background: rgba(255, 255, 255, 0.06);
+
+  border-radius: 12px;
+
+  display: flex;
+
+  gap: 8px;
+
+  align-items: center;
+}
+
+.actor-bio-section {
+  margin-bottom: 60px;
+}
+
+.actor-bio-section h2,
+.actor-movies-section h2 {
+  margin-bottom: 20px;
+}
+
+.actor-bio-section p {
+  line-height: 1.8;
+
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.actor-movies-grid {
+  display: grid;
+
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+
+  gap: 24px;
+}
+
+.actor-loading {
+  min-height: 100vh;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  font-size: 2rem;
+}
+.actor-readmore-btn {
+  margin-top: 20px;
+
+  padding: 12px 20px;
+
+  border: none;
+
+  border-radius: 12px;
+
+  background: #d4a133;
+
+  color: black;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: 0.3s ease;
+}
+
+.actor-readmore-btn:hover {
+  transform: translateY(-2px);
+}
+
+.stat-card svg {
+  color: #d4a133;
+
+  flex-shrink: 0;
+}
