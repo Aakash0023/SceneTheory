@@ -63,7 +63,7 @@ function Community({ posts, setPosts }) {
             setPosts={setPosts}
           />
         ))}
-      </div>
+      
     </div>
   );
 }
