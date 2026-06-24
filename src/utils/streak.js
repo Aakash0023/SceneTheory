@@ -19,9 +19,17 @@ export const updateStreak = () => {
       (currentDate - lastDate) / (1000 * 60 * 60 * 24)
     );
 
+    // Already solved today
+    if (diffDays === 0) {
+      return streak;
+    }
+
+    // Consecutive day
     if (diffDays === 1) {
       streak += 1;
-    } else if (diffDays > 1) {
+    }
+    // Missed one or more days
+    else {
       streak = 1;
     }
   }
@@ -30,4 +38,9 @@ export const updateStreak = () => {
   localStorage.setItem("lastSolvedDate", today);
 
   return streak;
+};
+
+export const resetStreak = () => {
+  localStorage.removeItem("cineStreak");
+  localStorage.removeItem("lastSolvedDate");
 };
