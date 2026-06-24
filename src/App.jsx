@@ -13,6 +13,7 @@ import QuizPage from "./pages/QuizPage.jsx";
 import Community from "./pages/Community";
 import CreatePost from "./pages/CreatePost";
 import ActorDetails from "./pages/ActorDetails";
+import Profile from "./pages/Profile";
 function App() {
   const [posts, setPosts] = useState([
     {
@@ -55,6 +56,7 @@ function App() {
           element={<CreatePost posts={posts} setPosts={setPosts} />}
         />
         <Route path="/actor/:actorId" element={<ActorDetails />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </BrowserRouter>
   );
