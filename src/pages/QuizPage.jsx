@@ -87,6 +87,33 @@ const QuizPage = () => {
     );
   }
 
+  const handleNext = () => {
+    if (!selectedAnswer) {
+      alert("Please select an answer!");
+      return;
+    }
+
+    let updatedScore = score;
+
+    if (selectedAnswer === question.answer) {
+      updatedScore += 1;
+      setScore(updatedScore);
+    }
+
+    setSelectedAnswer("");
+
+    if (currentQuestion < questions.length - 1) {
+      setCurrentQuestion((prev) => prev + 1);
+    } else {
+      // Save completed quizzes
+      const completed = Number(localStorage.getItem("quizCompleted")) || 0;
+
+      localStorage.setItem("quizCompleted", completed + 1);
+
+      setQuizFinished(true);
+    }
+  };
+
   return (
     <div className="quiz-page">
       <h1>{movieTitle} Quiz</h1>
@@ -111,28 +138,8 @@ const QuizPage = () => {
         ))}
       </div>
 
-      <button
-        className="primary-btn"
-        onClick={() => {
-          if (!selectedAnswer) {
-            alert("Please select an answer!");
-            return;
-          }
-
-          if (selectedAnswer === question.answer) {
-            setScore((prev) => prev + 1);
-          }
-
-          setSelectedAnswer("");
-
-          if (currentQuestion < questions.length - 1) {
-            setCurrentQuestion((prev) => prev + 1);
-          } else {
-            setQuizFinished(true);
-          }
-        }}
-      >
-        Next
+      <button className="primary-btn" onClick={handleNext}>
+        {currentQuestion === questions.length - 1 ? "Finish Quiz" : "Next"}
       </button>
     </div>
   );
