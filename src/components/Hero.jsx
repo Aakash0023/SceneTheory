@@ -1,13 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MovieCard from "./MovieCard";
 import movies from "../data/movies";
 import { motion } from "framer-motion";
-import { FaPlay } from "react-icons/fa";
-import { IoFilmOutline } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 
 const Hero = () => {
-  const [showTrailer, setShowTrailer] = useState(false);
+  const [currentMovie, setCurrentMovie] = useState(0);
+  const navigate = useNavigate();
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentMovie((prev) => (prev + 1) % movies.length);
+    }, 6000);
 
+    return () => clearInterval(interval);
+  }, []);
   return (
     <section id="discover" className="hero">
       <div className="hero-left">
@@ -48,6 +54,27 @@ const Hero = () => {
           Discover films curated for you. Challenge yourself with quizzes.
           Connect with a community that lives and breathes cinema.
         </motion.p>
+        <motion.div
+          className="hero-highlights"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.7 }}
+        >
+          <div className="highlight-item">
+            <span>🎬</span>
+            <p>500+ Movies</p>
+          </div>
+
+          <div className="highlight-item">
+            <span>🧠</span>
+            <p>AI Quizzes</p>
+          </div>
+
+          <div className="highlight-item">
+            <span>👥</span>
+            <p>Cine Community</p>
+          </div>
+        </motion.div>
 
         <motion.div
           className="hero-buttons"
@@ -57,20 +84,7 @@ const Hero = () => {
             duration: 0.6,
             delay: 0.8,
           }}
-        >
-          <button className="primary-btn">
-            <IoFilmOutline />
-            Start Exploring
-          </button>
-
-          <button
-            className="secondary-btn"
-            onClick={() => setShowTrailer(true)}
-          >
-            <FaPlay />
-            Watch Trailer
-          </button>
-        </motion.div>
+        ></motion.div>
       </div>
 
       <motion.div
@@ -82,51 +96,42 @@ const Hero = () => {
           delay: 0.4,
         }}
       >
-        <div className="poster-grid">
-          {movies.map((movie, index) => (
-            <motion.div
-              key={movie.id}
-              animate={{
-                y: [0, -10, 0],
-              }}
-              transition={{
-                duration: 4 + index,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-            >
-              <MovieCard
-                id={movie.id}
-                title={movie.title}
-                image={movie.image}
-              />
-            </motion.div>
-          ))}
-        </div>
-      </motion.div>
+        <motion.div
+          className="hero-right"
+          key={movies[currentMovie].id}
+          initial={{ opacity: 0, x: 80 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <div className="featured-card">
+            <img
+              src={movies[currentMovie].image}
+              alt={movies[currentMovie].title}
+              className="featured-image"
+            />
 
-      {showTrailer && (
-        <div className="modal-overlay" onClick={() => setShowTrailer(false)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <button
-              className="modal-close"
-              onClick={() => setShowTrailer(false)}
-            >
-              ✕
-            </button>
+            <div className="featured-content">
+              <p className="featured-label">FEATURED MOVIE</p>
 
-            <iframe
-              width="100%"
-              height="500"
-              src="https://www.youtube.com/embed/zSWdZVtXT7E"
-              title="Interstellar Trailer"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
+              <h2>{movies[currentMovie].title}</h2>
+
+              <div className="featured-meta">
+                <span>⭐ {movies[currentMovie].rating}</span>
+                <span>{movies[currentMovie].year}</span>
+              </div>
+
+              <p>{movies[currentMovie].description}</p>
+
+              <button
+                className="primary-btn"
+                onClick={() => navigate(`/movie/${movies[currentMovie].id}`)}
+              >
+                View Details →
+              </button>
+            </div>
           </div>
-        </div>
-      )}
+        </motion.div>
+      </motion.div>
     </section>
   );
 };
