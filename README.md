@@ -23,13 +23,3 @@
 ## 🚀 Live Demo
 
 🌐 **https://scene-theor.vercel.app/**
-
-## 📌 Future Enhancements
-
-- MongoDB integration
-- User authentication (JWT)
-- Persistent user profiles
-- Cloud-based watchlists
-- Real-time community interactions
-
----
