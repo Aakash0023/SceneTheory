@@ -22,7 +22,7 @@
 
 ## 🚀 Live Demo
 
-🌐 **https://scene-theor-git-main-aakash-s-projects02301.vercel.app/**
+🌐 **https://scene-theor.vercel.app/**
 
 ## 📌 Future Enhancements
 
@@ -33,5 +33,3 @@
 - Real-time community interactions
 
 ---
-
-
