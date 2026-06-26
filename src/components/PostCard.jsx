@@ -1,150 +1,122 @@
 import { useState } from "react";
-import { Heart, MessageCircle, Pencil, Trash2, Check } from "lucide-react";
+import { motion } from "framer-motion";
+import {
+  RiHeart3Line,
+  RiHeart3Fill,
+  RiChat3Line,
+  RiBookmarkLine,
+  RiDeleteBin6Line,
+} from "react-icons/ri";
 
-function PostCard({ post, posts, setPosts }) {
-  const [likes, setLikes] = useState(post.likes);
+import CommentsModal from "./CommentsModal";
+
+const PostCard = ({ post, posts, setPosts }) => {
   const [liked, setLiked] = useState(false);
+  const [showComments, setShowComments] = useState(false);
 
-  const [comment, setComment] = useState("");
-  const [comments, setComments] = useState([]);
-
-  const [editing, setEditing] = useState(false);
-
-  const [editedCaption, setEditedCaption] = useState(post.caption);
-
-  const handleLike = () => {
-    if (liked) {
-      setLikes(likes - 1);
-    } else {
-      setLikes(likes + 1);
-    }
-
+  const toggleLike = () => {
     setLiked(!liked);
   };
 
-  const handleComment = () => {
-    if (!comment.trim()) return;
-
-    setComments([...comments, comment]);
-
-    setComment("");
-  };
-
-  const handleDelete = () => {
+  const deletePost = () => {
     const updatedPosts = posts.filter((item) => item.id !== post.id);
 
     setPosts(updatedPosts);
+
+    localStorage.setItem("communityPosts", JSON.stringify(updatedPosts));
   };
 
-  const handleSave = () => {
-    const updatedPosts = posts.map((item) =>
-      item.id === post.id
-        ? {
-            ...item,
-            caption: editedCaption,
-          }
-        : item
-    );
+  const timeAgo = () => {
+    const diff = Math.floor((new Date() - new Date(post.createdAt)) / 1000);
 
-    setPosts(updatedPosts);
+    if (diff < 60) return "Just now";
 
-    setEditing(false);
+    if (diff < 3600) return `${Math.floor(diff / 60)} min ago`;
+
+    if (diff < 86400) return `${Math.floor(diff / 3600)} hrs ago`;
+
+    return `${Math.floor(diff / 86400)} days ago`;
   };
 
   return (
-    <div className="post-card">
-      <div className="post-header">
-        <div className="post-user">
-          <div className="user-avatar">{post.username.charAt(0)}</div>
+    <>
+      <motion.div
+        className="post-card"
+        whileHover={{
+          y: -6,
+        }}
+      >
+        {/* HEADER */}
 
-          <div className="user-info">
-            <h4>{post.username}</h4>
+        <div className="post-header">
+          <div className="post-user">
+            <div className="post-avatar">{post.avatar || "🎬"}</div>
 
-            <span>Just now</span>
-          </div>
-        </div>
+            <div>
+              <h3>{post.username || "Movie Lover"}</h3>
 
-        <div className="post-owner-actions">
-          {!editing ? (
-            <button onClick={() => setEditing(true)}>
-              <Pencil size={16} />
-            </button>
-          ) : (
-            <button onClick={handleSave}>
-              <Check size={16} />
-            </button>
-          )}
-
-          <button onClick={handleDelete}>
-            <Trash2 size={16} />
-          </button>
-        </div>
-      </div>
-
-      <img src={post.image} alt="post" className="post-image" />
-
-      <div className="post-content">
-        {editing ? (
-          <textarea
-            className="edit-caption"
-            value={editedCaption}
-            onChange={(e) => setEditedCaption(e.target.value)}
-          />
-        ) : (
-          <p className="post-caption">{post.caption}</p>
-        )}
-
-        <div className="post-actions">
-          <button
-            className={`like-btn ${liked ? "liked" : ""}`}
-            onClick={handleLike}
-          >
-            <Heart size={18} fill={liked ? "currentColor" : "none"} />
-
-            <span>{likes}</span>
-          </button>
-
-          <button className="comment-btn">
-            <MessageCircle size={18} />
-
-            <span>{comments.length}</span>
-          </button>
-        </div>
-
-        <div className="comment-section">
-          <div className="comment-input-row">
-            <input
-              type="text"
-              placeholder="Share your thoughts..."
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-              className="comment-input"
-            />
-
-            <button className="comment-submit-btn" onClick={handleComment}>
-              Post
-            </button>
+              <span>{timeAgo()}</span>
+            </div>
           </div>
 
-          {comments.length > 0 && (
-            <div className="comments-list">
-              {comments.map((item, index) => (
-                <div key={index} className="comment-item">
-                  <div className="comment-avatar">A</div>
+          <button className="delete-post-btn" onClick={deletePost}>
+            <RiDeleteBin6Line />
+          </button>
+        </div>
 
-                  <div className="comment-content">
-                    <strong>Aakash</strong>
+        {/* CAPTION */}
 
-                    <p>{item}</p>
-                  </div>
-                </div>
-              ))}
+        <div className="movie-review">
+          {post.movieTitle && (
+            <div className="movie-review-header">
+              <h2 className="review-movie-title">🎬 {post.movieTitle}</h2>
+
+              <div className="review-stars">
+                {"⭐".repeat(post.rating || 5)}
+              </div>
             </div>
           )}
+
+          <p className="post-caption">{post.caption}</p>
         </div>
-      </div>
-    </div>
+
+        {/* IMAGE */}
+
+        {post.image && (
+          <img src={post.image} alt={post.movieTitle} className="post-image" />
+        )}
+
+        {/* ACTIONS */}
+
+        <div className="post-footer">
+          <button className="post-action" onClick={toggleLike}>
+            {liked ? <RiHeart3Fill color="#f5c518" /> : <RiHeart3Line />}
+
+            <span>{(post.likes || 0) + (liked ? 1 : 0)}</span>
+          </button>
+
+          <button className="post-action" onClick={() => setShowComments(true)}>
+            <RiChat3Line />
+
+            <span>{post.comments?.length || 0}</span>
+          </button>
+
+          <button className="post-action">
+            <RiBookmarkLine />
+          </button>
+        </div>
+      </motion.div>
+
+      {showComments && (
+        <CommentsModal
+          post={post}
+          posts={posts}
+          setPosts={setPosts}
+          closeModal={() => setShowComments(false)}
+        />
+      )}
+    </>
   );
-}
+};
 
 export default PostCard;

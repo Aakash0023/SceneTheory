@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { motion } from "framer-motion";
+import { RiImageAddLine, RiSendPlaneFill } from "react-icons/ri";
 
 const CreatePost = () => {
   const [caption, setCaption] = useState("");
@@ -15,10 +17,19 @@ const CreatePost = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    if (!caption.trim()) {
+      alert("Please write something first!");
+      return;
+    }
+
     const newPost = {
       id: Date.now(),
+      username: "Aakash",
+      avatar: "🎬",
       caption,
       image: preview,
+      likes: 0,
+      comments: 0,
       createdAt: new Date().toISOString(),
     };
 
@@ -30,7 +41,7 @@ const CreatePost = () => {
       JSON.stringify([newPost, ...existingPosts])
     );
 
-    alert("Post published successfully!");
+    alert("🎉 Review Published!");
 
     setCaption("");
     setPreview(null);
@@ -38,34 +49,56 @@ const CreatePost = () => {
 
   return (
     <div className="create-post-page">
-      <div className="create-post-card">
+      <motion.div
+        className="create-post-card"
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
         <p className="section-eyebrow">CINECOMMUNITY</p>
 
-        <h1>Create Post</h1>
+        <h1>Share Your Movie Story</h1>
 
         <p className="create-post-subtitle">
-          Share your movie thoughts, reviews and theories.
+          Write reviews, recommend hidden gems, discuss fan theories and inspire
+          fellow movie lovers.
         </p>
 
         <form className="create-post-form" onSubmit={handleSubmit}>
           <textarea
-            placeholder="What movie is on your mind today?"
+            placeholder="Write a review, theory or recommendation..."
             className="caption-input"
             value={caption}
             onChange={(e) => setCaption(e.target.value)}
           />
 
-          <input type="file" accept="image/*" onChange={handleFileChange} />
+          <label className="upload-image-btn">
+            <RiImageAddLine />
+            Add Movie Image
+            <input
+              type="file"
+              hidden
+              accept="image/*"
+              onChange={handleFileChange}
+            />
+          </label>
 
           {preview && (
-            <img src={preview} alt="Preview" className="preview-image" />
+            <motion.div
+              className="preview-container"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+            >
+              <img src={preview} alt="Preview" className="preview-image" />
+            </motion.div>
           )}
 
-          <button type="submit" className="create-post-submit">
-            Publish Post
+          <button type="submit" className="publish-btn">
+            <RiSendPlaneFill />
+            Publish Review
           </button>
         </form>
-      </div>
+      </motion.div>
     </div>
   );
 };

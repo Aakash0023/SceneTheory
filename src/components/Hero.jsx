@@ -3,7 +3,7 @@ import MovieCard from "./MovieCard";
 import movies from "../data/movies";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-
+import { RiMovie2Line, RiRobot2Line, RiTeamLine } from "react-icons/ri";
 const Hero = () => {
   const [currentMovie, setCurrentMovie] = useState(0);
   const navigate = useNavigate();
@@ -61,17 +61,17 @@ const Hero = () => {
           transition={{ delay: 0.7 }}
         >
           <div className="highlight-item">
-            <span>🎬</span>
+            <RiMovie2Line className="highlight-icon" />
             <p>500+ Movies</p>
           </div>
 
           <div className="highlight-item">
-            <span>🧠</span>
+            <RiRobot2Line className="highlight-icon" />
             <p>AI Quizzes</p>
           </div>
 
           <div className="highlight-item">
-            <span>👥</span>
+            <RiTeamLine className="highlight-icon" />
             <p>Cine Community</p>
           </div>
         </motion.div>
@@ -87,15 +87,7 @@ const Hero = () => {
         ></motion.div>
       </div>
 
-      <motion.div
-        className="hero-right"
-        initial={{ opacity: 0, x: 80 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{
-          duration: 0.9,
-          delay: 0.4,
-        }}
-      >
+      <motion.div>
         <motion.div
           className="hero-right"
           key={movies[currentMovie].id}
@@ -104,12 +96,6 @@ const Hero = () => {
           transition={{ duration: 0.6 }}
         >
           <div className="featured-card">
-            <img
-              src={movies[currentMovie].image}
-              alt={movies[currentMovie].title}
-              className="featured-image"
-            />
-
             <div className="featured-content">
               <p className="featured-label">FEATURED MOVIE</p>
 
@@ -117,18 +103,26 @@ const Hero = () => {
 
               <div className="featured-meta">
                 <span>⭐ {movies[currentMovie].rating}</span>
-                <span>{movies[currentMovie].year}</span>
+                <span>📅 {movies[currentMovie].year}</span>
               </div>
 
-              <p>{movies[currentMovie].description}</p>
+              <p className="featured-description">
+                {movies[currentMovie].description}
+              </p>
 
               <button
-                className="primary-btn"
+                className="featured-btn"
                 onClick={() => navigate(`/movie/${movies[currentMovie].id}`)}
               >
                 View Details →
               </button>
             </div>
+
+            <img
+              src={movies[currentMovie].image}
+              alt={movies[currentMovie].title}
+              className="featured-image"
+            />
           </div>
         </motion.div>
       </motion.div>
