@@ -106,13 +106,13 @@ function Community({ posts, setPosts }) {
 
           <motion.div whileHover={{ y: -8 }} className="community-stat">
             <RiTeamLine />
-            <h3>1.2K</h3>
+            <h3>10</h3>
             <span>Cinephiles</span>
           </motion.div>
 
           <motion.div whileHover={{ y: -8 }} className="community-stat">
             <RiFireLine />
-            <h3>82</h3>
+            <h3>5</h3>
             <span>Trending Today</span>
           </motion.div>
         </div>
