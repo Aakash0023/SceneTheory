@@ -4390,3 +4390,19 @@ MOBILE
 .footer-links a:active {
   color: #f5c518;
 }
+.quiz-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.quiz-link:visited {
+  color: inherit;
+}
+
+.quiz-link:hover {
+  text-decoration: none;
+}
+
+.quiz-link:active {
+  color: inherit;
+}

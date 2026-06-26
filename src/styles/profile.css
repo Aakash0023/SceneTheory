@@ -1,0 +1,894 @@
+/* ═══════════════════════════════════════════════
+   SceneTheory — Profile Page
+   Matched exactly to the live app theme from screenshot
+   Pure black bg, gold pill buttons with glow, Inter font
+═══════════════════════════════════════════════ */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap");
+
+/* ── Design Tokens (matched to screenshot) ── */
+:root {
+  --bg: #0a0a0a;
+  --bg-card: #0e1018;
+  --bg-card-hover: #12151f;
+  --bg-input: #1a1a2e;
+  --gold: #f5c518;
+  --gold-hover: #ffd75e;
+  --gold-dim: rgba(245, 197, 24, 0.1);
+  --gold-glow: 0 4px 24px rgba(245, 197, 24, 0.38);
+  --gold-glow-sm: 0 2px 14px rgba(245, 197, 24, 0.28);
+  --text: #ffffff;
+  --text-sub: #9a9a9a;
+  --text-muted: #4a4a5a;
+  --border: rgba(255, 255, 255, 0.07);
+  --border-gold: rgba(245, 197, 24, 0.15);
+  --radius-card: 20px;
+  --radius-pill: 999px;
+  --shadow-card: 0 2px 40px rgba(0, 0, 0, 0.7);
+  --font: "Inter", "Segoe UI", system-ui, sans-serif;
+}
+
+/* ── Base ── */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.profile-root {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  padding-bottom: 100px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ════════════════════════════════
+   HERO
+════════════════════════════════ */
+.profile-hero {
+  position: relative;
+  overflow: hidden;
+  /* Matches the dark card seen in quiz section of screenshot */
+  background: linear-gradient(180deg, #0d1020 0%, #090909 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 72px 48px 60px;
+}
+
+/* Subtle left warm glow — matches the reddish ambient on the screenshot left side */
+.hero-scanline {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(245, 197, 24, 0.012) 3px,
+    rgba(245, 197, 24, 0.012) 4px
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero-glow {
+  position: absolute;
+  top: -100px;
+  left: -60px;
+  width: 480px;
+  height: 480px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(180, 60, 10, 0.12) 0%,
+    transparent 65%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1160px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 44px;
+}
+
+/* ── Avatar ── */
+.avatar-wrap {
+  flex-shrink: 0;
+  position: relative;
+}
+
+.avatar-ring {
+  width: 116px;
+  height: 116px;
+  border-radius: 50%;
+  padding: 3px;
+  background: linear-gradient(135deg, var(--gold) 0%, #c8940a 100%);
+  box-shadow: var(--gold-glow);
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+.avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: #111520;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 38px;
+}
+
+/* Upload button — small gold circle like a camera badge */
+.avatar-upload-btn {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--gold);
+  border: 2.5px solid var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.18s;
+  font-size: 13px;
+  line-height: 1;
+  box-shadow: var(--gold-glow-sm);
+}
+
+.avatar-upload-btn:hover {
+  background: var(--gold-hover);
+  transform: scale(1.12);
+}
+
+/* ── Identity text ── */
+.hero-identity {
+  flex: 1;
+}
+
+.hero-eyebrow {
+  /* Matches the "DAILY CINECHALLENGES" eyebrow pill in screenshot */
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--border-gold);
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  border-radius: var(--radius-pill);
+  background: var(--gold-dim);
+  margin-bottom: 16px;
+}
+
+/* Matches "Can You Guess The Movie?" — very bold, large */
+.hero-name {
+  font-size: clamp(30px, 4.5vw, 48px);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.hero-tagline {
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--text-sub);
+  margin-bottom: 22px;
+  /* Matches "Challenge 1 of 5" style text */
+}
+
+.hero-level-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+/* Matches "1 Day Streak" pill from navbar — dark bg, border, emoji + text */
+.level-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 16px;
+  border-radius: var(--radius-pill);
+  letter-spacing: 0.01em;
+}
+
+.xp-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-sub);
+}
+
+/* XP track */
+.xp-track {
+  width: min(360px, 100%);
+  height: 5px;
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.xp-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold) 0%, var(--gold-hover) 100%);
+  border-radius: var(--radius-pill);
+  box-shadow: 0 0 10px rgba(245, 197, 24, 0.55);
+}
+
+.xp-hint {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+/* ════════════════════════════════
+   STATS ROW
+════════════════════════════════ */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  max-width: 1160px;
+  margin: 28px auto;
+  padding: 0 24px;
+}
+
+/* Glass card — same dark card bg as quiz card in screenshot */
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  padding: 30px 18px 26px;
+  text-align: center;
+  box-shadow: var(--shadow-card);
+  cursor: default;
+  transition: border-color 0.22s, background 0.22s, transform 0.22s;
+}
+
+.stat-card:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-gold);
+  transform: translateY(-5px);
+}
+
+.stat-icon {
+  font-size: 26px;
+  margin-bottom: 10px;
+  line-height: 1;
+}
+
+/* Large bold number in gold — matches "Can You Guess The Movie?" heading weight */
+.stat-value {
+  font-size: 38px;
+  font-weight: 800;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 7px;
+  letter-spacing: -0.03em;
+  font-family: var(--font);
+}
+
+.stat-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-sub);
+}
+
+/* ════════════════════════════════
+   DASHBOARD 2-COL GRID
+════════════════════════════════ */
+.dashboard-grid {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+/* ── Shared card shell — matches quiz card in screenshot ── */
+.dash-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  padding: 32px 30px;
+  box-shadow: var(--shadow-card);
+  transition: border-color 0.22s;
+}
+
+.dash-card:hover {
+  border-color: var(--border-gold);
+}
+
+.card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 22px;
+  gap: 12px;
+}
+
+/* Matches "DAILY CINECHALLENGES" eyebrow label style */
+.card-eyebrow {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+
+/* Matches "Can You Guess The Movie?" heading — bold, white */
+.card-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+/* Matches nav link style — no bg, gold text */
+.card-link-btn {
+  background: none;
+  border: none;
+  color: var(--gold);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 4px 0;
+  transition: color 0.18s;
+  white-space: nowrap;
+  margin-top: 2px;
+  font-family: var(--font);
+}
+
+.card-link-btn:hover {
+  color: var(--gold-hover);
+}
+
+/* ════════════════════════════════
+   CONTINUE WATCHING — movie grid
+════════════════════════════════ */
+.movie-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.movie-thumb {
+  cursor: pointer;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.movie-thumb-img-wrap {
+  position: relative;
+  aspect-ratio: 2 / 3;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #060608;
+}
+
+.movie-thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.35s ease;
+}
+
+.movie-thumb:hover .movie-thumb-img {
+  transform: scale(1.06);
+}
+
+.movie-thumb-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.22s;
+  border-radius: 14px;
+}
+
+.movie-thumb:hover .movie-thumb-overlay {
+  background: rgba(0, 0, 0, 0.52);
+}
+
+.play-icon {
+  font-size: 24px;
+  color: var(--gold);
+  opacity: 0;
+  transform: scale(0.7);
+  transition: opacity 0.22s, transform 0.22s;
+  text-shadow: var(--gold-glow);
+}
+
+.movie-thumb:hover .play-icon {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.movie-thumb-meta {
+  padding: 8px 2px 2px;
+}
+
+.movie-thumb-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.movie-thumb-rating {
+  font-size: 11px;
+  color: var(--text-sub);
+}
+
+/* ════════════════════════════════
+   FAVOURITE MOVIE
+════════════════════════════════ */
+.favourite-layout {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.favourite-poster-wrap {
+  flex-shrink: 0;
+  width: 120px;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7), var(--gold-glow-sm);
+  position: relative;
+}
+
+.favourite-poster {
+  width: 100%;
+  display: block;
+  border-radius: 14px;
+}
+
+.favourite-poster-shine {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.055) 0%,
+    transparent 50%
+  );
+  pointer-events: none;
+}
+
+.favourite-info {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Small gold pill label */
+.favourite-badge {
+  display: inline-block;
+  background: var(--gold-dim);
+  border: 1px solid var(--border-gold);
+  color: var(--gold);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.favourite-title {
+  font-size: 16px;
+  font-weight: 800;
+  margin: 0 0 12px;
+  color: var(--text);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.favourite-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+/* Small metadata chips — matches subtle dark style */
+.meta-chip {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  color: var(--text-sub);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+}
+
+.favourite-overview {
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--text-sub);
+  margin: 0 0 18px;
+}
+
+.favourite-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* ════════════════════════════════
+   BUTTONS — Matched to screenshot exactly
+   "Submit Guess" / "Sign Up" = solid gold pill, black bold text, bottom glow
+════════════════════════════════ */
+.gold-btn {
+  background: var(--gold);
+  color: #000000;
+  border: none;
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 700;
+  padding: 11px 26px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  letter-spacing: 0.01em;
+  /* The warm underside glow visible on "Submit Guess" in screenshot */
+  box-shadow: var(--gold-glow);
+  transition: background 0.18s, box-shadow 0.18s, transform 0.15s;
+}
+
+.gold-btn:hover {
+  background: var(--gold-hover);
+  box-shadow: 0 6px 30px rgba(245, 197, 24, 0.55);
+  transform: translateY(-2px);
+}
+
+/* Ghost — matches "1 Day Streak" pill: dark bg, subtle border, white text */
+.ghost-btn {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 11px 26px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: background 0.18s, border-color 0.18s, transform 0.15s;
+}
+
+.ghost-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.22);
+  transform: translateY(-2px);
+}
+
+/* ════════════════════════════════
+   ACHIEVEMENTS
+════════════════════════════════ */
+.badge-count {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-sub);
+  margin-top: 4px;
+  white-space: nowrap;
+}
+
+.achievement-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.achievement-badge {
+  border-radius: 16px;
+  padding: 18px 10px 14px;
+  text-align: center;
+  border: 1px solid transparent;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s, border-color 0.2s;
+  cursor: default;
+}
+
+.badge-unlocked {
+  background: linear-gradient(
+    145deg,
+    rgba(245, 197, 24, 0.09) 0%,
+    rgba(245, 197, 24, 0.03) 100%
+  );
+  border-color: rgba(245, 197, 24, 0.28);
+}
+
+.badge-locked {
+  background: rgba(255, 255, 255, 0.025);
+  border-color: rgba(255, 255, 255, 0.05);
+  opacity: 0.45;
+  filter: grayscale(0.5);
+}
+
+.badge-icon-wrap {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 8px;
+}
+
+.badge-icon {
+  font-size: 26px;
+  line-height: 1;
+  display: block;
+}
+
+/* Gold halo behind unlocked badge icons */
+.badge-glow {
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(245, 197, 24, 0.3) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+.badge-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 3px;
+}
+
+.badge-desc {
+  font-size: 10px;
+  color: var(--text-muted);
+  margin: 0 0 8px;
+  line-height: 1.4;
+}
+
+.badge-status {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  letter-spacing: 0.05em;
+}
+
+.status-unlocked {
+  background: rgba(245, 197, 24, 0.13);
+  color: var(--gold);
+}
+
+.status-locked {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-muted);
+}
+
+/* ════════════════════════════════
+   TIMELINE — Recent Activity
+════════════════════════════════ */
+.timeline {
+  display: flex;
+  flex-direction: column;
+}
+
+.timeline-item {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.tl-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* Icon node */
+.tl-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--gold-dim);
+  border: 1px solid var(--border-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+/* Connector line between items */
+.tl-line {
+  width: 1px;
+  flex: 1;
+  min-height: 24px;
+  background: linear-gradient(
+    to bottom,
+    rgba(245, 197, 24, 0.15) 0%,
+    transparent 100%
+  );
+  margin: 6px 0;
+}
+
+.tl-body {
+  padding-bottom: 26px;
+  flex: 1;
+}
+
+.timeline-item:last-child .tl-body {
+  padding-bottom: 0;
+}
+
+.tl-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 10px 0 5px;
+}
+
+.tl-desc {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-sub);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Gold highlight on numbers inside timeline — matches italic gold text style */
+.tl-desc strong {
+  color: var(--gold);
+  font-weight: 700;
+}
+
+/* ════════════════════════════════
+   EMPTY STATES
+════════════════════════════════ */
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.empty-icon {
+  font-size: 38px;
+  margin-bottom: 14px;
+  line-height: 1;
+}
+
+.empty-state h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 8px;
+}
+
+.empty-state p {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-sub);
+  margin: 0 0 22px;
+  line-height: 1.6;
+}
+
+/* ════════════════════════════════
+   RESPONSIVE
+════════════════════════════════ */
+@media (max-width: 1024px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+  .stats-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .profile-hero {
+    padding: 44px 20px 40px;
+  }
+
+  .hero-inner {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 22px;
+  }
+
+  .hero-eyebrow,
+  .hero-level-row {
+    justify-content: center;
+  }
+
+  .xp-track {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .stats-row,
+  .dashboard-grid {
+    padding: 0 16px;
+  }
+
+  .stats-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .dash-card {
+    padding: 24px 18px;
+  }
+
+  .achievement-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .movie-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .favourite-layout {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .favourite-poster-wrap {
+    width: 130px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-name {
+    font-size: 26px;
+  }
+  .stat-value {
+    font-size: 30px;
+  }
+  .achievement-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ── Respect reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .xp-fill,
+  .movie-thumb-img,
+  .play-icon,
+  .gold-btn,
+  .ghost-btn {
+    transition: none;
+  }
+}

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { getCurrentStreak } from "../utils/streak";
+import "../styles/profile.css";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -34,37 +35,79 @@ const Profile = () => {
   const totalPoints = streak + watchlist.length + posts.length + quizCount;
   const level = Math.max(1, Math.floor(totalPoints / 3));
   const xp = totalPoints * 20;
+  const xpProgress = xp % 100;
 
   const achievements = [
-    { icon: "🥇", title: "First Quiz", unlocked: quizCount >= 1 },
-    { icon: "🔥", title: "7 Day Streak", unlocked: streak >= 7 },
-    { icon: "🎬", title: "Movie Buff", unlocked: watchlist.length >= 10 },
-    { icon: "✍️", title: "Reviewer", unlocked: posts.length >= 5 },
-    { icon: "👑", title: "Quiz Master", unlocked: quizCount >= 25 },
-    { icon: "💎", title: "Cine Legend", unlocked: level >= 10 },
+    {
+      icon: "🥇",
+      title: "First Quiz",
+      desc: "Complete your first quiz",
+      unlocked: quizCount >= 1,
+    },
+    {
+      icon: "🔥",
+      title: "7 Day Streak",
+      desc: "Log in 7 days in a row",
+      unlocked: streak >= 7,
+    },
+    {
+      icon: "🎬",
+      title: "Movie Buff",
+      desc: "Save 10 movies",
+      unlocked: watchlist.length >= 10,
+    },
+    {
+      icon: "✍️",
+      title: "Reviewer",
+      desc: "Publish 5 posts",
+      unlocked: posts.length >= 5,
+    },
+    {
+      icon: "👑",
+      title: "Quiz Master",
+      desc: "Complete 25 quizzes",
+      unlocked: quizCount >= 25,
+    },
+    {
+      icon: "💎",
+      title: "Cine Legend",
+      desc: "Reach Level 10",
+      unlocked: level >= 10,
+    },
+  ];
+
+  const stats = [
+    { icon: "🔥", value: streak, label: "Day Streak" },
+    { icon: "🎬", value: watchlist.length, label: "Watchlist" },
+    { icon: "🧠", value: quizCount, label: "Quizzes Done" },
+    { icon: "📝", value: posts.length, label: "Posts" },
   ];
 
   return (
-    <div className="profile-page">
+    <div className="profile-root">
+      {/* ─────────────────── HERO ─────────────────── */}
       <motion.section
         className="profile-hero"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
+        transition={{ duration: 0.9 }}
       >
-        <div className="hero-overlay">
-          <div className="hero-left">
-            {profilePic ? (
-              <img
-                src={profilePic}
-                alt="Profile"
-                className="profile-avatar-img"
-              />
-            ) : (
-              <div className="profile-avatar">🎬</div>
-            )}
-            <label className="upload-btn">
-              📷 Change Photo
+        {/* Cinematic scanline accent */}
+        <div className="hero-scanline" aria-hidden="true" />
+        <div className="hero-glow" aria-hidden="true" />
+
+        <div className="hero-inner">
+          {/* Avatar */}
+          <div className="avatar-wrap">
+            <div className="avatar-ring">
+              {profilePic ? (
+                <img src={profilePic} alt="Profile" className="avatar-img" />
+              ) : (
+                <div className="avatar-placeholder">🎬</div>
+              )}
+            </div>
+            <label className="avatar-upload-btn" title="Change photo">
+              <span className="upload-icon">📷</span>
               <input
                 type="file"
                 hidden
@@ -74,83 +117,94 @@ const Profile = () => {
             </label>
           </div>
 
-          <div className="hero-right">
-            <h1>Aakash</h1>
-            <p>Movie Explorer • SceneTheory Member</p>
-            <div className="level-pill">🎖 Level {level}</div>
-            <div className="xp-wrapper">
-              <div className="xp-bar">
-                <motion.div
-                  className="xp-fill"
-                  initial={{ width: 0 }}
-                  animate={{ width: `${xp % 100}%` }}
-                  transition={{ duration: 1 }}
-                />
-              </div>
-              <span>{xp} XP</span>
+          {/* Identity */}
+          <div className="hero-identity">
+            <div className="hero-eyebrow">SceneTheory Member</div>
+            <h1 className="hero-name">Aakash</h1>
+            <p className="hero-tagline">Movie Explorer · Cinephile</p>
+
+            <div className="hero-level-row">
+              <span className="level-badge">🎖 Level {level}</span>
+              <span className="xp-label">{xp} XP</span>
             </div>
+
+            <div className="xp-track">
+              <motion.div
+                className="xp-fill"
+                initial={{ width: 0 }}
+                animate={{ width: `${xpProgress}%` }}
+                transition={{ duration: 1.2, ease: "easeOut" }}
+              />
+            </div>
+            <div className="xp-hint">{xpProgress} / 100 XP to next level</div>
           </div>
         </div>
       </motion.section>
 
-      <motion.section
-        className="premium-stats"
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        viewport={{ once: true }}
-      >
-        <div className="stat-card">
-          <span>🔥</span>
-          <h2>{streak}</h2>
-          <p>Current Streak</p>
-        </div>
-        <div className="stat-card">
-          <span>🎬</span>
-          <h2>{watchlist.length}</h2>
-          <p>Watchlist</p>
-        </div>
-        <div className="stat-card">
-          <span>🧠</span>
-          <h2>{quizCount}</h2>
-          <p>Quizzes Completed</p>
-        </div>
-        <div className="stat-card">
-          <span>📝</span>
-          <h2>{posts.length}</h2>
-          <p>Community Posts</p>
-        </div>
-      </motion.section>
+      {/* ─────────────────── STATS ROW ─────────────────── */}
+      <section className="stats-row">
+        {stats.map((s, i) => (
+          <motion.div
+            key={s.label}
+            className="stat-card"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: i * 0.08 }}
+            whileHover={{ y: -6, scale: 1.03 }}
+          >
+            <div className="stat-icon">{s.icon}</div>
+            <div className="stat-value">{s.value}</div>
+            <div className="stat-label">{s.label}</div>
+          </motion.div>
+        ))}
+      </section>
 
-      <div className="profile-container">
-        {/* ================= Continue Watching ================= */}
+      {/* ─────────────────── DASHBOARD GRID ─────────────────── */}
+      <div className="dashboard-grid">
+        {/* ── Continue Watching ── */}
         <motion.section
-          className="continue-section glass-card"
-          initial={{ opacity: 0, y: 50 }}
+          className="dash-card"
+          initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
+          transition={{ duration: 0.55 }}
         >
-          <div className="section-heading">
-            <h2>Continue Watching</h2>
-            <p>Your recently saved movies</p>
+          <div className="card-header">
+            <div>
+              <p className="card-eyebrow">YOUR LIST</p>
+              <h2 className="card-title">Continue Watching</h2>
+            </div>
+            <button
+              className="card-link-btn"
+              onClick={() => navigate("/watchlist")}
+            >
+              View All →
+            </button>
           </div>
 
           {watchlist.length > 0 ? (
-            <div className="continue-row">
-              {watchlist.slice(0, 8).map((movie) => (
+            <div className="movie-grid">
+              {watchlist.slice(0, 6).map((movie) => (
                 <motion.div
-                  whileHover={{ scale: 1.06, y: -8 }}
                   key={movie.id}
-                  className="continue-card"
+                  className="movie-thumb"
+                  whileHover={{ y: -8, scale: 1.04 }}
+                  transition={{ type: "spring", stiffness: 300 }}
                   onClick={() => navigate(`/movie/${movie.id}`)}
                 >
-                  <img
-                    src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                    alt={movie.title}
-                  />
-                  <div className="continue-info">
-                    <h4>{movie.title}</h4>
-                    <span>
+                  <div className="movie-thumb-img-wrap">
+                    <img
+                      src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
+                      alt={movie.title}
+                      className="movie-thumb-img"
+                    />
+                    <div className="movie-thumb-overlay">
+                      <span className="play-icon">▶</span>
+                    </div>
+                  </div>
+                  <div className="movie-thumb-meta">
+                    <p className="movie-thumb-title">{movie.title}</p>
+                    <span className="movie-thumb-rating">
                       ⭐{" "}
                       {movie.vote_average
                         ? movie.vote_average.toFixed(1)
@@ -162,67 +216,83 @@ const Profile = () => {
             </div>
           ) : (
             <div className="empty-state">
-              <h3>No Movies Yet</h3>
-              <p>Start exploring movies and build your personal watchlist.</p>
+              <div className="empty-icon">🎬</div>
+              <h3>Your watchlist is empty</h3>
+              <p>Explore movies and save them to see them here.</p>
+              <button className="gold-btn" onClick={() => navigate("/")}>
+                Explore Movies
+              </button>
             </div>
           )}
         </motion.section>
 
-        {/* ================= Favorite Movie ================= */}
+        {/* ── Favourite Movie ── */}
         <motion.section
-          className="favorite-section glass-card"
-          initial={{ opacity: 0, y: 50 }}
+          className="dash-card favourite-card"
+          initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
+          transition={{ duration: 0.55, delay: 0.1 }}
         >
-          <div className="section-heading">
-            <h2>Favourite Movie</h2>
-            <p>Your top pick from the watchlist</p>
+          <div className="card-header">
+            <div>
+              <p className="card-eyebrow">TOP PICK</p>
+              <h2 className="card-title">Favourite Movie</h2>
+            </div>
           </div>
 
-          {/* ✅ Guard: only render movie details if watchlist is non-empty */}
           {watchlist.length > 0 ? (
-            <div className="favorite-layout">
-              <motion.img
-                whileHover={{ scale: 1.04 }}
-                src={`https://image.tmdb.org/t/p/w500${watchlist[0].poster_path}`}
-                alt={watchlist[0].title}
-                className="favorite-poster"
-              />
-              <div className="favorite-details">
-                <span className="favorite-tag">⭐ Favorite Movie</span>
-                <h2>{watchlist[0].title}</h2>
-                <div className="favorite-meta">
-                  <span>
+            <div className="favourite-layout">
+              <motion.div
+                className="favourite-poster-wrap"
+                whileHover={{ scale: 1.03 }}
+                transition={{ type: "spring", stiffness: 250 }}
+              >
+                <img
+                  src={`https://image.tmdb.org/t/p/w342${watchlist[0].poster_path}`}
+                  alt={watchlist[0].title}
+                  className="favourite-poster"
+                />
+                <div className="favourite-poster-shine" />
+              </motion.div>
+
+              <div className="favourite-info">
+                <span className="favourite-badge">⭐ Top of your list</span>
+                <h3 className="favourite-title">{watchlist[0].title}</h3>
+
+                <div className="favourite-meta-row">
+                  <span className="meta-chip">
                     ⭐{" "}
                     {watchlist[0].vote_average
                       ? watchlist[0].vote_average.toFixed(1)
                       : "N/A"}
                   </span>
-                  <span>
+                  <span className="meta-chip">
                     📅{" "}
                     {watchlist[0].release_date
                       ? watchlist[0].release_date.slice(0, 4)
-                      : "Unknown"}
+                      : "—"}
                   </span>
-                  <span>
+                  <span className="meta-chip">
                     🌎 {watchlist[0].original_language?.toUpperCase()}
                   </span>
                 </div>
-                <p className="favorite-overview">
+
+                <p className="favourite-overview">
                   {watchlist[0].overview
-                    ? watchlist[0].overview.substring(0, 220) + "..."
+                    ? watchlist[0].overview.substring(0, 200) + "…"
                     : "No overview available."}
                 </p>
-                <div className="favorite-buttons">
+
+                <div className="favourite-actions">
                   <button
-                    className="primary-btn"
+                    className="gold-btn"
                     onClick={() => navigate(`/movie/${watchlist[0].id}`)}
                   >
                     View Details
                   </button>
                   <button
-                    className="secondary-btn"
+                    className="ghost-btn"
                     onClick={() => navigate("/watchlist")}
                   >
                     Open Watchlist
@@ -231,93 +301,139 @@ const Profile = () => {
               </div>
             </div>
           ) : (
-            // ✅ Empty state is now correctly inside the section
             <div className="empty-state">
-              <h3>No Favourite Movie</h3>
+              <div className="empty-icon">🍿</div>
+              <h3>No favourite yet</h3>
               <p>
-                Add movies to your watchlist to see your favourite movie here.
+                Add movies to your watchlist and your top pick will appear here.
               </p>
             </div>
           )}
         </motion.section>
 
-        {/* ================= Achievements ================= */}
+        {/* ── Achievements ── */}
         <motion.section
-          className="achievement-section glass-card"
-          initial={{ opacity: 0, y: 60 }}
+          className="dash-card"
+          initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
+          transition={{ duration: 0.55, delay: 0.05 }}
         >
-          <div className="section-heading">
-            <h2>Achievements</h2>
-            <p>Your SceneTheory milestones</p>
+          <div className="card-header">
+            <div>
+              <p className="card-eyebrow">MILESTONES</p>
+              <h2 className="card-title">Achievements</h2>
+            </div>
+            <span className="badge-count">
+              {achievements.filter((a) => a.unlocked).length}/
+              {achievements.length} unlocked
+            </span>
           </div>
+
           <div className="achievement-grid">
             {achievements.map((badge) => (
               <motion.div
-                whileHover={{ scale: 1.05, y: -8 }}
                 key={badge.title}
-                className={`achievement-card ${
-                  badge.unlocked ? "achievement-unlocked" : "achievement-locked"
+                className={`achievement-badge ${
+                  badge.unlocked ? "badge-unlocked" : "badge-locked"
                 }`}
+                whileHover={{ scale: 1.06, y: -4 }}
+                transition={{ type: "spring", stiffness: 300 }}
               >
-                <div className="achievement-icon">{badge.icon}</div>
-                <h3>{badge.title}</h3>
-                <p>{badge.unlocked ? "Unlocked" : "Locked"}</p>
+                <div className="badge-icon-wrap">
+                  <span className="badge-icon">{badge.icon}</span>
+                  {badge.unlocked && <div className="badge-glow" />}
+                </div>
+                <p className="badge-title">{badge.title}</p>
+                <p className="badge-desc">{badge.desc}</p>
+                <span
+                  className={`badge-status ${
+                    badge.unlocked ? "status-unlocked" : "status-locked"
+                  }`}
+                >
+                  {badge.unlocked ? "✓ Unlocked" : "Locked"}
+                </span>
               </motion.div>
             ))}
           </div>
         </motion.section>
 
-        {/* ================= Activity Timeline ================= */}
+        {/* ── Recent Activity ── */}
         <motion.section
-          className="timeline-section glass-card"
-          initial={{ opacity: 0, y: 60 }}
+          className="dash-card"
+          initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
+          transition={{ duration: 0.55, delay: 0.15 }}
         >
-          <div className="section-heading">
-            <h2>Recent Activity</h2>
-            <p>Your latest actions on SceneTheory</p>
+          <div className="card-header">
+            <div>
+              <p className="card-eyebrow">HISTORY</p>
+              <h2 className="card-title">Recent Activity</h2>
+            </div>
           </div>
+
           <div className="timeline">
-            <div className="timeline-item">
-              <div className="timeline-icon">🔥</div>
-              <div className="timeline-content">
-                <h4>Current Streak</h4>
-                <p>
-                  You are on a <strong>{streak} day</strong> streak. Keep
-                  solving CineChallenges every day!
-                </p>
-              </div>
-            </div>
-            <div className="timeline-item">
-              <div className="timeline-icon">🧠</div>
-              <div className="timeline-content">
-                <h4>Quiz Progress</h4>
-                <p>
-                  Completed <strong>{quizCount}</strong> movie quizzes.
-                </p>
-              </div>
-            </div>
-            <div className="timeline-item">
-              <div className="timeline-icon">🎬</div>
-              <div className="timeline-content">
-                <h4>Watchlist Updated</h4>
-                <p>
-                  You have saved <strong>{watchlist.length}</strong> movies.
-                </p>
-              </div>
-            </div>
-            <div className="timeline-item">
-              <div className="timeline-icon">📝</div>
-              <div className="timeline-content">
-                <h4>Community Activity</h4>
-                <p>
-                  You have published <strong>{posts.length}</strong> posts.
-                </p>
-              </div>
-            </div>
+            {[
+              {
+                icon: "🔥",
+                title: "Current Streak",
+                desc: (
+                  <>
+                    You're on a <strong>{streak}-day</strong> streak. Keep
+                    solving CineChallenges daily!
+                  </>
+                ),
+              },
+              {
+                icon: "🧠",
+                title: "Quiz Progress",
+                desc: (
+                  <>
+                    Completed <strong>{quizCount}</strong> movie{" "}
+                    {quizCount === 1 ? "quiz" : "quizzes"} so far.
+                  </>
+                ),
+              },
+              {
+                icon: "🎬",
+                title: "Watchlist Updated",
+                desc: (
+                  <>
+                    You've saved <strong>{watchlist.length}</strong>{" "}
+                    {watchlist.length === 1 ? "movie" : "movies"} to your list.
+                  </>
+                ),
+              },
+              {
+                icon: "📝",
+                title: "Community Activity",
+                desc: (
+                  <>
+                    You've published <strong>{posts.length}</strong>{" "}
+                    {posts.length === 1 ? "post" : "posts"} to the community.
+                  </>
+                ),
+              },
+            ].map((item, i) => (
+              <motion.div
+                key={item.title}
+                className="timeline-item"
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: i * 0.08 }}
+              >
+                <div className="tl-left">
+                  <div className="tl-icon">{item.icon}</div>
+                  {i < 3 && <div className="tl-line" />}
+                </div>
+                <div className="tl-body">
+                  <h4 className="tl-title">{item.title}</h4>
+                  <p className="tl-desc">{item.desc}</p>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </motion.section>
       </div>

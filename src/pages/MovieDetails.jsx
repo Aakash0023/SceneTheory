@@ -124,7 +124,10 @@ const MovieDetails = () => {
             Add to Watchlist
           </button>
 
-          <Link to={`/movie/${movieId}/quiz`} className="secondary-btn">
+          <Link
+            to={`/movie/${movieId}/quiz`}
+            className="secondary-btn quiz-link"
+          >
             🧠 Start Quiz
           </Link>
         </div>
