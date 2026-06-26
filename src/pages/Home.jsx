@@ -91,8 +91,6 @@ const Home = () => {
 
       <CineChallenge />
 
-      <Watchlists />
-
       <Footer />
     </>
   );

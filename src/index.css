@@ -4359,3 +4359,34 @@ MOBILE
     height: 300px;
   }
 }
+.footer-links ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links li {
+  margin: 14px 0;
+}
+
+.footer-links a {
+  color: #d1d5db;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.footer-links a:hover {
+  color: #f5c518;
+  transform: translateX(6px);
+}
+
+.footer-links a:visited {
+  color: #d1d5db;
+}
+
+.footer-links a:active {
+  color: #f5c518;
+}
