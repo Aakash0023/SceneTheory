@@ -1597,9 +1597,7 @@ body.light .theme-toggle {
     z-index: 9999;
   }
 
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45), 0 0 20px rgba(124, 58, 237, 0.15);
-
-  z-index: 999999;
+ 
 }
 .search-item {
   display: flex;
