@@ -7,11 +7,12 @@ import {
   RiBookmarkLine,
   RiDeleteBin6Line,
 } from "react-icons/ri";
-
+import { useNavigate } from "react-router-dom";
 import CommentsModal from "./CommentsModal";
 
 const PostCard = ({ post, posts, setPosts }) => {
   const [liked, setLiked] = useState(false);
+  const navigate = useNavigate();
   const [showComments, setShowComments] = useState(false);
 
   const toggleLike = () => {
@@ -66,26 +67,47 @@ const PostCard = ({ post, posts, setPosts }) => {
 
         {/* CAPTION */}
 
-        <div className="movie-review">
-          {post.movieTitle && (
-            <div className="movie-review-header">
-              <h2 className="review-movie-title">🎬 {post.movieTitle}</h2>
+        {post.movieTitle && (
+          <div className="movie-review-card">
+            <img
+              src={post.moviePoster}
+              alt={post.movieTitle}
+              className="review-poster"
+              onClick={() => navigate(`/movie/${post.movieId}`)}
+            />
 
-              <div className="review-stars">
-                {"⭐".repeat(post.rating || 5)}
+            <div className="review-details">
+              <div className="review-top">
+                <div>
+                  <h2>{post.movieTitle}</h2>
+
+                  <span>
+                    {post.movieYear} • ⭐ {post.tmdbRating.toFixed(1)}
+                  </span>
+                </div>
+
+                <div className="user-rating">{"⭐".repeat(post.rating)}</div>
               </div>
+
+              <p className="review-overview">
+                {post.movieOverview.length > 150
+                  ? post.movieOverview.substring(0, 150) + "..."
+                  : post.movieOverview}
+              </p>
             </div>
-          )}
-
-          <p className="post-caption">{post.caption}</p>
-        </div>
-
-        {/* IMAGE */}
-
-        {post.image && (
-          <img src={post.image} alt={post.movieTitle} className="post-image" />
+          </div>
         )}
 
+        <p className="post-caption">{post.caption}</p>
+        {/* IMAGE */}
+
+        {post.moviePoster && (
+          <img
+            src={post.moviePoster}
+            alt={post.movieTitle}
+            className="post-image"
+          />
+        )}
         {/* ACTIONS */}
 
         <div className="post-footer">
