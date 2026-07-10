@@ -36,7 +36,7 @@ export const getProfile = async (req, res) => {
 };
 export const updateProfile = async (req, res) => {
   try {
-    const { username, bio, avatar } = req.body;
+    const { username, bio } = req.body;
 
     const user = await User.findById(req.user._id);
 
@@ -47,36 +47,24 @@ export const updateProfile = async (req, res) => {
     }
 
     if (username) user.username = username;
+
     if (bio) user.bio = bio;
-    if (avatar) user.avatar = avatar;
+
+    if (req.file) {
+      user.avatar = req.file.path;
+    }
 
     await user.save();
 
-    res.status(200).json({
-      message: "Profile updated successfully",
-      user: {
-        username: user.username,
-        email: user.email,
-        avatar: user.avatar,
-        bio: user.bio,
-
-        watchlist: user.watchlist,
-        watchlistCount: user.watchlist.length,
-
-        quizCompleted: user.quizCompleted,
-
-        postsCount: user.postsCount,
-
-        streak: user.streak,
-
-        joined: user.createdAt,
-      },
+    res.json({
+      message: "Profile Updated Successfully",
+      user,
     });
   } catch (error) {
     console.error(error);
 
     res.status(500).json({
-      message: "Failed to update profile",
+      message: "Update Failed",
     });
   }
 };

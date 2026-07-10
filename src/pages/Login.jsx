@@ -27,6 +27,8 @@ const Login = () => {
 
       localStorage.setItem("user", JSON.stringify(res.data.user));
 
+      window.dispatchEvent(new Event("storage"));
+
       alert("Login Successful!");
 
       navigate("/");

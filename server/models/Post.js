@@ -54,6 +54,8 @@ const postSchema = new mongoose.Schema(
 
         username: String,
 
+        avatar: String,
+
         text: String,
 
         createdAt: {

@@ -7,12 +7,13 @@ import {
   updateQuizProgress,
   updateStreak,
 } from "../controllers/profileController.js";
+import upload from "../middleware/upload.js";
 
 const router = express.Router();
 
 router.get("/", authMiddleware, getProfile);
 
-router.put("/", authMiddleware, updateProfile);
+router.put("/", authMiddleware, upload.single("avatar"), updateProfile);
 
 router.patch("/quiz", authMiddleware, updateQuizProgress);
 

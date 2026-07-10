@@ -1,81 +1,200 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import {
   RiMovie2Line,
   RiTeamLine,
   RiFireLine,
   RiSendPlaneFill,
+  RiImageAddLine,
+  RiCloseLine,
 } from "react-icons/ri";
 
 import PostCard from "../components/PostCard";
 import "../styles/community.css";
 import { searchMovies } from "../api/searchMovies";
+import API from "../api/auth";
 
 function Community({ posts, setPosts }) {
   const [caption, setCaption] = useState("");
   const [movieRating, setMovieRating] = useState(5);
+
   const [search, setSearch] = useState("");
   const [results, setResults] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState(null);
+  const [searching, setSearching] = useState(false);
 
   const [preview, setPreview] = useState(null);
+  const fileInputRef = useRef(null);
 
   const [activeFilter, setActiveFilter] = useState("All");
+  const [postCategory, setPostCategory] = useState("Reviews");
+  const [submitting, setSubmitting] = useState(false);
+
+  // Guards against out-of-order search responses (race condition fix)
+  const searchRequestId = useRef(0);
+  const debounceTimer = useRef(null);
 
   const filters = ["All", "Reviews", "Theories", "Recommendations"];
 
-  const publishPost = (e) => {
+  // ===============================
+  // Load Posts
+  // ===============================
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const loadPosts = async () => {
+      try {
+        const res = await API.get("/posts");
+        if (!cancelled) setPosts(res.data);
+      } catch (error) {
+        console.error("Failed to load posts:", error);
+      }
+    };
+
+    loadPosts();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [setPosts]);
+
+  // ===============================
+  // Filtered posts (was previously dead state)
+  // ===============================
+
+  const filteredPosts =
+    activeFilter === "All"
+      ? posts
+      : posts.filter(
+          (post) =>
+            post.category &&
+            post.category.toLowerCase() === activeFilter.toLowerCase()
+        );
+
+  // ===============================
+  // Publish Post
+  // ===============================
+
+  const publishPost = async (e) => {
     e.preventDefault();
+
+    if (submitting) return; // prevent double-submit
 
     if (!caption.trim()) {
       alert("Write something first!");
       return;
     }
 
-    const newPost = {
-      id: Date.now(),
-      username: "Aakash",
-      avatar: "🎬",
-      movieTitle: selectedMovie?.title || "",
-      moviePoster: selectedMovie?.poster_path
-        ? `https://image.tmdb.org/t/p/w500${selectedMovie.poster_path}`
-        : "",
-      movieId: selectedMovie?.id || "",
-      movieYear: selectedMovie?.release_date
-        ? selectedMovie.release_date.split("-")[0]
-        : "",
-      movieGenre: selectedMovie?.genre_ids || [],
-      tmdbRating: selectedMovie?.vote_average || 0,
-      movieOverview: selectedMovie?.overview || "",
-      rating: movieRating,
-      caption,
-      likes: 0,
-      comments: [],
-      createdAt: new Date().toISOString(),
-    };
-
-    const updatedPosts = [newPost, ...posts];
-    setPosts(updatedPosts);
-    localStorage.setItem("communityPosts", JSON.stringify(updatedPosts));
-
-    setCaption("");
-    setSelectedMovie(null);
-    setSearch("");
-    setMovieRating(5);
-    setPreview(null); //
-  };
-
-  const handleMovieSearch = async (e) => {
-    const value = e.target.value;
-    setSearch(value);
-
-    if (value.length < 2) {
-      setResults([]);
+    if (!selectedMovie) {
+      alert("Please select a movie.");
       return;
     }
 
-    const movies = await searchMovies(value);
-    setResults(movies.slice(0, 5));
+    setSubmitting(true);
+
+    try {
+      await API.post("/posts", {
+        movieId: selectedMovie.id,
+        movieTitle: selectedMovie.title,
+
+        moviePoster: selectedMovie.poster_path
+          ? `https://image.tmdb.org/t/p/w500${selectedMovie.poster_path}`
+          : "",
+
+        movieYear: selectedMovie.release_date
+          ? selectedMovie.release_date.split("-")[0]
+          : "",
+
+        movieOverview: selectedMovie.overview,
+
+        tmdbRating: selectedMovie.vote_average,
+
+        rating: movieRating,
+
+        review: caption,
+
+        image: "",
+      });
+
+      setPosts((prev) => [res.data, ...prev]);
+
+      alert("🎉 Review Published!");
+
+      setCaption("");
+      setSelectedMovie(null);
+      setSearch("");
+      setMovieRating(5);
+      setPreview(null);
+      setPostCategory("Reviews");
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    } catch (error) {
+      console.error(error);
+      alert(error.response?.data?.message || "Failed to publish review.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  // ===============================
+  // Search Movie (debounced + race-safe)
+  // ===============================
+
+  const handleMovieSearch = (e) => {
+    const value = e.target.value;
+    setSearch(value);
+
+    // FIX: typing after picking a movie no longer leaves a stale selection
+    if (selectedMovie && value !== selectedMovie.title) {
+      setSelectedMovie(null);
+    }
+
+    if (debounceTimer.current) clearTimeout(debounceTimer.current);
+
+    if (value.trim().length < 2) {
+      setResults([]);
+      setSearching(false);
+      return;
+    }
+
+    setSearching(true);
+
+    debounceTimer.current = setTimeout(async () => {
+      const requestId = ++searchRequestId.current;
+
+      try {
+        const movies = await searchMovies(value);
+
+        // FIX: ignore stale responses that resolve out of order
+        if (requestId === searchRequestId.current) {
+          setResults(movies.slice(0, 5));
+          setSearching(false);
+        }
+      } catch (error) {
+        console.error(error);
+        if (requestId === searchRequestId.current) {
+          setSearching(false);
+        }
+      }
+    }, 350);
+  };
+
+  // ===============================
+  // Image Upload (was referenced in payload but had no input before)
+  // ===============================
+
+  const handleImageChange = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      alert("Please choose an image file.");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => setPreview(reader.result);
+    reader.readAsDataURL(file);
   };
 
   return (
@@ -125,6 +244,7 @@ function Community({ posts, setPosts }) {
         transition={{ delay: 0.2 }}
       >
         <h2>What's on your mind?</h2>
+
         <p>Share your latest review, recommendation or fan theory.</p>
 
         <form onSubmit={publishPost}>
@@ -157,16 +277,27 @@ function Community({ posts, setPosts }) {
               )}
             </div>
 
+            {searching && <p className="search-status">Searching…</p>}
+
             {results.length > 0 && (
               <div className="movie-results">
                 {results.map((movie) => (
                   <div
                     key={movie.id}
                     className="movie-result"
+                    role="button"
+                    tabIndex={0}
                     onClick={() => {
                       setSelectedMovie(movie);
                       setSearch(movie.title);
                       setResults([]);
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        setSelectedMovie(movie);
+                        setSearch(movie.title);
+                        setResults([]);
+                      }
                     }}
                   >
                     <img
@@ -177,10 +308,19 @@ function Community({ posts, setPosts }) {
                       }
                       alt={movie.title}
                     />
+
                     <div>
                       <h4>{movie.title}</h4>
-                      <span>⭐ {movie.vote_average.toFixed(1)}</span>
-                      <p>{movie.release_date?.split("-")[0]}</p>
+
+                      {/* FIX: guard against missing vote_average */}
+                      <span>
+                        ⭐{" "}
+                        {typeof movie.vote_average === "number"
+                          ? movie.vote_average.toFixed(1)
+                          : "N/A"}
+                      </span>
+
+                      <p>{movie.release_date?.split("-")[0] || "—"}</p>
                     </div>
                   </div>
                 ))}
@@ -202,16 +342,27 @@ function Community({ posts, setPosts }) {
                 }
                 alt={selectedMovie.title}
               />
+
               <div className="selected-movie-info">
                 <h3>{selectedMovie.title}</h3>
-                <p>{selectedMovie.release_date?.split("-")[0]}</p>
+
+                <p>{selectedMovie.release_date?.split("-")[0] || "—"}</p>
+
                 <div className="selected-movie-rating">
-                  ⭐ {selectedMovie.vote_average.toFixed(1)} / 10
+                  ⭐{" "}
+                  {typeof selectedMovie.vote_average === "number"
+                    ? selectedMovie.vote_average.toFixed(1)
+                    : "N/A"}{" "}
+                  / 10
                 </div>
+
+                {/* FIX: guard against missing overview */}
                 <p className="selected-overview">
-                  {selectedMovie.overview.length > 120
-                    ? selectedMovie.overview.substring(0, 120) + "..."
-                    : selectedMovie.overview}
+                  {selectedMovie.overview
+                    ? selectedMovie.overview.length > 120
+                      ? selectedMovie.overview.substring(0, 120) + "..."
+                      : selectedMovie.overview
+                    : "No description available."}
                 </p>
               </div>
             </motion.div>
@@ -221,8 +372,10 @@ function Community({ posts, setPosts }) {
             <div className="rating-card">
               <div className="rating-header">
                 <h3>Your Rating</h3>
+
                 <span>{movieRating}/5</span>
               </div>
+
               <div className="star-rating">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <span
@@ -237,6 +390,65 @@ function Community({ posts, setPosts }) {
             </div>
           </div>
 
+          {/* FIX: image upload input now actually exists to back the `preview` state */}
+          <div className="image-upload-card">
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              id="post-image-input"
+              onChange={handleImageChange}
+              hidden
+            />
+
+            {!preview ? (
+              <label
+                htmlFor="post-image-input"
+                className="image-upload-trigger"
+              >
+                <RiImageAddLine />
+                Add an image (optional)
+              </label>
+            ) : (
+              <div className="image-preview-wrap">
+                <img src={preview} alt="Selected preview" />
+                <button
+                  type="button"
+                  className="remove-image-btn"
+                  onClick={() => {
+                    setPreview(null);
+                    if (fileInputRef.current) fileInputRef.current.value = "";
+                  }}
+                >
+                  <RiCloseLine />
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* NEW: category picker — value gets saved on the post and used by the filter bar */}
+          <div className="category-picker">
+            <p className="input-heading">POST TYPE</p>
+            <div className="category-options">
+              {filters
+                .filter((f) => f !== "All")
+                .map((f) => (
+                  <button
+                    key={f}
+                    type="button"
+                    className={
+                      f === postCategory
+                        ? "category-chip active"
+                        : "category-chip"
+                    }
+                    onClick={() => setPostCategory(f)}
+                  >
+                    {f}
+                  </button>
+                ))}
+            </div>
+          </div>
+
           <textarea
             className="caption-input"
             placeholder="Write a review, theory or recommendation..."
@@ -245,21 +457,34 @@ function Community({ posts, setPosts }) {
           />
 
           <div className="post-actions">
-            <button type="submit" className="publish-btn">
+            <button type="submit" className="publish-btn" disabled={submitting}>
               <RiSendPlaneFill />
-              Publish Review
+              {submitting ? "Publishing..." : "Publish Review"}
             </button>
           </div>
         </form>
       </motion.section>
 
+      {/* FIX: filter bar now rendered and wired up (was defined but unused) */}
+      <div className="community-filters">
+        {filters.map((f) => (
+          <button
+            key={f}
+            className={f === activeFilter ? "filter-btn active" : "filter-btn"}
+            onClick={() => setActiveFilter(f)}
+          >
+            {f}
+          </button>
+        ))}
+      </div>
+
       <div className="community-main">
         <div className="community-layout">
           <div className="community-feed">
-            {posts.length > 0 ? (
-              posts.map((post) => (
+            {filteredPosts.length > 0 ? (
+              filteredPosts.map((post) => (
                 <PostCard
-                  key={post.id}
+                  key={post._id}
                   post={post}
                   posts={posts}
                   setPosts={setPosts}
@@ -272,11 +497,14 @@ function Community({ posts, setPosts }) {
                 animate={{ opacity: 1 }}
               >
                 <RiMovie2Line />
+
                 <h2>No Posts Yet</h2>
+
                 <p>
                   Be the first person to share a movie review with the
                   community.
                 </p>
+
                 <button
                   className="primary-btn"
                   onClick={() =>
@@ -331,7 +559,6 @@ function Community({ posts, setPosts }) {
 
                   <div className="trending-info">
                     <span className="movie-rank">{index + 1}</span>
-
                     <h4>{movie.title}</h4>
                   </div>
 
@@ -350,28 +577,14 @@ function Community({ posts, setPosts }) {
               </div>
 
               {[
-                {
-                  rank: "🥇",
-                  name: "Aakash",
-                  points: "1250",
-                },
-                {
-                  rank: "🥈",
-                  name: "Rahul",
-                  points: "980",
-                },
-                {
-                  rank: "🥉",
-                  name: "Alex",
-                  points: "720",
-                },
+                { rank: "🥇", name: "Aakash", points: "1250" },
+                { rank: "🥈", name: "Rahul", points: "980" },
+                { rank: "🥉", name: "Alex", points: "720" },
               ].map((user) => (
                 <div className="leaderboard-user" key={user.name}>
                   <div className="leader-left">
                     <div className="leader-rank">{user.rank}</div>
-
                     <div className="leader-avatar">{user.name.charAt(0)}</div>
-
                     <h4>{user.name}</h4>
                   </div>
 

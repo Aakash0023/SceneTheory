@@ -49,26 +49,31 @@ const Profile = () => {
 
     if (!file) return;
 
-    const reader = new FileReader();
+    try {
+      const formData = new FormData();
 
-    reader.onloadend = async () => {
-      try {
-        const image = reader.result;
+      formData.append("avatar", file);
 
-        await API.put("/profile", {
-          avatar: image,
-        });
+      // Only append these if you have these state variables
+      formData.append("username", username);
+      formData.append("bio", bio);
 
-        setProfilePic(image);
+      const res = await API.put("/profile", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
-        alert("Profile picture updated!");
-      } catch (error) {
-        console.error(error);
-        alert("Failed to update profile picture");
-      }
-    };
+      setProfilePic(res.data.user.avatar);
 
-    reader.readAsDataURL(file);
+      alert("Profile picture updated successfully!");
+    } catch (error) {
+      console.error(error);
+
+      alert(
+        error.response?.data?.message || "Failed to upload profile picture."
+      );
+    }
   };
 
   const totalPoints = streak + watchlist.length + posts.length + quizCount;
