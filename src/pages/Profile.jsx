@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { getCurrentStreak } from "../utils/streak";
+import API from "../api/auth";
 import "../styles/profile.css";
 
 const Profile = () => {
@@ -12,23 +12,62 @@ const Profile = () => {
   const [posts, setPosts] = useState([]);
   const [quizCount, setQuizCount] = useState(0);
   const [profilePic, setProfilePic] = useState("");
-
+  const [username, setUsername] = useState("");
+  const [bio, setBio] = useState("");
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
-    setStreak(getCurrentStreak());
-    setWatchlist(JSON.parse(localStorage.getItem("watchlist")) || []);
-    setPosts(JSON.parse(localStorage.getItem("communityPosts")) || []);
-    setQuizCount(Number(localStorage.getItem("quizCompleted")) || 0);
-    setProfilePic(localStorage.getItem("profilePicture") || "");
+    const loadProfile = async () => {
+      try {
+        const res = await API.get("/profile");
+
+        setUsername(res.data.username);
+        setBio(res.data.bio);
+
+        setProfilePic(res.data.avatar);
+
+        setWatchlist(res.data.watchlist);
+
+        setQuizCount(res.data.quizCompleted);
+
+        setStreak(res.data.streak);
+
+        // Community backend not built yet
+        setPosts([]);
+      } catch (error) {
+        console.error(error);
+        alert("Failed to load profile");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadProfile();
   }, []);
 
-  const handleProfilePicture = (e) => {
+  const handleProfilePicture = async (e) => {
     const file = e.target.files[0];
+
     if (!file) return;
+
     const reader = new FileReader();
-    reader.onloadend = () => {
-      localStorage.setItem("profilePicture", reader.result);
-      setProfilePic(reader.result);
+
+    reader.onloadend = async () => {
+      try {
+        const image = reader.result;
+
+        await API.put("/profile", {
+          avatar: image,
+        });
+
+        setProfilePic(image);
+
+        alert("Profile picture updated!");
+      } catch (error) {
+        console.error(error);
+        alert("Failed to update profile picture");
+      }
     };
+
     reader.readAsDataURL(file);
   };
 
@@ -82,6 +121,15 @@ const Profile = () => {
     { icon: "🧠", value: quizCount, label: "Quizzes Done" },
     { icon: "📝", value: posts.length, label: "Posts" },
   ];
+  if (loading) {
+    return (
+      <div className="profile-root">
+        <h1 style={{ color: "#fff", textAlign: "center", padding: "120px" }}>
+          Loading Profile...
+        </h1>
+      </div>
+    );
+  }
 
   return (
     <div className="profile-root">
@@ -120,8 +168,8 @@ const Profile = () => {
           {/* Identity */}
           <div className="hero-identity">
             <div className="hero-eyebrow">SceneTheory Member</div>
-            <h1 className="hero-name">Aakash</h1>
-            <p className="hero-tagline">Movie Explorer · Cinephile</p>
+            <h1 className="hero-name">{username}</h1>
+            <p className="hero-tagline">{bio}</p>
 
             <div className="hero-level-row">
               <span className="level-badge">🎖 Level {level}</span>
@@ -186,11 +234,11 @@ const Profile = () => {
             <div className="movie-grid">
               {watchlist.slice(0, 6).map((movie) => (
                 <motion.div
-                  key={movie.id}
+                  key={movie.movieId}
                   className="movie-thumb"
                   whileHover={{ y: -8, scale: 1.04 }}
                   transition={{ type: "spring", stiffness: 300 }}
-                  onClick={() => navigate(`/movie/${movie.id}`)}
+                  onClick={() => navigate(`/movie/${movie.movieId}`)}
                 >
                   <div className="movie-thumb-img-wrap">
                     <img
@@ -287,7 +335,7 @@ const Profile = () => {
                 <div className="favourite-actions">
                   <button
                     className="gold-btn"
-                    onClick={() => navigate(`/movie/${watchlist[0].id}`)}
+                    onClick={() => navigate(`/movie/${watchlist[0].movieId}`)}
                   >
                     View Details
                   </button>

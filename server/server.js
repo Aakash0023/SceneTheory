@@ -7,6 +7,8 @@ import quizRoutes from "./routes/quizRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import watchlistRoutes from "./routes/watchlistRoutes.js";
 import profileRoutes from "./routes/profileRoutes.js";
+import postRoutes from "./routes/postRoutes.js";
+
 dotenv.config();
 
 connectDB();
@@ -24,6 +26,7 @@ app.get("/", (req, res) => {
 });
 app.use("/api/watchlist", watchlistRoutes);
 app.use("/api/profile", profileRoutes);
+app.use("/api/posts", postRoutes);
 
 const PORT = process.env.PORT || 5000;
 
