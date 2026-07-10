@@ -1,14 +1,48 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { FaTrash } from "react-icons/fa";
+import API from "../api/auth";
 
 const Watchlist = () => {
   const [watchlist, setWatchlist] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchWatchlist = async () => {
+    try {
+      const res = await API.get("/watchlist");
+      setWatchlist(res.data);
+    } catch (error) {
+      console.error(error);
+      alert("Failed to load watchlist");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const savedMovies = JSON.parse(localStorage.getItem("watchlist")) || [];
-
-    setWatchlist(savedMovies);
+    fetchWatchlist();
   }, []);
+
+  const removeMovie = async (movieId) => {
+    try {
+      await API.delete(`/watchlist/${movieId}`);
+
+      setWatchlist((prev) => prev.filter((movie) => movie.movieId !== movieId));
+    } catch (error) {
+      console.error(error);
+      alert("Failed to remove movie");
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="watchlist-page">
+        <div className="watchlist-header">
+          <h1>Loading Watchlist...</h1>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="watchlist-page">
@@ -23,7 +57,7 @@ const Watchlist = () => {
           </h2>
         </div>
 
-        <h1>My List</h1>
+        <h1>My Watchlist</h1>
 
         <p>
           {watchlist.length} Saved Movie
@@ -49,8 +83,8 @@ const Watchlist = () => {
       ) : (
         <div className="watchlist-grid">
           {watchlist.map((movie) => (
-            <div key={movie.id} className="watchlist-card">
-              <Link to={`/movie/${movie.id}`}>
+            <div key={movie.movieId} className="watchlist-card">
+              <Link to={`/movie/${movie.movieId}`}>
                 <img
                   src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                   alt={movie.title}
@@ -63,6 +97,14 @@ const Watchlist = () => {
                   <p>{movie.release_date?.split("-")[0]}</p>
                 </div>
               </Link>
+
+              <button
+                className="watchlist-remove-btn"
+                onClick={() => removeMovie(movie.movieId)}
+              >
+                <FaTrash />
+                Remove
+              </button>
             </div>
           ))}
         </div>

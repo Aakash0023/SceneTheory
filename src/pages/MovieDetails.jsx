@@ -3,6 +3,8 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import { BsBookmarkPlus } from "react-icons/bs";
 import { motion } from "framer-motion";
 
+import API from "../api/auth";
+
 import {
   fetchMovieDetails,
   fetchMovieTrailer,
@@ -21,39 +23,43 @@ const MovieDetails = () => {
   const [showTrailer, setShowTrailer] = useState(false);
   const [similarMovies, setSimilarMovies] = useState([]);
 
-  const addToWatchlist = () => {
-    const watchlist = JSON.parse(localStorage.getItem("watchlist")) || [];
+  const addToWatchlist = async () => {
+    try {
+      const res = await API.post("/watchlist/add", {
+        movieId: movie.id,
+        title: movie.title,
+        poster_path: movie.poster_path,
+        release_date: movie.release_date,
+      });
 
-    const exists = watchlist.find((item) => item.id === movie.id);
-
-    if (exists) {
-      alert("Movie already in watchlist!");
-      return;
+      alert(res.data.message);
+    } catch (err) {
+      alert(err.response?.data?.message || "Failed to add movie");
     }
-
-    watchlist.push(movie);
-
-    localStorage.setItem("watchlist", JSON.stringify(watchlist));
-
-    alert("Added to Watchlist!");
   };
 
   useEffect(() => {
     const getMovie = async () => {
-      const data = await fetchMovieDetails(movieId);
-      setMovie(data);
+      try {
+        const data = await fetchMovieDetails(movieId);
 
-      const videos = await fetchMovieTrailer(movieId);
+        setMovie(data);
 
-      const similar = await fetchSimilarMovies(movieId);
-      setSimilarMovies(similar.slice(0, 4));
+        const videos = await fetchMovieTrailer(movieId);
 
-      const trailer = videos?.find(
-        (video) => video.site === "YouTube" && video.type === "Trailer"
-      );
+        const similar = await fetchSimilarMovies(movieId);
 
-      if (trailer) {
-        setTrailerUrl(`https://www.youtube.com/watch?v=${trailer.key}`);
+        setSimilarMovies(similar.slice(0, 4));
+
+        const trailer = videos?.find(
+          (video) => video.site === "YouTube" && video.type === "Trailer"
+        );
+
+        if (trailer) {
+          setTrailerUrl(`https://www.youtube.com/watch?v=${trailer.key}`);
+        }
+      } catch (error) {
+        console.error(error);
       }
     };
 
@@ -98,6 +104,7 @@ const MovieDetails = () => {
         transition={{ duration: 0.8 }}
       >
         <h1>{movie.title}</h1>
+
         <div className="movie-meta">
           <span>⭐ {movie.vote_average?.toFixed(1)}</span>
 

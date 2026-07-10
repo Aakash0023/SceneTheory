@@ -1,35 +1,36 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import API from "../api/auth";
 
 const Signup = () => {
+  const navigate = useNavigate();
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!name || !email || !password) {
-      setError("Please fill all fields");
-      return;
+      return setError("Please fill all fields");
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    try {
+      const res = await API.post("/auth/register", {
+        username: name,
+        email,
+        password,
+      });
 
-    if (!emailRegex.test(email)) {
-      setError("Please enter a valid email address");
-      return;
+      alert(res.data.message);
+
+      navigate("/login");
+    } catch (err) {
+      setError(err.response?.data?.message || "Registration Failed");
     }
-
-    if (password.length < 8) {
-      setError("Password must be at least 8 characters");
-      return;
-    }
-
-    setError("");
-
-    alert("Account created successfully!");
   };
 
   return (

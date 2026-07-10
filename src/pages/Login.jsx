@@ -1,34 +1,38 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import API from "../api/auth";
 
 const Login = () => {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!email || !password) {
-      setError("Please fill all fields");
-      return;
+      return setError("Please fill all fields");
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    try {
+      const res = await API.post("/auth/login", {
+        email,
+        password,
+      });
 
-    if (!emailRegex.test(email)) {
-      setError("Please enter a valid email address");
-      return;
+      localStorage.setItem("token", res.data.token);
+
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+
+      alert("Login Successful!");
+
+      navigate("/");
+    } catch (err) {
+      setError(err.response?.data?.message || "Login Failed");
     }
-
-    if (password.length < 8) {
-      setError("Password must be at least 8 characters");
-      return;
-    }
-
-    setError("");
-
-    alert("Login successful!");
   };
 
   return (
