@@ -94,7 +94,7 @@ function Community({ posts, setPosts }) {
     setSubmitting(true);
 
     try {
-      await API.post("/posts", {
+      const res = await API.post("/posts", {
         movieId: selectedMovie.id,
         movieTitle: selectedMovie.title,
 
@@ -115,6 +115,8 @@ function Community({ posts, setPosts }) {
         review: caption,
 
         image: "",
+
+        category: postCategory,
       });
 
       setPosts((prev) => [res.data, ...prev]);
