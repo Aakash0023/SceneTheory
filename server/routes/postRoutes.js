@@ -14,6 +14,19 @@ const router = express.Router();
 
 router.get("/", getPosts);
 
+router.get("/", getPosts);
+
+router.get("/test", (req, res) => {
+  res.json({
+    message: "Posts route working!",
+  });
+});
+
+router.post("/", authMiddleware, createPost);
+router.delete("/:id", authMiddleware, deletePost);
+router.patch("/:id/like", authMiddleware, toggleLike);
+router.post("/:id/comment", authMiddleware, addComment);
+
 router.post("/", authMiddleware, createPost);
 
 router.delete("/:id", authMiddleware, deletePost);
