@@ -1,8 +1,6 @@
 import Post from "../models/Post.js";
 import User from "../models/User.js";
 
-
-
 export const createPost = async (req, res) => {
   try {
     const {
@@ -66,7 +64,6 @@ export const createPost = async (req, res) => {
   }
 };
 
-
 export const getPosts = async (req, res) => {
   try {
     const posts = await Post.find().sort({
@@ -83,10 +80,15 @@ export const getPosts = async (req, res) => {
   }
 };
 
-
 export const toggleLike = async (req, res) => {
   try {
+    console.log("LIKE REQUEST");
+    console.log("Post ID:", req.params.id);
+    console.log("User:", req.user?._id);
+
     const post = await Post.findById(req.params.id);
+
+    console.log("Post:", post);
 
     if (!post) {
       return res.status(404).json({
@@ -94,35 +96,37 @@ export const toggleLike = async (req, res) => {
       });
     }
 
+    if (!Array.isArray(post.likes)) {
+      post.likes = [];
+    }
+
     const userId = req.user._id.toString();
 
-    const alreadyLiked = post.likes.some(
-      (id) => id.toString() === userId
-    );
+    const alreadyLiked = post.likes.some((id) => id.toString() === userId);
+
+    console.log("Already liked:", alreadyLiked);
 
     if (alreadyLiked) {
-      post.likes = post.likes.filter(
-        (id) => id.toString() !== userId
-      );
+      post.likes = post.likes.filter((id) => id.toString() !== userId);
     } else {
       post.likes.push(req.user._id);
     }
 
     await post.save();
 
-    const updatedPost = await Post.findById(post._id);
+    const updatedPost = await Post.findById(req.params.id);
 
-    res.status(200).json(updatedPost);
+    console.log("Updated likes:", updatedPost.likes.length);
+
+    return res.status(200).json(updatedPost);
   } catch (error) {
     console.error("LIKE ERROR:", error);
 
-    res.status(500).json({
-      message: "Failed to update like.",
+    return res.status(500).json({
+      message: error.message,
     });
   }
 };
-
-
 
 export const addComment = async (req, res) => {
   try {
@@ -162,8 +166,6 @@ export const addComment = async (req, res) => {
     });
   }
 };
-
-
 
 export const deletePost = async (req, res) => {
   try {
