@@ -24,6 +24,7 @@ function Community({ posts, setPosts }) {
   const [searching, setSearching] = useState(false);
 
   const [preview, setPreview] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
   const fileInputRef = useRef(null);
 
   const [activeFilter, setActiveFilter] = useState("All");
@@ -110,11 +111,11 @@ function Community({ posts, setPosts }) {
 
         tmdbRating: selectedMovie.vote_average,
 
-        rating: movieRating,
+        userRating: movieRating,
 
         review: caption,
 
-        image: "",
+        image: preview || "",
 
         category: postCategory,
       });
@@ -127,7 +128,7 @@ function Community({ posts, setPosts }) {
       setSelectedMovie(null);
       setSearch("");
       setMovieRating(5);
-      setPreview(null);
+      setSelectedImage(null);
       setPostCategory("Reviews");
       if (fileInputRef.current) fileInputRef.current.value = "";
     } catch (error) {
@@ -194,8 +195,14 @@ function Community({ posts, setPosts }) {
       return;
     }
 
+    setSelectedImage(file);
+
     const reader = new FileReader();
-    reader.onload = () => setPreview(reader.result);
+
+    reader.onload = () => {
+      setPreview(reader.result);
+    };
+
     reader.readAsDataURL(file);
   };
 

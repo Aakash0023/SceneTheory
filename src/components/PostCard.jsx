@@ -22,7 +22,11 @@ const PostCard = ({ post, posts, setPosts }) => {
 
   const [showComments, setShowComments] = useState(false);
 
-  const [liked, setLiked] = useState(post.likes?.includes(user?._id) || false);
+  const [liked, setLiked] = useState(() => {
+    if (!Array.isArray(post.likes)) return false;
+
+    return post.likes.some((id) => id.toString() === user?._id?.toString());
+  });
 
   const toggleLike = async () => {
     if (loadingLike) return;
@@ -36,7 +40,10 @@ const PostCard = ({ post, posts, setPosts }) => {
         prev.map((item) => (item._id === post._id ? res.data : item))
       );
 
-      setLiked(res.data.likes.includes(user._id));
+      setLiked(
+        Array.isArray(res.data.likes) &&
+          res.data.likes.some((id) => id.toString() === user?._id?.toString())
+      );
     } catch (error) {
       console.error(error);
 
@@ -91,9 +98,12 @@ const PostCard = ({ post, posts, setPosts }) => {
             <div className="post-avatar">
               {post.avatar ? (
                 <img
-                  src={post.avatar}
+                  src={post.avatar || "/default-avatar.png"}
                   alt={post.username}
                   className="post-avatar-img"
+                  onError={(e) => {
+                    e.target.src = "/default-avatar.png";
+                  }}
                 />
               ) : (
                 <div className="avatar-placeholder">🎬</div>
@@ -107,7 +117,7 @@ const PostCard = ({ post, posts, setPosts }) => {
             </div>
           </div>
 
-          {user?._id === post.user && (
+          {user?._id === String(post.user) && (
             <button className="delete-post-btn" onClick={deletePost}>
               <RiDeleteBin6Line />
             </button>
@@ -141,7 +151,7 @@ const PostCard = ({ post, posts, setPosts }) => {
                 </div>
 
                 <div className="user-rating">
-                  {"⭐".repeat(post.rating || 5)}
+                  {"⭐".repeat(post.userRating || 5)}
                 </div>
               </div>
 
