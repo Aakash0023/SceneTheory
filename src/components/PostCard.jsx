@@ -8,6 +8,7 @@ import {
   RiDeleteBin6Line,
 } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 import CommentsModal from "./CommentsModal";
 import API from "../api/auth";
@@ -15,13 +16,13 @@ import API from "../api/auth";
 const PostCard = ({ post, posts, setPosts }) => {
   const navigate = useNavigate();
 
-  const [liked, setLiked] = useState(false);
-  const [showComments, setShowComments] = useState(false);
+  const user = JSON.parse(localStorage.getItem("user"));
+
   const [loadingLike, setLoadingLike] = useState(false);
 
-  // ==================================
-  // Toggle Like
-  // ==================================
+  const [showComments, setShowComments] = useState(false);
+
+  const [liked, setLiked] = useState(post.likes?.includes(user?._id) || false);
 
   const toggleLike = async () => {
     if (loadingLike) return;
@@ -35,18 +36,15 @@ const PostCard = ({ post, posts, setPosts }) => {
         prev.map((item) => (item._id === post._id ? res.data : item))
       );
 
-      setLiked((prev) => !prev);
+      setLiked(res.data.likes.includes(user._id));
     } catch (error) {
       console.error(error);
-      alert(error.response?.data?.message || "Failed to update like.");
+
+      toast.error(error.response?.data?.message || "Failed to update like.");
     } finally {
       setLoadingLike(false);
     }
   };
-
-  // ==================================
-  // Delete Post
-  // ==================================
 
   const deletePost = async () => {
     const confirmDelete = window.confirm(
@@ -60,17 +58,13 @@ const PostCard = ({ post, posts, setPosts }) => {
 
       setPosts((prev) => prev.filter((item) => item._id !== post._id));
 
-      alert("Review deleted successfully.");
+      toast.success("Review deleted successfully.");
     } catch (error) {
       console.error(error);
 
-      alert(error.response?.data?.message || "Failed to delete review.");
+      toast.error(error.response?.data?.message || "Failed to delete review.");
     }
   };
-
-  // ==================================
-  // Time Ago
-  // ==================================
 
   const timeAgo = () => {
     if (!post.createdAt) return "Just now";
@@ -92,13 +86,19 @@ const PostCard = ({ post, posts, setPosts }) => {
         whileHover={{ y: -6 }}
         transition={{ duration: 0.25 }}
       >
-        {/* ===========================
-          HEADER
-      =========================== */}
-
         <div className="post-header">
           <div className="post-user">
-            <div className="post-avatar">{post.avatar || "🎬"}</div>
+            <div className="post-avatar">
+              {post.avatar ? (
+                <img
+                  src={post.avatar}
+                  alt={post.username}
+                  className="post-avatar-img"
+                />
+              ) : (
+                <div className="avatar-placeholder">🎬</div>
+              )}
+            </div>
 
             <div>
               <h3>{post.username || "Movie Lover"}</h3>
@@ -107,18 +107,18 @@ const PostCard = ({ post, posts, setPosts }) => {
             </div>
           </div>
 
-          <button className="delete-post-btn" onClick={deletePost}>
-            <RiDeleteBin6Line />
-          </button>
+          {user?._id === post.user && (
+            <button className="delete-post-btn" onClick={deletePost}>
+              <RiDeleteBin6Line />
+            </button>
+          )}
         </div>
-
-        {/* ===========================
-          MOVIE REVIEW CARD
-      =========================== */}
 
         {post.movieTitle && (
           <div className="movie-review-card">
-            <img
+            <motion.img
+              whileHover={{ scale: 1.03 }}
+              transition={{ duration: 0.25 }}
               src={
                 post.moviePoster
                   ? post.moviePoster
@@ -147,8 +147,8 @@ const PostCard = ({ post, posts, setPosts }) => {
 
               <p className="review-overview">
                 {post.movieOverview
-                  ? post.movieOverview.length > 160
-                    ? post.movieOverview.substring(0, 160) + "..."
+                  ? post.movieOverview.length > 180
+                    ? post.movieOverview.substring(0, 180) + "..."
                     : post.movieOverview
                   : "No overview available."}
               </p>
@@ -156,26 +156,22 @@ const PostCard = ({ post, posts, setPosts }) => {
           </div>
         )}
 
-        {/* ===========================
-          REVIEW TEXT
-      =========================== */}
-
-        <p className="post-caption">{post.review || post.caption}</p>
-
-        {/* ===========================
-          REVIEW IMAGE
-      =========================== */}
+        {post.review && <p className="post-caption">{post.review}</p>}
 
         {post.image && (
-          <img src={post.image} alt="Review" className="post-image" />
+          <motion.img
+            src={post.image}
+            alt="Review"
+            className="post-image"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          />
         )}
-        {/* ===========================
-          ACTIONS
-      =========================== */}
 
         <div className="post-footer">
           <button
-            className="post-action"
+            className={`post-action ${liked ? "liked" : ""}`}
             onClick={toggleLike}
             disabled={loadingLike}
           >
@@ -190,15 +186,16 @@ const PostCard = ({ post, posts, setPosts }) => {
             <span>{post.comments?.length || 0}</span>
           </button>
 
-          <button className="post-action">
+          <button
+            className="post-action"
+            onClick={() =>
+              toast.success("Saved to your bookmarks (Coming Soon 🚀)")
+            }
+          >
             <RiBookmarkLine />
           </button>
         </div>
       </motion.div>
-
-      {/* ===========================
-        COMMENTS MODAL
-    =========================== */}
 
       {showComments && (
         <CommentsModal

@@ -28,6 +28,31 @@ const postSchema = new mongoose.Schema(
       required: true,
     },
 
+    moviePoster: {
+      type: String,
+      default: "",
+    },
+
+    movieYear: {
+      type: String,
+      default: "",
+    },
+
+    movieOverview: {
+      type: String,
+      default: "",
+    },
+
+    tmdbRating: {
+      type: Number,
+      default: 0,
+    },
+
+    rating: {
+      type: Number,
+      default: 0,
+    },
+
     review: {
       type: String,
       required: true,
@@ -52,11 +77,20 @@ const postSchema = new mongoose.Schema(
           ref: "User",
         },
 
-        username: String,
+        username: {
+          type: String,
+          default: "",
+        },
 
-        avatar: String,
+        avatar: {
+          type: String,
+          default: "",
+        },
 
-        text: String,
+        text: {
+          type: String,
+          default: "",
+        },
 
         createdAt: {
           type: Date,
