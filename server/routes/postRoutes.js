@@ -5,6 +5,7 @@ import authMiddleware from "../middleware/authMiddleware.js";
 import {
   createPost,
   getPosts,
+  getUserPosts,
   deletePost,
   addComment,
   toggleLike,
@@ -24,5 +25,6 @@ router.post("/", authMiddleware, createPost);
 router.delete("/:id", authMiddleware, deletePost);
 router.post("/:id/like", authMiddleware, toggleLike);
 router.post("/:id/comment", authMiddleware, addComment);
+
 
 export default router;

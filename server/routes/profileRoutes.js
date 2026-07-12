@@ -3,6 +3,7 @@ import authMiddleware from "../middleware/authMiddleware.js";
 
 import {
   getProfile,
+  getUserProfile,
   updateProfile,
   updateQuizProgress,
   updateStreak,
@@ -12,6 +13,8 @@ import upload from "../middleware/upload.js";
 const router = express.Router();
 
 router.get("/", authMiddleware, getProfile);
+
+router.get("/:id", getUserProfile);
 
 router.put("/", authMiddleware, upload.single("avatar"), updateProfile);
 

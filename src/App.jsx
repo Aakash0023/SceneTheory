@@ -14,6 +14,7 @@ import Community from "./pages/Community";
 import CreatePost from "./pages/CreatePost";
 import ActorDetails from "./pages/ActorDetails";
 import Profile from "./pages/Profile";
+import UserProfile from "./pages/UserProfile";
 function App() {
   const [posts, setPosts] = useState([
     {
@@ -57,6 +58,7 @@ function App() {
         />
         <Route path="/actor/:actorId" element={<ActorDetails />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/user/:id" element={<UserProfile />} />
       </Routes>
     </BrowserRouter>
   );

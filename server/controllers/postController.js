@@ -136,6 +136,49 @@ export const toggleLike = async (req, res) => {
 };
 
 // ======================================
+// TOGGLE BOOKMARK
+// ======================================
+
+export const toggleBookmark = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+
+    const post = await Post.findById(req.params.id);
+
+    if (!user || !post) {
+      return res.status(404).json({
+        message: "Post not found.",
+      });
+    }
+
+    const alreadyBookmarked = user.bookmarks.some(
+      (id) => id.toString() === post._id.toString()
+    );
+
+    if (alreadyBookmarked) {
+      user.bookmarks = user.bookmarks.filter(
+        (id) => id.toString() !== post._id.toString()
+      );
+    } else {
+      user.bookmarks.push(post._id);
+    }
+
+    await user.save();
+
+    res.status(200).json({
+      bookmarks: user.bookmarks,
+      bookmarked: !alreadyBookmarked,
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      message: "Failed to update bookmark.",
+    });
+  }
+};
+
+// ======================================
 // DELETE POST
 // ======================================
 
@@ -213,6 +256,61 @@ export const addComment = async (req, res) => {
 
     return res.status(500).json({
       message: "Failed to add comment.",
+    });
+  }
+};
+// ======================================
+// GET USER PROFILE BY ID
+// ======================================
+
+export const getUserProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id).select("-password");
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found.",
+      });
+    }
+
+    res.status(200).json({
+      _id: user._id,
+      username: user.username,
+      email: user.email,
+      avatar: user.avatar,
+      bio: user.bio,
+      joined: user.createdAt,
+      watchlistCount: user.watchlist.length,
+      postsCount: user.postsCount,
+      streak: user.streak,
+      quizCompleted: user.quizCompleted,
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      message: "Failed to fetch profile.",
+    });
+  }
+};
+// ======================================
+// GET POSTS BY USER
+// ======================================
+
+export const getUserPosts = async (req, res) => {
+  try {
+    const posts = await Post.find({
+      user: req.params.id,
+    }).sort({
+      createdAt: -1,
+    });
+
+    return res.status(200).json(posts);
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      message: "Failed to fetch user posts.",
     });
   }
 };
