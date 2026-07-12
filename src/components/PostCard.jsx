@@ -37,26 +37,40 @@ const PostCard = ({ post, posts, setPosts }) => {
     setLoadingLike(true);
 
     try {
+      console.log("Sending Like Request...");
+
       const res = await API.post(`/posts/${post._id}/like`);
 
+      console.log("LIKE RESPONSE:", res);
+      console.log("LIKE DATA:", res.data);
+
+      const updatedLikes = Array.isArray(res.data.likes) ? res.data.likes : [];
+
       setLiked(
-        res.data.likes.some((id) => id.toString() === user?._id?.toString())
+        updatedLikes.some((id) => id.toString() === user?._id?.toString())
       );
 
-      setLikesCount(res.data.likesCount);
+      setLikesCount(
+        typeof res.data.likesCount === "number"
+          ? res.data.likesCount
+          : updatedLikes.length
+      );
 
       setPosts((prev) =>
         prev.map((item) =>
           item._id === post._id
             ? {
                 ...item,
-                likes: res.data.likes,
+                likes: updatedLikes,
               }
             : item
         )
       );
     } catch (error) {
-      console.error(error);
+      console.error("LIKE ERROR:", error);
+
+      console.log("STATUS:", error.response?.status);
+      console.log("DATA:", error.response?.data);
 
       toast.error(error.response?.data?.message || "Failed to update like.");
     } finally {
