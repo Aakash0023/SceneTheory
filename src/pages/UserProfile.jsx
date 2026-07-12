@@ -1,82 +1,168 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { motion } from "framer-motion";
+
 import API from "../api/auth";
+import FollowButton from "../components/FollowButton";
+import FollowListModal from "../components/FollowListModal";
+import "../styles/profile.css";
 
 const UserProfile = () => {
-  const { id } = useParams();
+  const { userId } = useParams();
+  const navigate = useNavigate();
 
-  const [user, setUser] = useState(null);
-  const [posts, setPosts] = useState([]);
+  const [profile, setProfile] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [listModal, setListModal] = useState(null); // "followers" | "following" | null
 
   useEffect(() => {
-    fetchUser();
-    fetchPosts();
-  }, [id]);
+    let cancelled = false;
 
-  const fetchUser = async () => {
-    try {
-      const res = await API.get(`/profile/${id}`);
-      setUser(res.data);
-    } catch (err) {
-      console.error(err);
+    const loadProfile = async () => {
+      setLoading(true);
+
+      try {
+        const res = await API.get(`/profile/user/${userId}`);
+        if (!cancelled) setProfile(res.data);
+      } catch (error) {
+        console.error(error);
+        if (!cancelled) setProfile(null);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    };
+
+    loadProfile();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [userId]);
+
+  // If this happens to be your own profile, send people to the full
+  // "/profile" dashboard instead of the public read-only view.
+  useEffect(() => {
+    if (profile?.isOwnProfile) {
+      navigate("/profile", { replace: true });
     }
-  };
+  }, [profile, navigate]);
 
-  const fetchPosts = async () => {
-    try {
-      const res = await API.get(`/posts/user/${id}`);
-      setPosts(res.data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  if (loading) {
+    return (
+      <div className="profile-root">
+        <h1 style={{ color: "#fff", textAlign: "center", padding: "120px" }}>
+          Loading Profile...
+        </h1>
+      </div>
+    );
+  }
 
-  if (!user) return <h2>Loading...</h2>;
+  if (!profile) {
+    return (
+      <div className="profile-root">
+        <h1 style={{ color: "#fff", textAlign: "center", padding: "120px" }}>
+          User not found
+        </h1>
+      </div>
+    );
+  }
+
+  const stats = [
+    { icon: "🔥", value: profile.streak, label: "Day Streak" },
+    { icon: "🎬", value: profile.watchlistCount, label: "Watchlist" },
+    { icon: "🧠", value: profile.quizCompleted, label: "Quizzes Done" },
+    { icon: "📝", value: profile.postsCount, label: "Posts" },
+  ];
 
   return (
-    <div className="user-profile-page">
-      <div className="profile-header">
-        <img
-          src={user.avatar || "/default-avatar.png"}
-          alt={user.username}
-          className="profile-avatar"
-        />
+    <div className="profile-root">
+      {/* ─────────────────── HERO ─────────────────── */}
+      <motion.section
+        className="profile-hero"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.9 }}
+      >
+        <div className="hero-scanline" aria-hidden="true" />
+        <div className="hero-glow" aria-hidden="true" />
 
-        <h1>{user.username}</h1>
-
-        <p>{user.bio}</p>
-
-        <div className="profile-stats">
-          <div>
-            <h3>{user.postsCount}</h3>
-            <span>Posts</span>
+        <div className="hero-inner">
+          <div className="avatar-wrap">
+            <div className="avatar-ring">
+              {profile.avatar ? (
+                <img
+                  src={profile.avatar}
+                  alt="Profile"
+                  className="avatar-img"
+                />
+              ) : (
+                <div className="avatar-placeholder">🎬</div>
+              )}
+            </div>
           </div>
 
-          <div>
-            <h3>{user.quizCompleted}</h3>
-            <span>Quizzes</span>
-          </div>
+          <div className="hero-identity">
+            <div className="hero-eyebrow">SceneTheory Member</div>
+            <h1 className="hero-name">{profile.username}</h1>
+            <p className="hero-tagline">{profile.bio}</p>
 
-          <div>
-            <h3>{user.streak}</h3>
-            <span>Streak</span>
+            <div className="follow-counts-row">
+              <button
+                className="follow-count-btn"
+                onClick={() => setListModal("followers")}
+              >
+                <strong>{profile.followersCount}</strong> Followers
+              </button>
+              <button
+                className="follow-count-btn"
+                onClick={() => setListModal("following")}
+              >
+                <strong>{profile.followingCount}</strong> Following
+              </button>
+            </div>
+
+            <div className="follow-action-row">
+              <FollowButton
+                userId={profile._id}
+                initialIsFollowing={profile.isFollowing}
+                onChange={(isFollowing, followersCount) =>
+                  setProfile((prev) => ({
+                    ...prev,
+                    isFollowing,
+                    followersCount,
+                  }))
+                }
+              />
+            </div>
           </div>
         </div>
-      </div>
+      </motion.section>
 
-      <h2>User Reviews</h2>
-
-      <div className="user-posts">
-        {posts.map((post) => (
-          <div className="review-card" key={post._id}>
-            <img src={post.moviePoster} alt={post.movieTitle} />
-
-            <h3>{post.movieTitle}</h3>
-
-            <p>{post.review}</p>
-          </div>
+      {/* ─────────────────── STATS ROW ─────────────────── */}
+      <section className="stats-row">
+        {stats.map((s, i) => (
+          <motion.div
+            key={s.label}
+            className="stat-card"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: i * 0.08 }}
+            whileHover={{ y: -6, scale: 1.03 }}
+          >
+            <div className="stat-icon">{s.icon}</div>
+            <div className="stat-value">{s.value}</div>
+            <div className="stat-label">{s.label}</div>
+          </motion.div>
         ))}
-      </div>
+      </section>
+
+      {listModal && (
+        <FollowListModal
+          userId={profile._id}
+          type={listModal}
+          closeModal={() => setListModal(null)}
+        />
+      )}
     </div>
   );
 };

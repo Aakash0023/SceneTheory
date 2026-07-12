@@ -58,7 +58,7 @@ function App() {
         />
         <Route path="/actor/:actorId" element={<ActorDetails />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/user/:id" element={<UserProfile />} />
+        <Route path="/profile/:userId" element={<UserProfile />} />
       </Routes>
     </BrowserRouter>
   );

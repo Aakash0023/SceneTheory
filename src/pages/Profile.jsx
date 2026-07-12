@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import API from "../api/auth";
+import FollowListModal from "../components/FollowListModal";
 import "../styles/profile.css";
 
 const Profile = () => {
@@ -15,6 +16,11 @@ const Profile = () => {
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
   const [loading, setLoading] = useState(true);
+  const [userId, setUserId] = useState(null);
+  const [followersCount, setFollowersCount] = useState(0);
+  const [followingCount, setFollowingCount] = useState(0);
+  const [listModal, setListModal] = useState(null); // "followers" | "following" | null
+
   useEffect(() => {
     const loadProfile = async () => {
       try {
@@ -30,6 +36,13 @@ const Profile = () => {
         setQuizCount(res.data.quizCompleted);
 
         setStreak(res.data.streak);
+
+        setFollowersCount(res.data.followersCount || 0);
+        setFollowingCount(res.data.followingCount || 0);
+
+        // Fall back to the id stored at login if the endpoint ever omits it
+        const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
+        setUserId(res.data._id || storedUser?._id || storedUser?.id || null);
 
         // Community backend not built yet
         setPosts([]);
@@ -175,6 +188,21 @@ const Profile = () => {
             <div className="hero-eyebrow">SceneTheory Member</div>
             <h1 className="hero-name">{username}</h1>
             <p className="hero-tagline">{bio}</p>
+
+            <div className="follow-counts-row">
+              <button
+                className="follow-count-btn"
+                onClick={() => setListModal("followers")}
+              >
+                <strong>{followersCount}</strong> Followers
+              </button>
+              <button
+                className="follow-count-btn"
+                onClick={() => setListModal("following")}
+              >
+                <strong>{followingCount}</strong> Following
+              </button>
+            </div>
 
             <div className="hero-level-row">
               <span className="level-badge">🎖 Level {level}</span>
@@ -490,6 +518,14 @@ const Profile = () => {
           </div>
         </motion.section>
       </div>
+
+      {listModal && userId && (
+        <FollowListModal
+          userId={userId}
+          type={listModal}
+          closeModal={() => setListModal(null)}
+        />
+      )}
     </div>
   );
 };

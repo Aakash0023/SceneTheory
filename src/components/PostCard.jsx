@@ -4,6 +4,7 @@ import {
   RiHeart3Line,
   RiHeart3Fill,
   RiChat3Line,
+  RiBookmarkLine,
   RiDeleteBin6Line,
 } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
@@ -16,9 +17,12 @@ const PostCard = ({ post, posts, setPosts }) => {
   const navigate = useNavigate();
 
   const user = JSON.parse(localStorage.getItem("user"));
+
+  // Supports both id and _id
   const loggedInUserId = user?._id || user?.id;
 
   const [loadingLike, setLoadingLike] = useState(false);
+
   const [showComments, setShowComments] = useState(false);
 
   const [liked, setLiked] = useState(
@@ -31,7 +35,7 @@ const PostCard = ({ post, posts, setPosts }) => {
   );
 
   // ===============================
-  // LIKE
+  // LIKE POST
   // ===============================
 
   const toggleLike = async () => {
@@ -42,13 +46,17 @@ const PostCard = ({ post, posts, setPosts }) => {
     try {
       const res = await API.post(`/posts/${post._id}/like`);
 
-      const updatedLikes = res.data.likes || [];
+      const updatedLikes = Array.isArray(res.data.likes) ? res.data.likes : [];
 
       setLiked(
         updatedLikes.some((id) => id.toString() === loggedInUserId?.toString())
       );
 
-      setLikesCount(res.data.likesCount);
+      setLikesCount(
+        typeof res.data.likesCount === "number"
+          ? res.data.likesCount
+          : updatedLikes.length
+      );
 
       setPosts((prev) =>
         prev.map((item) =>
@@ -70,7 +78,7 @@ const PostCard = ({ post, posts, setPosts }) => {
   };
 
   // ===============================
-  // DELETE
+  // DELETE POST
   // ===============================
 
   const deletePost = async () => {
@@ -122,12 +130,15 @@ const PostCard = ({ post, posts, setPosts }) => {
         ========================== */}
 
         <div className="post-header">
-          <div className="post-user">
-            <div
-              className="post-avatar"
-              onClick={() => navigate(`/user/${post.user?._id || post.user}`)}
-              style={{ cursor: "pointer" }}
-            >
+          <div
+            className="post-user"
+            onClick={() => {
+              const authorId = (post.user?._id || post.user)?.toString();
+              if (authorId) navigate(`/profile/${authorId}`);
+            }}
+            style={{ cursor: "pointer" }}
+          >
+            <div className="post-avatar">
               {post.avatar ? (
                 <img
                   src={post.avatar}
@@ -143,12 +154,7 @@ const PostCard = ({ post, posts, setPosts }) => {
             </div>
 
             <div>
-              <h3
-                onClick={() => navigate(`/user/${post.user?._id || post.user}`)}
-                style={{ cursor: "pointer" }}
-              >
-                {post.username || "Movie Lover"}
-              </h3>
+              <h3>{post.username || "Movie Lover"}</h3>
 
               <span>{timeAgo()}</span>
             </div>
@@ -214,13 +220,13 @@ const PostCard = ({ post, posts, setPosts }) => {
         )}
 
         {/* ==========================
-            REVIEW
+            REVIEW TEXT
         ========================== */}
 
         {post.review && <p className="post-caption">{post.review}</p>}
 
         {/* ==========================
-            REVIEW IMAGE
+            IMAGE
         ========================== */}
 
         {post.image && (
@@ -238,7 +244,6 @@ const PostCard = ({ post, posts, setPosts }) => {
         ========================== */}
 
         <div className="post-footer">
-          {/* LIKE */}
           <button
             className={`post-action ${liked ? "liked" : ""}`}
             onClick={toggleLike}
@@ -249,11 +254,17 @@ const PostCard = ({ post, posts, setPosts }) => {
             <span>{likesCount}</span>
           </button>
 
-          {/* COMMENTS */}
           <button className="post-action" onClick={() => setShowComments(true)}>
             <RiChat3Line />
 
             <span>{post.comments?.length || 0}</span>
+          </button>
+
+          <button
+            className="post-action"
+            onClick={() => toast.success("Bookmarks feature coming soon 🚀")}
+          >
+            <RiBookmarkLine />
           </button>
         </div>
       </motion.div>

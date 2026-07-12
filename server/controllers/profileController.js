@@ -10,6 +10,7 @@ export const getProfile = async (req, res) => {
     }
 
     res.status(200).json({
+      _id: user._id,
       username: user.username,
       email: user.email,
       avatar: user.avatar,
@@ -23,6 +24,9 @@ export const getProfile = async (req, res) => {
       postsCount: user.postsCount,
 
       streak: user.streak,
+
+      followersCount: user.followers.length,
+      followingCount: user.following.length,
 
       joined: user.createdAt,
     });
@@ -107,41 +111,6 @@ export const updateStreak = async (req, res) => {
 
     res.status(500).json({
       message: "Failed to update streak",
-    });
-  }
-};
-// ======================================
-// GET USER PROFILE BY ID
-// ======================================
-
-export const getUserProfile = async (req, res) => {
-  try {
-    const user = await User.findById(req.params.id).select("-password");
-
-    if (!user) {
-      return res.status(404).json({
-        message: "User not found",
-      });
-    }
-
-    return res.status(200).json({
-      _id: user._id,
-      username: user.username,
-      email: user.email,
-      avatar: user.avatar,
-      bio: user.bio,
-      watchlist: user.watchlist,
-      watchlistCount: user.watchlist.length,
-      quizCompleted: user.quizCompleted,
-      postsCount: user.postsCount,
-      streak: user.streak,
-      joined: user.createdAt,
-    });
-  } catch (error) {
-    console.error(error);
-
-    return res.status(500).json({
-      message: "Failed to fetch user profile",
     });
   }
 };
