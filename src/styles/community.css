@@ -211,6 +211,21 @@ background:#f5c518;
 color:#111;
 
 }
+.heart-icon-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.post-action.liked {
+  background: rgba(237, 73, 86, 0.12);
+  color: #ed4956;
+}
+
+.post-action.liked:hover {
+  background: rgba(237, 73, 86, 0.22);
+  color: #ed4956;
+}
 .upload-btn:hover {
   background: #f5c518;
   color: #111;

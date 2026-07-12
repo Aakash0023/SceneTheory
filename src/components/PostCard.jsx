@@ -249,14 +249,21 @@ const PostCard = ({ post, posts, setPosts }) => {
             onClick={toggleLike}
             disabled={loadingLike}
           >
-            {liked ? <RiHeart3Fill color="#f5c518" /> : <RiHeart3Line />}
+            <motion.span
+              className="heart-icon-wrap"
+              key={liked ? "liked" : "unliked"}
+              initial={{ scale: liked ? 0.6 : 1 }}
+              animate={{ scale: 1 }}
+              transition={{ type: "spring", stiffness: 500, damping: 15 }}
+            >
+              {liked ? <RiHeart3Fill color="#ed4956" /> : <RiHeart3Line />}
+            </motion.span>
 
             <span>{likesCount}</span>
           </button>
 
           <button className="post-action" onClick={() => setShowComments(true)}>
             <RiChat3Line />
-
             <span>{post.comments?.length || 0}</span>
           </button>
 
