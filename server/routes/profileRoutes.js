@@ -13,6 +13,8 @@ import {
   toggleFollow,
   getFollowers,
   getFollowing,
+  getAllUsers,
+  getSuggestedUsers,
 } from "../controllers/followController.js";
 import upload from "../middleware/upload.js";
 
@@ -35,5 +37,11 @@ router.post("/follow/:id", authMiddleware, toggleFollow);
 router.get("/followers/:id", getFollowers);
 
 router.get("/following/:id", getFollowing);
+
+// ── Discover People ─────────────────────────────────────
+
+router.get("/all", optionalAuth, getAllUsers);
+
+router.get("/suggested", authMiddleware, getSuggestedUsers);
 
 export default router;

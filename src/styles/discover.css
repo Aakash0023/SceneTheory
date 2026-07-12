@@ -1,0 +1,184 @@
+/* ═══════════════════════════════════════════════
+   SceneTheory — Discover People Page
+   Reuses design tokens defined in profile.css
+═══════════════════════════════════════════════ */
+
+.discover-people-page {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  padding: 72px 48px 100px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.discover-people-hero {
+  max-width: 720px;
+  margin: 0 auto 48px;
+  text-align: center;
+}
+
+.discover-people-hero h1 {
+  font-size: 40px;
+  font-weight: 900;
+  margin: 10px 0 14px;
+  color: var(--text);
+}
+
+.discover-people-hero h1 span {
+  color: var(--gold);
+}
+
+.discover-people-subtitle {
+  color: var(--text-sub);
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 28px;
+}
+
+.people-search-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  padding: 14px 22px;
+  max-width: 460px;
+  margin: 0 auto;
+  transition: border-color 0.2s;
+}
+
+.people-search-box:focus-within {
+  border-color: var(--border-gold);
+}
+
+.people-search-box svg {
+  color: var(--text-sub);
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.people-search-box input {
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 14px;
+  width: 100%;
+}
+
+.people-search-box input::placeholder {
+  color: var(--text-muted);
+}
+
+/* ── Grid of people ── */
+.people-grid {
+  max-width: 1160px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.person-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  padding: 26px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-shadow: var(--shadow-card);
+}
+
+.person-card-clickable {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.person-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 14px;
+  border: 2px solid var(--border-gold);
+}
+
+.person-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.person-avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #111520;
+  font-size: 26px;
+}
+
+.person-card h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.person-bio {
+  color: var(--text-sub);
+  font-size: 13px;
+  margin-bottom: 10px;
+  min-height: 18px;
+}
+
+.person-meta {
+  display: flex;
+  gap: 6px;
+  color: var(--text-muted);
+  font-size: 12px;
+  margin-bottom: 18px;
+}
+
+.person-card .follow-btn {
+  width: 100%;
+  padding: 9px 0;
+}
+
+.people-status,
+.people-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--text-sub);
+  padding: 60px 0;
+}
+
+.people-empty svg {
+  font-size: 40px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.people-empty h2 {
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+@media (max-width: 640px) {
+  .discover-people-page {
+    padding: 56px 20px 80px;
+  }
+
+  .discover-people-hero h1 {
+    font-size: 28px;
+  }
+}

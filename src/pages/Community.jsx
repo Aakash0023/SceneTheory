@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import {
   RiMovie2Line,
   RiTeamLine,
@@ -10,13 +11,18 @@ import {
 } from "react-icons/ri";
 
 import PostCard from "../components/PostCard";
+import FollowButton from "../components/FollowButton";
 import "../styles/community.css";
 import { searchMovies } from "../api/searchMovies";
 import API from "../api/auth";
 
 function Community({ posts, setPosts }) {
+  const navigate = useNavigate();
+
   const [caption, setCaption] = useState("");
   const [movieRating, setMovieRating] = useState(5);
+
+  const [suggestedUsers, setSuggestedUsers] = useState([]);
 
   const [search, setSearch] = useState("");
   const [results, setResults] = useState([]);
@@ -59,6 +65,31 @@ function Community({ posts, setPosts }) {
       cancelled = true;
     };
   }, [setPosts]);
+
+  // ===============================
+  // Load Suggested Users (sidebar)
+  // ===============================
+
+  useEffect(() => {
+    if (!localStorage.getItem("token")) return;
+
+    let cancelled = false;
+
+    const loadSuggested = async () => {
+      try {
+        const res = await API.get("/profile/suggested");
+        if (!cancelled) setSuggestedUsers(res.data);
+      } catch (error) {
+        console.error("Failed to load suggested users:", error);
+      }
+    };
+
+    loadSuggested();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   // ===============================
   // Filtered posts (was previously dead state)
@@ -527,6 +558,43 @@ function Community({ posts, setPosts }) {
           </div>
 
           <aside className="community-sidebar">
+            {suggestedUsers.length > 0 && (
+              <div className="sidebar-card">
+                <div className="sidebar-title">
+                  🎯
+                  <div>
+                    <h3>Suggested for You</h3>
+                    <span>Cinephiles you might like</span>
+                  </div>
+                </div>
+
+                {suggestedUsers.map((u) => (
+                  <div className="suggested-user-row" key={u._id}>
+                    <div
+                      className="suggested-user-info"
+                      onClick={() => navigate(`/profile/${u._id}`)}
+                    >
+                      <div className="leader-avatar suggested-avatar">
+                        {u.avatar ? (
+                          <img src={u.avatar} alt={u.username} />
+                        ) : (
+                          u.username?.charAt(0).toUpperCase()
+                        )}
+                      </div>
+                      <div>
+                        <h4>{u.username}</h4>
+                        <span className="suggested-followers">
+                          {u.followersCount} followers
+                        </span>
+                      </div>
+                    </div>
+
+                    <FollowButton userId={u._id} />
+                  </div>
+                ))}
+              </div>
+            )}
+
             <div className="sidebar-card">
               <div className="sidebar-title">
                 🔥

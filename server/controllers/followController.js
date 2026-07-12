@@ -1,6 +1,82 @@
 import User from "../models/User.js";
 
+export const getAllUsers = async (req, res) => {
+  try {
+    const { q } = req.query;
 
+    const filter = {};
+
+    if (q && q.trim()) {
+      filter.username = { $regex: q.trim(), $options: "i" };
+    }
+
+    if (req.user) {
+      filter._id = { $ne: req.user._id };
+    }
+
+    const users = await User.find(filter)
+      .select("username avatar bio followers postsCount")
+      .sort({ createdAt: -1 })
+      .limit(50);
+
+    const shaped = users.map((u) => ({
+      _id: u._id,
+      username: u.username,
+      avatar: u.avatar,
+      bio: u.bio,
+      postsCount: u.postsCount,
+      followersCount: u.followers.length,
+      isFollowing: req.user
+        ? u.followers.some((id) => id.toString() === req.user._id.toString())
+        : false,
+    }));
+
+    return res.status(200).json(shaped);
+  } catch (error) {
+    console.error("GET ALL USERS ERROR:", error);
+
+    return res.status(500).json({
+      message: "Failed to fetch users.",
+    });
+  }
+};
+
+// ======================================
+// SUGGESTED USERS (people you don't follow yet)
+// ======================================
+
+export const getSuggestedUsers = async (req, res) => {
+  try {
+    const currentUser = await User.findById(req.user._id);
+
+    const excludeIds = [req.user._id, ...currentUser.following];
+
+    const suggestions = await User.aggregate([
+      { $match: { _id: { $nin: excludeIds } } },
+      { $sample: { size: 5 } },
+      {
+        $project: {
+          username: 1,
+          avatar: 1,
+          bio: 1,
+          followersCount: { $size: "$followers" },
+        },
+      },
+    ]);
+
+    return res.status(200).json(suggestions);
+  } catch (error) {
+    console.error("GET SUGGESTED USERS ERROR:", error);
+
+    return res.status(500).json({
+      message: "Failed to fetch suggestions.",
+    });
+  }
+};
+
+// ======================================
+// GET PUBLIC PROFILE (any user, by id)
+// ======================================
 
 export const getUserById = async (req, res) => {
   try {
@@ -113,6 +189,10 @@ export const toggleFollow = async (req, res) => {
     });
   }
 };
+
+// ======================================
+// GET FOLLOWERS LIST
+// ======================================
 
 export const getFollowers = async (req, res) => {
   try {

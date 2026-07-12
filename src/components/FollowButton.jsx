@@ -1,6 +1,8 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 import API from "../api/auth";
+// .follow-btn styles live here; import so this works from any page.
+import "../styles/profile.css";
 
 /**
  * Follow / Unfollow toggle button.

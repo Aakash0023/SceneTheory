@@ -102,6 +102,10 @@ const Navbar = ({ onSearch, genres, onGenreSelect }) => {
           <Link to="/community">Community</Link>
         </li>
 
+        <li>
+          <Link to="/people">People</Link>
+        </li>
+
         <li className="genre-dropdown">
           <span onClick={() => setShowGenres(!showGenres)}>
             {showGenres ? "Genres ▲" : "Genres ▼"}
