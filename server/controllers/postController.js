@@ -151,11 +151,11 @@ export const deletePost = async (req, res) => {
 
     if (post.user.toString() !== req.user._id.toString()) {
       return res.status(403).json({
-        message: "Not authorized.",
+        message: "You can only delete your own post.",
       });
     }
 
-    await post.deleteOne();
+    await Post.findByIdAndDelete(req.params.id);
 
     await User.findByIdAndUpdate(req.user._id, {
       $inc: {
@@ -164,13 +164,14 @@ export const deletePost = async (req, res) => {
     });
 
     return res.status(200).json({
+      success: true,
       message: "Post deleted successfully.",
     });
   } catch (error) {
     console.error("DELETE ERROR:", error);
 
     return res.status(500).json({
-      message: "Delete failed.",
+      message: "Failed to delete post.",
     });
   }
 };

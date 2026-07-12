@@ -18,18 +18,25 @@ const PostCard = ({ post, posts, setPosts }) => {
 
   const user = JSON.parse(localStorage.getItem("user"));
 
+  // Supports both id and _id
+  const loggedInUserId = user?._id || user?.id;
+
   const [loadingLike, setLoadingLike] = useState(false);
 
   const [showComments, setShowComments] = useState(false);
 
   const [liked, setLiked] = useState(
     Array.isArray(post.likes) &&
-      post.likes.some((id) => id.toString() === user?._id?.toString())
+      post.likes.some((id) => id.toString() === loggedInUserId?.toString())
   );
 
   const [likesCount, setLikesCount] = useState(
     Array.isArray(post.likes) ? post.likes.length : 0
   );
+
+  // ===============================
+  // LIKE POST
+  // ===============================
 
   const toggleLike = async () => {
     if (loadingLike) return;
@@ -37,17 +44,12 @@ const PostCard = ({ post, posts, setPosts }) => {
     setLoadingLike(true);
 
     try {
-      console.log("Sending Like Request...");
-
       const res = await API.post(`/posts/${post._id}/like`);
-
-      console.log("LIKE RESPONSE:", res);
-      console.log("LIKE DATA:", res.data);
 
       const updatedLikes = Array.isArray(res.data.likes) ? res.data.likes : [];
 
       setLiked(
-        updatedLikes.some((id) => id.toString() === user?._id?.toString())
+        updatedLikes.some((id) => id.toString() === loggedInUserId?.toString())
       );
 
       setLikesCount(
@@ -67,16 +69,17 @@ const PostCard = ({ post, posts, setPosts }) => {
         )
       );
     } catch (error) {
-      console.error("LIKE ERROR:", error);
-
-      console.log("STATUS:", error.response?.status);
-      console.log("DATA:", error.response?.data);
+      console.error(error);
 
       toast.error(error.response?.data?.message || "Failed to update like.");
     } finally {
       setLoadingLike(false);
     }
   };
+
+  // ===============================
+  // DELETE POST
+  // ===============================
 
   const deletePost = async () => {
     const confirmDelete = window.confirm(
@@ -90,13 +93,17 @@ const PostCard = ({ post, posts, setPosts }) => {
 
       setPosts((prev) => prev.filter((item) => item._id !== post._id));
 
-      toast.success("Review deleted successfully.");
+      toast.success("Post deleted successfully.");
     } catch (error) {
       console.error(error);
 
-      toast.error(error.response?.data?.message || "Failed to delete review.");
+      toast.error(error.response?.data?.message || "Failed to delete post.");
     }
   };
+
+  // ===============================
+  // TIME AGO
+  // ===============================
 
   const timeAgo = () => {
     if (!post.createdAt) return "Just now";
@@ -118,12 +125,16 @@ const PostCard = ({ post, posts, setPosts }) => {
         whileHover={{ y: -6 }}
         transition={{ duration: 0.25 }}
       >
+        {/* ==========================
+            HEADER
+        ========================== */}
+
         <div className="post-header">
           <div className="post-user">
             <div className="post-avatar">
               {post.avatar ? (
                 <img
-                  src={post.avatar || "/default-avatar.png"}
+                  src={post.avatar}
                   alt={post.username}
                   className="post-avatar-img"
                   onError={(e) => {
@@ -142,12 +153,22 @@ const PostCard = ({ post, posts, setPosts }) => {
             </div>
           </div>
 
-          {user?._id === String(post.user) && (
-            <button className="delete-post-btn" onClick={deletePost}>
+          {/* DELETE BUTTON */}
+
+          {loggedInUserId === (post.user?._id || post.user)?.toString() && (
+            <button
+              className="delete-post-btn"
+              onClick={deletePost}
+              title="Delete Review"
+            >
               <RiDeleteBin6Line />
             </button>
           )}
         </div>
+
+        {/* ==========================
+            MOVIE CARD
+        ========================== */}
 
         {post.movieTitle && (
           <div className="movie-review-card">
@@ -191,7 +212,15 @@ const PostCard = ({ post, posts, setPosts }) => {
           </div>
         )}
 
+        {/* ==========================
+            REVIEW TEXT
+        ========================== */}
+
         {post.review && <p className="post-caption">{post.review}</p>}
+
+        {/* ==========================
+            IMAGE
+        ========================== */}
 
         {post.image && (
           <motion.img
@@ -203,6 +232,9 @@ const PostCard = ({ post, posts, setPosts }) => {
             transition={{ duration: 0.5 }}
           />
         )}
+        {/* ==========================
+            FOOTER
+        ========================== */}
 
         <div className="post-footer">
           <button
@@ -223,14 +255,16 @@ const PostCard = ({ post, posts, setPosts }) => {
 
           <button
             className="post-action"
-            onClick={() =>
-              toast.success("Saved to your bookmarks (Coming Soon 🚀)")
-            }
+            onClick={() => toast.success("Bookmarks feature coming soon 🚀")}
           >
             <RiBookmarkLine />
           </button>
         </div>
       </motion.div>
+
+      {/* ==========================
+          COMMENTS MODAL
+      ========================== */}
 
       {showComments && (
         <CommentsModal
