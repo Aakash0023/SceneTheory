@@ -17,27 +17,25 @@ connectDB();
 
 const app = express();
 
-const corsOptions = {
-  origin: ["http://localhost:5173", "https://scene-theor.vercel.app"],
-  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true,
-};
-
-app.use(cors(corsOptions));
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "https://scene-theory.vercel.app"],
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 
-app.use("/api/quiz", quizRoutes);
+app.get("/", (req, res) => {
+  res.send("🎬 SceneTheory Backend Running");
+});
+
 app.use("/api/auth", authRoutes);
+app.use("/api/quiz", quizRoutes);
 app.use("/api/watchlist", watchlistRoutes);
 app.use("/api/profile", profileRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/chat", chatRoutes);
-
-app.get("/", (req, res) => {
-  res.send("SceneTheory Backend Running ");
-});
 
 const PORT = process.env.PORT || 5000;
 
@@ -45,4 +43,8 @@ app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
-console.log("GROQ:", process.env.GROQ_API_KEY ? "Loaded " : "Missing ");
+console.log("Mongo URI:", process.env.MONGO_URI ? "Loaded " : "Missing ");
+
+console.log("JWT:", process.env.JWT_SECRET ? "Loaded " : "Missing ");
+
+console.log("Groq:", process.env.GROQ_API_KEY ? "Loaded " : "Missing ");

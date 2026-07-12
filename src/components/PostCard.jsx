@@ -22,11 +22,14 @@ const PostCard = ({ post, posts, setPosts }) => {
 
   const [showComments, setShowComments] = useState(false);
 
-  const [liked, setLiked] = useState(() => {
-    if (!Array.isArray(post.likes)) return false;
+  const [liked, setLiked] = useState(
+    Array.isArray(post.likes) &&
+      post.likes.some((id) => id.toString() === user?._id?.toString())
+  );
 
-    return post.likes.some((id) => id.toString() === user?._id?.toString());
-  });
+  const [likesCount, setLikesCount] = useState(
+    Array.isArray(post.likes) ? post.likes.length : 0
+  );
 
   const toggleLike = async () => {
     if (loadingLike) return;
@@ -34,15 +37,23 @@ const PostCard = ({ post, posts, setPosts }) => {
     setLoadingLike(true);
 
     try {
-      const res = await API.patch(`/posts/${post._id}/like`);
-
-      setPosts((prev) =>
-        prev.map((item) => (item._id === post._id ? res.data : item))
-      );
+      const res = await API.post(`/posts/${post._id}/like`);
 
       setLiked(
-        Array.isArray(res.data.likes) &&
-          res.data.likes.some((id) => id.toString() === user?._id?.toString())
+        res.data.likes.some((id) => id.toString() === user?._id?.toString())
+      );
+
+      setLikesCount(res.data.likesCount);
+
+      setPosts((prev) =>
+        prev.map((item) =>
+          item._id === post._id
+            ? {
+                ...item,
+                likes: res.data.likes,
+              }
+            : item
+        )
       );
     } catch (error) {
       console.error(error);
@@ -187,7 +198,7 @@ const PostCard = ({ post, posts, setPosts }) => {
           >
             {liked ? <RiHeart3Fill color="#f5c518" /> : <RiHeart3Line />}
 
-            <span>{post.likes?.length || 0}</span>
+            <span>{likesCount}</span>
           </button>
 
           <button className="post-action" onClick={() => setShowComments(true)}>
