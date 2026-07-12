@@ -97,7 +97,21 @@ const CommentsModal = ({ post, closeModal, posts, setPosts }) => {
           {post.comments?.length ? (
             post.comments.map((comment, index) => (
               <div className="comment-card" key={comment._id || index}>
-                <div className="comment-avatar">{comment.avatar || "🎬"}</div>
+                <div className="comment-avatar">
+                  {comment.avatar ? (
+                    <img
+                      src={comment.avatar}
+                      alt={comment.username}
+                      className="comment-avatar-img"
+                      onError={(e) => {
+                        e.target.style.display = "none";
+                        e.target.parentNode.innerHTML = "🎬";
+                      }}
+                    />
+                  ) : (
+                    "🎬"
+                  )}
+                </div>
 
                 <div className="comment-content">
                   <div className="comment-top">
@@ -144,4 +158,3 @@ const CommentsModal = ({ post, closeModal, posts, setPosts }) => {
 };
 
 export default CommentsModal;
-  
