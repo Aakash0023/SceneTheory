@@ -196,25 +196,12 @@ const PostCard = ({ post, posts, setPosts }) => {
               <div className="review-top">
                 <div>
                   <h2>{post.movieTitle}</h2>
-
-                  <span>
-                    {post.movieYear || "Unknown"} • ⭐{" "}
-                    {Number(post.tmdbRating || 0).toFixed(1)}
-                  </span>
                 </div>
 
                 <div className="user-rating">
                   {"⭐".repeat(post.userRating || 5)}
                 </div>
               </div>
-
-              <p className="review-overview">
-                {post.movieOverview
-                  ? post.movieOverview.length > 180
-                    ? post.movieOverview.substring(0, 180) + "..."
-                    : post.movieOverview
-                  : "No overview available."}
-              </p>
             </div>
           </div>
         )}

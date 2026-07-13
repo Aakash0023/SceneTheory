@@ -4680,3 +4680,38 @@ MOBILE
   color: #bbb;
   font-size: 16px;
 }
+.back-btn {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 10px 18px;
+
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(14px);
+
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 999px;
+
+  color: white;
+
+  cursor: pointer;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  transition: 0.3s;
+
+  z-index: 9999;
+}
+
+.back-btn:hover {
+  background: #f5c518;
+  color: #111;
+
+  transform: translateX(-5px);
+}
