@@ -1,8 +1,9 @@
 import { fetchMovieDetails } from "../api/tmdb";
 import { useState, useEffect } from "react";
 import QuizResults from "./QuizResults";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { generateQuiz } from "../api/quiz";
+import { RiArrowLeftLine } from "react-icons/ri";
 
 const QuizPage = () => {
   const [questions, setQuestions] = useState([]);
@@ -17,6 +18,7 @@ const QuizPage = () => {
   const [quizFinished, setQuizFinished] = useState(false);
 
   const { movieId } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadQuiz = async () => {
@@ -105,7 +107,6 @@ const QuizPage = () => {
     if (currentQuestion < questions.length - 1) {
       setCurrentQuestion((prev) => prev + 1);
     } else {
-      // Save completed quizzes
       const completed = Number(localStorage.getItem("quizCompleted")) || 0;
 
       localStorage.setItem("quizCompleted", completed + 1);
@@ -116,6 +117,11 @@ const QuizPage = () => {
 
   return (
     <div className="quiz-page">
+      <button className="quiz-back-btn" onClick={() => navigate(-1)}>
+        <RiArrowLeftLine />
+        Back
+      </button>
+
       <h1>{movieTitle} Quiz</h1>
 
       <h2>

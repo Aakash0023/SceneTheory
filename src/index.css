@@ -4641,3 +4641,42 @@ MOBILE
   height: 100%;
   object-fit: cover;
 }
+.quiz-back-btn {
+  position: fixed;
+  top: 25px;
+  left: 25px;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 10px 18px;
+
+  border: none;
+  border-radius: 30px;
+
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+
+  color: white;
+  cursor: pointer;
+
+  font-weight: 600;
+  font-size: 15px;
+
+  transition: 0.3s;
+
+  z-index: 999;
+}
+
+.quiz-back-btn:hover {
+  background: #f5c518;
+  color: black;
+  transform: translateX(-4px);
+}
+
+.redirect-msg {
+  margin-top: 20px;
+  color: #bbb;
+  font-size: 16px;
+}

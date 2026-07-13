@@ -1,13 +1,31 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const QuizResults = ({ score, total, movieId }) => {
+  const navigate = useNavigate();
+
+  const [countdown, setCountdown] = useState(5);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCountdown((prev) => prev - 1);
+    }, 1000);
+
+    const timer = setTimeout(() => {
+      navigate("/");
+    }, 5000);
+
+    return () => {
+      clearInterval(interval);
+      clearTimeout(timer);
+    };
+  }, [navigate]);
+
   const getRank = () => {
     const percentage = (score / total) * 100;
 
     if (percentage >= 90) return "👑 SceneTheory Master";
-
     if (percentage >= 70) return "🎥 Cinephile";
-
     if (percentage >= 40) return "🎬 Movie Fan";
 
     return "🍿 Casual Viewer";
@@ -23,12 +41,26 @@ const QuizResults = ({ score, total, movieId }) => {
 
       <h3>{getRank()}</h3>
 
-      <Link to={`/movie/${movieId}`} className="primary-btn">
-        Back To Movie
-      </Link>
-      <Link to={`/movie/${movieId}/quiz`} className="secondary-btn">
-        Try Again
-      </Link>
+      <p className="redirect-msg">
+        Returning to Home in {countdown} seconds...
+      </p>
+
+      <div
+        style={{
+          display: "flex",
+          gap: "15px",
+          justifyContent: "center",
+          marginTop: "30px",
+        }}
+      >
+        <Link to="/" className="primary-btn">
+          🏠 Home
+        </Link>
+
+        <Link to={`/movie/${movieId}/quiz`} className="secondary-btn">
+          🔄 Play Again
+        </Link>
+      </div>
     </div>
   );
 };
