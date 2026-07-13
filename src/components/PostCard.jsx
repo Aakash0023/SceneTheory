@@ -267,10 +267,7 @@ const PostCard = ({ post, posts, setPosts }) => {
             <span>{post.comments?.length || 0}</span>
           </button>
 
-          <button
-            className="post-action"
-            onClick={() => toast.success("Bookmarks feature coming soon 🚀")}
-          >
+          
             <RiBookmarkLine />
           </button>
         </div>
