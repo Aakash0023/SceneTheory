@@ -266,10 +266,6 @@ const PostCard = ({ post, posts, setPosts }) => {
             <RiChat3Line />
             <span>{post.comments?.length || 0}</span>
           </button>
-
-          
-            <RiBookmarkLine />
-          </button>
         </div>
       </motion.div>
 
