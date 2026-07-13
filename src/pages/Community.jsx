@@ -154,7 +154,7 @@ function Community({ posts, setPosts }) {
 
       setPosts((prev) => [res.data, ...prev]);
 
-      alert("🎉 Review Published!");
+      alert("Review Published Successfully!");
 
       setCaption("");
       setSelectedMovie(null);
@@ -576,7 +576,6 @@ function Community({ posts, setPosts }) {
             {suggestedUsers.length > 0 && (
               <div className="sidebar-card">
                 <div className="sidebar-title">
-                  🎯
                   <div>
                     <h3>Suggested for You</h3>
                     <span>Cinephiles you might like</span>
@@ -612,7 +611,6 @@ function Community({ posts, setPosts }) {
 
             <div className="sidebar-card">
               <div className="sidebar-title">
-                🔥
                 <div>
                   <h3>Trending Movies</h3>
                   <span>What's hot right now</span>
