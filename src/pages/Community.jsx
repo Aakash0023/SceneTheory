@@ -669,9 +669,9 @@ function Community({ posts, setPosts }) {
               </div>
 
               {[
-                { rank: "🥇", name: "Aakash", points: "1250" },
-                { rank: "🥈", name: "Rahul", points: "980" },
-                { rank: "🥉", name: "Alex", points: "720" },
+                { rank: "🥇", name: "Aakash", points: "50" },
+                { rank: "🥈", name: "Rahul", points: "30" },
+                { rank: "🥉", name: "Manish", points: "10" },
               ].map((user) => (
                 <div className="leaderboard-user" key={user.name}>
                   <div className="leader-left">

@@ -177,7 +177,7 @@ const PostCard = ({ post, posts, setPosts }) => {
             MOVIE CARD
         ========================== */}
 
-        {post.movieTitle && (
+        {post.movieTitle && !post.image && (
           <div className="movie-review-card">
             <motion.img
               whileHover={{ scale: 1.03 }}

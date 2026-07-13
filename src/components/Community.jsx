@@ -34,17 +34,17 @@ const Community = () => {
 
       <div className="hero-stats">
         <div className="stat">
-          <h3>1.2M+</h3>
+          <h3>10+</h3>
           <p>Members</p>
         </div>
 
         <div className="stat">
-          <h3>150K+</h3>
+          <h3>10+</h3>
           <p>Reviews</p>
         </div>
 
         <div className="stat">
-          <h3>9.4K+</h3>
+          <h3>1K+</h3>
           <p>Quizzes</p>
         </div>
       </div>
