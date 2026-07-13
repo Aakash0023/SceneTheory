@@ -15,6 +15,7 @@ import FollowButton from "../components/FollowButton";
 import "../styles/community.css";
 import { searchMovies } from "../api/searchMovies";
 import API from "../api/auth";
+import imageCompression from "browser-image-compression";
 
 function Community({ posts, setPosts }) {
   const navigate = useNavigate();
@@ -217,24 +218,38 @@ function Community({ posts, setPosts }) {
   // Image Upload (was referenced in payload but had no input before)
   // ===============================
 
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
     const file = e.target.files?.[0];
+
     if (!file) return;
 
     if (!file.type.startsWith("image/")) {
-      alert("Please choose an image file.");
+      alert("Please select an image.");
       return;
     }
 
-    setSelectedImage(file);
+    try {
+      const options = {
+        maxSizeMB: 0.4, // Compress to ~400KB
+        maxWidthOrHeight: 1280,
+        useWebWorker: true,
+      };
 
-    const reader = new FileReader();
+      const compressedFile = await imageCompression(file, options);
 
-    reader.onload = () => {
-      setPreview(reader.result);
-    };
+      setSelectedImage(compressedFile);
 
-    reader.readAsDataURL(file);
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        setPreview(reader.result);
+      };
+
+      reader.readAsDataURL(compressedFile);
+    } catch (err) {
+      console.error(err);
+      alert("Failed to compress image.");
+    }
   };
 
   return (
