@@ -7,6 +7,8 @@ import {
   RiSettings3Line,
   RiBookmark3Line,
   RiArrowDownSLine,
+  RiMenuLine,
+  RiCloseLine,
 } from "react-icons/ri";
 
 import SearchBar from "./SearchBar";
@@ -19,6 +21,8 @@ const Navbar = ({ onSearch, genres, onGenreSelect }) => {
   const [showGenres, setShowGenres] = useState(false);
 
   const [showMenu, setShowMenu] = useState(false);
+
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   const [streak, setStreak] = useState(0);
 
@@ -60,6 +64,14 @@ const Navbar = ({ onSearch, genres, onGenreSelect }) => {
     return () => document.removeEventListener("mousedown", closeDropdown);
   }, []);
 
+  useEffect(() => {
+    document.body.style.overflow = showMobileMenu ? "hidden" : "";
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [showMobileMenu]);
+
   const logout = () => {
     localStorage.removeItem("token");
 
@@ -86,7 +98,7 @@ const Navbar = ({ onSearch, genres, onGenreSelect }) => {
       </Link>
 
       {/* =========================
-        NAV LINKS
+        NAV LINKS (desktop)
     ========================= */}
 
       <ul className="nav-links">
@@ -143,14 +155,16 @@ const Navbar = ({ onSearch, genres, onGenreSelect }) => {
       </ul>
 
       {/* =========================
-        SEARCH
+        SEARCH (desktop)
     ========================= */}
 
-      <SearchBar
-        onSearch={onSearch}
-        genres={genres}
-        onGenreSelect={onGenreSelect}
-      />
+      <div className="navbar-search-wrap">
+        <SearchBar
+          onSearch={onSearch}
+          genres={genres}
+          onGenreSelect={onGenreSelect}
+        />
+      </div>
 
       {/* =========================
         STREAK
@@ -159,15 +173,159 @@ const Navbar = ({ onSearch, genres, onGenreSelect }) => {
       <div className="streak-badge">🔥 {streak} Day Streak</div>
 
       {/* =========================
-        USER MENU
+        HAMBURGER (mobile only)
+    ========================= */}
+
+      <button
+        className="hamburger-btn"
+        aria-label={showMobileMenu ? "Close menu" : "Open menu"}
+        aria-expanded={showMobileMenu}
+        onClick={() => setShowMobileMenu((prev) => !prev)}
+      >
+        {showMobileMenu ? <RiCloseLine /> : <RiMenuLine />}
+      </button>
+
+      {/* =========================
+        MOBILE MENU DRAWER
+    ========================= */}
+
+      <AnimatePresence>
+        {showMobileMenu && (
+          <>
+            <motion.div
+              className="mobile-menu-overlay"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => setShowMobileMenu(false)}
+            />
+
+            <motion.div
+              className="mobile-menu-drawer"
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "tween", duration: 0.25 }}
+            >
+              <div className="mobile-menu-search">
+                <SearchBar
+                  onSearch={onSearch}
+                  genres={genres}
+                  onGenreSelect={onGenreSelect}
+                />
+              </div>
+
+              <ul className="mobile-nav-links">
+                <li>
+                  <a href="#discover" onClick={() => setShowMobileMenu(false)}>
+                    Discover
+                  </a>
+                </li>
+                <li>
+                  <a href="#quizzes" onClick={() => setShowMobileMenu(false)}>
+                    Quizzes
+                  </a>
+                </li>
+                <li>
+                  <Link
+                    to="/community"
+                    onClick={() => setShowMobileMenu(false)}
+                  >
+                    Community
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/people" onClick={() => setShowMobileMenu(false)}>
+                    People
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/watchlist"
+                    onClick={() => setShowMobileMenu(false)}
+                  >
+                    Watchlist
+                  </Link>
+                </li>
+              </ul>
+
+              <div className="mobile-menu-genres">
+                <p className="mobile-menu-label">Genres</p>
+                <div className="mobile-genre-chips">
+                  <span
+                    onClick={() => {
+                      onGenreSelect(null);
+                      setShowMobileMenu(false);
+                    }}
+                  >
+                    All
+                  </span>
+                  {genres.map((genre) => (
+                    <span
+                      key={genre.id}
+                      onClick={() => {
+                        onGenreSelect(genre.id);
+                        setShowMobileMenu(false);
+                      }}
+                    >
+                      {genre.name}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="mobile-menu-footer">
+                <div className="streak-badge mobile-streak">
+                  🔥 {streak} Day Streak
+                </div>
+
+                {!isLoggedIn ? (
+                  <Link
+                    to="/signup"
+                    className="signup-btn"
+                    onClick={() => setShowMobileMenu(false)}
+                  >
+                    Sign Up
+                  </Link>
+                ) : (
+                  <>
+                    <Link
+                      to="/profile"
+                      className="dropdown-item"
+                      onClick={() => setShowMobileMenu(false)}
+                    >
+                      <RiUser3Line />
+                      <span>My Profile</span>
+                    </Link>
+                    <button
+                      className="dropdown-item logout-btn"
+                      onClick={() => {
+                        setShowMobileMenu(false);
+                        logout();
+                      }}
+                    >
+                      <RiLogoutBoxLine />
+                      <span>Logout</span>
+                    </button>
+                  </>
+                )}
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
+      {/* =========================
+        USER MENU (desktop)
     ========================= */}
 
       {!isLoggedIn ? (
-        <Link to="/signup" className="signup-btn">
+        <Link to="/signup" className="signup-btn desktop-only">
           Sign Up
         </Link>
       ) : (
-        <div className="profile-menu" ref={dropdownRef}>
+        <div className="profile-menu desktop-only" ref={dropdownRef}>
           <button
             className="profile-button"
             onClick={() => setShowMenu(!showMenu)}

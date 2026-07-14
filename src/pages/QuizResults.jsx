@@ -54,7 +54,7 @@ const QuizResults = ({ score, total, movieId }) => {
         }}
       >
         <Link to="/" className="primary-btn">
-          🏠 Home
+           Home
         </Link>
 
         <Link to={`/movie/${movieId}/quiz`} className="secondary-btn">
