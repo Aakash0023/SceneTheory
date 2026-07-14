@@ -4850,6 +4850,26 @@ MOBILE
   }
 }
 
+@media (max-width: 768px) {
+  .movie-details-container,
+  .movie-info,
+  .community-page,
+  .post-card {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    overflow-x: hidden;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
 /* Movie details page */
 @media (max-width: 900px) {
   .movie-details {
@@ -4956,20 +4976,6 @@ MOBILE
   }
 }
 
-/* ═══════════════════════════════════════════════
-   MOBILE — GUARANTEED OVERRIDES
-   This file has several duplicate class definitions
-   scattered further up (e.g. a second .navbar, a second
-   .features-grid) that were silently cancelling out the
-   earlier mobile @media rules due to CSS source-order
-   rules. Everything below uses !important and sits at
-   the very end of the file so it always wins, regardless
-   of duplicate rules added anywhere above.
-═══════════════════════════════════════════════ */
-
-/* Global overflow safety net — stops any remaining
-   fixed-width element from creating a horizontal scrollbar
-   that clips content on the right edge. */
 html,
 body {
   max-width: 100vw;
