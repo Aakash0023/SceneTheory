@@ -2,10 +2,10 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 console.log("API URL =", API_URL);
 
-export const generateQuiz = async (title, overview) => {
-  console.log("Request URL =", `${API_URL}/api/quiz/generate`);
+const API_URL = import.meta.env.VITE_API_URL;
 
-  const response = await fetch(`${API_URL}/api/quiz/generate`, {
+export const generateQuiz = async (title, overview) => {
+  const response = await fetch(`${API_URL}/quiz/generate`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
