@@ -30,9 +30,11 @@ const QuizPage = () => {
 
         const data = await generateQuiz(movie.title, movie.overview);
 
-        const cleaned = data.quiz.replace(/```json/g, "").replace(/```/g, "");
+        if (!data.quiz) {
+          throw new Error(data.error || "No quiz returned from server");
+        }
 
-        setQuestions(JSON.parse(cleaned));
+        setQuestions(JSON.parse(data.quiz));
       } catch (error) {
         console.error("Quiz Generation Error:", error);
       } finally {

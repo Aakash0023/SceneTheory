@@ -16,7 +16,7 @@ const MODEL_FALLBACK_CHAIN = [
 ];
 
 export const groqChatCompletion = async (
-  { messages, options = {} },
+  { messages, options = {}, validate },
   models = MODEL_FALLBACK_CHAIN
 ) => {
   let lastError;
@@ -28,6 +28,24 @@ export const groqChatCompletion = async (
         messages,
         ...options,
       });
+
+      const content = completion?.choices?.[0]?.message?.content;
+
+      if (validate) {
+        let isValid = false;
+
+        try {
+          isValid = validate(content);
+        } catch (validationError) {
+          isValid = false;
+        }
+
+        if (!isValid) {
+          throw new Error(
+            `Model "${model}" returned content that failed validation`
+          );
+        }
+      }
 
       return {
         completion,
