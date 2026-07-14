@@ -1,18 +1,10 @@
 import dotenv from "dotenv";
 dotenv.config();
-console.log("GROQ KEY:", process.env.GROQ_API_KEY);
 
-import Groq from "groq-sdk";
-
-console.log("GROQ KEY LENGTH:", process.env.GROQ_API_KEY?.length);
-
-const groq = new Groq({
-  apiKey: process.env.GROQ_API_KEY?.trim(),
-});
+import { groqChatCompletion } from "./groqClient.js";
 
 export const generateQuiz = async (title, overview) => {
-  const completion = await groq.chat.completions.create({
-    model: "llama-3.3-70b-versatile",
+  const { completion, modelUsed } = await groqChatCompletion({
     messages: [
       {
         role: "user",
@@ -40,6 +32,8 @@ Format:
       },
     ],
   });
+
+  console.log(`[groqService] Quiz generated using model: ${modelUsed}`);
 
   return completion.choices[0].message.content;
 };

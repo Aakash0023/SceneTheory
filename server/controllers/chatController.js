@@ -1,8 +1,4 @@
-import Groq from "groq-sdk";
-
-const groq = new Groq({
-  apiKey: process.env.GROQ_API_KEY,
-});
+import { groqChatCompletion } from "../services/groqClient.js";
 
 export const chatWithAI = async (req, res) => {
   try {
@@ -14,9 +10,7 @@ export const chatWithAI = async (req, res) => {
       });
     }
 
-    const completion = await groq.chat.completions.create({
-      model: "llama-3.3-70b-versatile",
-
+    const { completion, modelUsed } = await groqChatCompletion({
       messages: [
         {
           role: "system",
@@ -42,6 +36,8 @@ Keep responses friendly, concise and engaging.
         },
       ],
     });
+
+    console.log(`[chatController] Reply generated using model: ${modelUsed}`);
 
     res.json({
       reply: completion.choices[0].message.content,
