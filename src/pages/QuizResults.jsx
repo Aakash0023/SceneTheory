@@ -33,7 +33,7 @@ const QuizResults = ({ score, total, movieId }) => {
 
   return (
     <div className="quiz-page">
-      <h1>🎉 Quiz Complete</h1>
+      <h1>Quiz Completed</h1>
 
       <h2>
         Score: {score}/{total}
@@ -54,11 +54,11 @@ const QuizResults = ({ score, total, movieId }) => {
         }}
       >
         <Link to="/" className="primary-btn">
-           Home
+          Home
         </Link>
 
         <Link to={`/movie/${movieId}/quiz`} className="secondary-btn">
-          🔄 Play Again
+          Play Again
         </Link>
       </div>
     </div>
