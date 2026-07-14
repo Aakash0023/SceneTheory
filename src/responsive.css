@@ -1,0 +1,878 @@
+@media (max-width: 768px) {
+  * {
+    box-sizing: border-box;
+  }
+
+  html,
+  body {
+    overflow-x: hidden;
+    width: 100%;
+  }
+
+  body {
+    padding: 0;
+    margin: 0;
+  }
+
+  section {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  /* ================= NAVBAR ================= */
+
+  .navbar {
+    padding: 14px 18px;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+
+  .logo h2 {
+    font-size: 1.4rem;
+  }
+
+  .logo-icon {
+    width: 38px;
+    height: 38px;
+    font-size: 0.95rem;
+  }
+
+  .nav-links {
+    gap: 16px;
+    overflow-x: auto;
+    white-space: nowrap;
+    scrollbar-width: none;
+  }
+
+  .nav-links::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav-links a {
+    font-size: 0.95rem;
+  }
+
+  .hero {
+    padding: 110px 20px 60px;
+    min-height: auto;
+  }
+
+  .hero-content {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .hero-left,
+  .hero-right {
+    width: 100%;
+  }
+
+  .hero-left h1 {
+    font-size: 2.3rem;
+    line-height: 1.2;
+    text-align: center;
+  }
+
+  .hero-left p {
+    text-align: center;
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  .hero-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .hero-buttons button,
+  .hero-buttons a {
+    width: 100%;
+  }
+
+  .hero-stats {
+    justify-content: center;
+    gap: 30px;
+  }
+
+  .search-container,
+  .search-box {
+    width: 100%;
+  }
+
+  .search-box input {
+    width: 100%;
+    font-size: 16px;
+  }
+
+  .featured-section {
+    padding: 50px 18px;
+  }
+
+  .featured-title {
+    font-size: clamp(2rem, 8vw, 3rem);
+    text-align: center;
+    line-height: 1.2;
+    margin-bottom: 30px;
+  }
+
+  .featured-card {
+    flex-direction: column;
+    padding: 20px;
+    border-radius: 22px;
+  }
+
+  .featured-poster {
+    width: 100%;
+    max-width: 260px;
+    margin: auto;
+  }
+
+  .featured-content {
+    width: 100%;
+    margin-top: 25px;
+  }
+
+  .featured-content h2 {
+    font-size: 1.8rem;
+    text-align: center;
+  }
+
+  .featured-content p {
+    text-align: center;
+    line-height: 1.8;
+    font-size: 0.96rem;
+  }
+
+  .featured-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 25px;
+  }
+
+  .featured-buttons button,
+  .featured-buttons a {
+    width: 100%;
+  }
+
+  .movies-grid,
+  .trending-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+  }
+
+  .movie-card {
+    width: 100%;
+  }
+
+  .movie-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 16px;
+  }
+
+  .movie-title {
+    font-size: 0.95rem;
+  }
+
+  .movie-rating {
+    font-size: 0.85rem;
+  }
+
+  .section-title {
+    font-size: 2rem;
+    text-align: center;
+  }
+
+  .section-subtitle {
+    text-align: center;
+    font-size: 0.95rem;
+  }
+
+  .primary-btn,
+  .secondary-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 14px;
+  }
+}
+
+@media (max-width: 768px) {
+  /* ================= MOVIE DETAILS ================= */
+
+  .movie-details-page,
+  .movie-details-container {
+    padding: 90px 18px 40px;
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  .movie-details-content,
+  .movie-main,
+  .movie-info-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    align-items: center;
+  }
+
+  /* ================= POSTER ================= */
+
+  .movie-poster,
+  .details-poster,
+  .movie-poster img {
+    width: 100%;
+    max-width: 260px;
+    margin: auto;
+    border-radius: 18px;
+  }
+
+  /* ================= MOVIE INFO ================= */
+
+  .movie-info {
+    width: 100%;
+    text-align: center;
+  }
+
+  .movie-info h1 {
+    font-size: 2rem;
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+
+  .movie-meta {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 0.9rem;
+  }
+
+  .movie-overview {
+    font-size: 0.96rem;
+    line-height: 1.8;
+    text-align: left;
+    margin-top: 20px;
+  }
+
+  /* ================= RATING ================= */
+
+  .rating-box,
+  .movie-rating-box {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 20px;
+  }
+
+  /* ================= BUTTONS ================= */
+
+  .movie-actions,
+  .movie-buttons,
+  .details-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 25px;
+  }
+
+  .movie-actions button,
+  .movie-buttons button,
+  .movie-actions a,
+  .movie-buttons a,
+  .details-buttons button,
+  .details-buttons a {
+    width: 100%;
+  }
+
+  /* ================= TRAILER ================= */
+
+  iframe {
+    width: 100%;
+    height: 220px;
+    border-radius: 16px;
+  }
+
+  .trailer-container {
+    width: 100%;
+    overflow: hidden;
+    border-radius: 16px;
+  }
+
+  /* ================= CAST ================= */
+
+  .cast-grid,
+  .cast-container {
+    display: flex;
+    overflow-x: auto;
+    gap: 16px;
+    padding-bottom: 10px;
+    scroll-snap-type: x mandatory;
+  }
+
+  .cast-grid::-webkit-scrollbar,
+  .cast-container::-webkit-scrollbar {
+    display: none;
+  }
+
+  .cast-card {
+    flex: 0 0 120px;
+    scroll-snap-align: start;
+  }
+
+  .cast-card img {
+    width: 100%;
+    border-radius: 14px;
+  }
+
+  .cast-card h4 {
+    font-size: 0.85rem;
+  }
+
+  /* ================= SIMILAR MOVIES ================= */
+
+  .similar-grid,
+  .similar-movies {
+    display: flex;
+    overflow-x: auto;
+    gap: 18px;
+    padding-bottom: 10px;
+    scroll-snap-type: x mandatory;
+  }
+
+  .similar-grid::-webkit-scrollbar,
+  .similar-movies::-webkit-scrollbar {
+    display: none;
+  }
+
+  .similar-card {
+    flex: 0 0 160px;
+    scroll-snap-align: start;
+  }
+
+  .similar-card img {
+    width: 100%;
+    border-radius: 14px;
+  }
+
+  /* ================= REVIEW CARD ================= */
+
+  .movie-review-card {
+    flex-direction: column;
+    padding: 18px;
+    gap: 18px;
+  }
+
+  .review-poster {
+    width: 100%;
+    max-width: 220px;
+    margin: auto;
+  }
+
+  .review-details {
+    width: 100%;
+  }
+
+  .review-top {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .review-overview {
+    text-align: left;
+    line-height: 1.8;
+    font-size: 0.94rem;
+  }
+
+  /* ================= BACK BUTTON ================= */
+
+  .back-btn,
+  .back-button {
+    position: fixed;
+    top: 75px;
+    left: 15px;
+    z-index: 999;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  /* ================= COMMUNITY PAGE ================= */
+
+  .community-page,
+  .community-container {
+    padding: 90px 16px 30px;
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  .community-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+  }
+
+  .community-header h1 {
+    font-size: 2rem;
+    line-height: 1.2;
+  }
+
+  .community-header p {
+    font-size: 0.95rem;
+  }
+
+  .community-actions {
+    width: 100%;
+  }
+
+  .community-actions button {
+    width: 100%;
+  }
+
+  /* ================= CREATE POST ================= */
+
+  .create-post-card,
+  .create-post-container {
+    padding: 18px;
+    border-radius: 18px;
+  }
+
+  .create-post-card textarea,
+  .create-post-container textarea {
+    min-height: 130px;
+    font-size: 15px;
+  }
+
+  .create-post-actions {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .create-post-actions button {
+    width: 100%;
+  }
+
+  /* ================= IMAGE UPLOAD ================= */
+
+  .image-upload-card {
+    width: 100%;
+  }
+
+  .image-preview-wrap img {
+    width: 100%;
+    max-height: 280px;
+    object-fit: cover;
+    border-radius: 16px;
+  }
+
+  /* ================= POSTS ================= */
+
+  .posts-feed {
+    gap: 20px;
+  }
+
+  .post-card {
+    padding: 16px;
+    border-radius: 18px;
+  }
+
+  .post-header {
+    gap: 12px;
+  }
+
+  .post-user {
+    gap: 12px;
+  }
+
+  .post-avatar {
+    width: 45px;
+    height: 45px;
+  }
+
+  .post-avatar img {
+    width: 45px;
+    height: 45px;
+  }
+
+  .post-user h3 {
+    font-size: 0.95rem;
+  }
+
+  .post-user span {
+    font-size: 0.8rem;
+  }
+
+  /* ================= REVIEW CARD ================= */
+
+  .movie-review-card {
+    flex-direction: column;
+    gap: 18px;
+    padding: 15px;
+  }
+
+  .review-poster {
+    width: 100%;
+    max-width: 220px;
+    margin: auto;
+  }
+
+  .review-details {
+    width: 100%;
+  }
+
+  .review-top {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .review-top h2 {
+    font-size: 1.3rem;
+    text-align: center;
+  }
+
+  .review-overview {
+    font-size: 0.92rem;
+    line-height: 1.7;
+  }
+
+  /* ================= USER POST IMAGE ================= */
+
+  .post-image {
+    width: 100%;
+    border-radius: 16px;
+    max-height: 420px;
+    object-fit: cover;
+  }
+
+  /* ================= ACTION BUTTONS ================= */
+
+  .post-footer {
+    justify-content: space-around;
+    gap: 10px;
+  }
+
+  .post-action {
+    flex: 1;
+    justify-content: center;
+    padding: 10px;
+  }
+
+  /* ================= COMMENTS ================= */
+
+  .comments-overlay {
+    padding: 15px;
+  }
+
+  .comments-modal {
+    width: 100%;
+    max-height: 85vh;
+    border-radius: 20px;
+  }
+
+  .comments-header {
+    padding: 18px;
+  }
+
+  .comments-list {
+    padding: 15px;
+  }
+
+  .comment-card {
+    gap: 12px;
+  }
+
+  .comment-avatar {
+    width: 42px;
+    height: 42px;
+  }
+
+  .comment-input-area {
+    padding: 15px;
+  }
+
+  .comment-input-area textarea {
+    font-size: 15px;
+    min-height: 90px;
+  }
+
+  .comment-input-area button {
+    width: 100%;
+    margin-top: 12px;
+  }
+
+  /* ================= PEOPLE PAGE ================= */
+
+  .people-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .person-card,
+  .user-card {
+    width: 100%;
+    padding: 18px;
+  }
+
+  .person-card img,
+  .user-card img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .person-card button,
+  .user-card button {
+    width: 100%;
+    margin-top: 15px;
+  }
+
+  /* ================= FOLLOWERS ================= */
+
+  .followers-grid,
+  .following-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+}
+
+@media (max-width: 768px) {
+  /* ================= PROFILE ================= */
+
+  .profile-page,
+  .profile-container {
+    padding: 90px 16px 30px;
+    width: 100%;
+  }
+
+  .profile-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 20px;
+  }
+
+  .profile-avatar,
+  .profile-avatar img {
+    width: 110px;
+    height: 110px;
+  }
+
+  .profile-info h1 {
+    font-size: 2rem;
+  }
+
+  .profile-info p {
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+
+  .profile-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    width: 100%;
+    margin-top: 25px;
+  }
+
+  .profile-stat {
+    padding: 18px;
+  }
+
+  .profile-stat h2 {
+    font-size: 1.5rem;
+  }
+
+  .profile-stat p {
+    font-size: 0.9rem;
+  }
+
+  .profile-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 25px;
+  }
+
+  .profile-actions button,
+  .profile-actions a {
+    width: 100%;
+  }
+
+  /* ================= WATCHLIST ================= */
+
+  .watchlist-page,
+  .watchlist-container {
+    padding: 90px 16px 40px;
+  }
+
+  .watchlist-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+  }
+
+  .watchlist-card {
+    width: 100%;
+  }
+
+  .watchlist-card img {
+    width: 100%;
+    border-radius: 14px;
+  }
+
+  /* ================= QUIZ ================= */
+
+  .quiz-page {
+    padding: 90px 16px 40px;
+    min-height: 100vh;
+  }
+
+  .quiz-page h1 {
+    font-size: 2rem;
+    text-align: center;
+  }
+
+  .quiz-page h2 {
+    font-size: 1.15rem;
+    text-align: center;
+  }
+
+  .quiz-page p {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  .quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 25px;
+  }
+
+  .quiz-options button {
+    width: 100%;
+  }
+
+  .quiz-loading {
+    padding: 25px;
+  }
+
+  .quiz-loader-content h1 {
+    font-size: 2rem;
+    text-align: center;
+  }
+
+  .quiz-loader-content p {
+    text-align: center;
+  }
+
+  /* ================= QUIZ RESULT ================= */
+
+  .quiz-result,
+  .quiz-results {
+    padding: 90px 16px;
+    text-align: center;
+  }
+
+  .quiz-result h1,
+  .quiz-results h1 {
+    font-size: 2.2rem;
+  }
+
+  .quiz-result h2,
+  .quiz-results h2 {
+    font-size: 1.5rem;
+  }
+
+  .quiz-result .primary-btn,
+  .quiz-result .secondary-btn,
+  .quiz-results .primary-btn,
+  .quiz-results .secondary-btn {
+    width: 100%;
+    margin-top: 15px;
+  }
+
+  /* ================= CHAT ================= */
+
+  .chat-widget,
+  .chat-window {
+    width: calc(100% - 20px);
+    right: 10px;
+    left: 10px;
+    bottom: 90px;
+    max-height: 75vh;
+  }
+
+  .chat-input {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .chat-input input {
+    width: 100%;
+  }
+
+  .chat-input button {
+    width: 100%;
+  }
+
+  /* ================= FOOTER ================= */
+
+  footer,
+  .footer {
+    padding: 40px 20px;
+    text-align: center;
+  }
+
+  .footer-content {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+  }
+
+  .footer-links {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 18px;
+  }
+
+  /* ================= IMAGES ================= */
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* ================= TABLES ================= */
+
+  table {
+    display: block;
+    overflow-x: auto;
+  }
+
+  /* ================= LONG TEXT ================= */
+
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  span {
+    word-break: break-word;
+  }
+
+  /* ================= SAFE AREA ================= */
+
+  body {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
